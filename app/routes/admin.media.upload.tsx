@@ -198,24 +198,24 @@ export default function UploadMedia() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="grid gap-6 md:grid-cols-[300px_1fr]">
+    <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-[300px_1fr]">
         {/* Admin Menu */}
         <div className="md:block">
           <AdminMenu t={t} />
         </div>
 
         {/* Main Content */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Header Section */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <div>
-              <h1 className="text-3xl font-bold">{t.menu.media.upload}</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-2xl md:text-3xl font-bold">{t.menu.media.upload}</h1>
+              <p className="text-sm md:text-base text-muted-foreground mt-1">
                 Upload new media files
               </p>
             </div>
-            <Button variant="outline" asChild>
+            <Button variant="outline" asChild className="w-full sm:w-auto">
               <Link to="/admin/media">
                 Back to Media Library
               </Link>
@@ -247,11 +247,11 @@ export default function UploadMedia() {
 
                 {/* File List */}
                 {files.length > 0 && (
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {files.map((fileWithPreview, index) => (
-                      <div key={index} className="flex items-start gap-4 p-4 border rounded-lg">
+                      <div key={index} className="flex items-start gap-3 p-3 border rounded-lg">
                         {/* Preview */}
-                        <div className="relative w-20 h-20">
+                        <div className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0">
                           <img
                             src={fileWithPreview.preview}
                             alt={fileWithPreview.file.name}
@@ -262,13 +262,13 @@ export default function UploadMedia() {
                             onClick={() => removeFile(index)}
                             className="absolute -top-2 -right-2 p-1 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90"
                           >
-                            <X className="h-4 w-4" />
+                            <X className="h-3 w-3 md:h-4 md:w-4" />
                           </button>
                         </div>
 
                         {/* File Info */}
-                        <div className="flex-1 space-y-2">
-                          <div className="text-sm font-medium">
+                        <div className="flex-1 min-w-0 space-y-1.5">
+                          <div className="text-sm font-medium truncate">
                             {fileWithPreview.file.name}
                           </div>
                           
@@ -303,7 +303,7 @@ export default function UploadMedia() {
                   </div>
                 )}
 
-                <Button type="submit" disabled={isUploading || files.length === 0}>
+                <Button type="submit" disabled={isUploading || files.length === 0} className="w-full sm:w-auto">
                   {isUploading ? "Uploading..." : "Upload"}
                 </Button>
               </Form>

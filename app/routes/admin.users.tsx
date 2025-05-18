@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Badge } from "~/components/ui/badge";
+import { Card, CardContent } from "~/components/ui/card";
 
 const translations = {
   en: enTranslations,
@@ -114,66 +115,105 @@ export default function AdminUsers() {
   const { user, profile, users, locale, t } = useLoaderData<typeof loader>();
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="grid gap-6 md:grid-cols-[300px_1fr]">
+    <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-[300px_1fr]">
         {/* Admin Menu */}
         <div className="md:block">
           <AdminMenu t={t} />
         </div>
 
         {/* Main Content */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Header Section */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <div>
-              <h1 className="text-3xl font-bold">{t.menu.users.all}</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-2xl md:text-3xl font-bold">{t.menu.users.all}</h1>
+              <p className="text-sm md:text-base text-muted-foreground mt-1">
                 Manage user accounts and roles
               </p>
             </div>
           </div>
 
-          {/* Users Table */}
+          {/* Users List */}
           <div className="bg-card rounded-lg border shadow-sm">
             <div className="p-4 sm:p-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Created At</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {users.map((user: User) => (
-                    <TableRow key={user.id}>
-                      <TableCell>
-                        {user.first_name} {user.last_name}
-                      </TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                          {user.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{user.phone || '-'}</TableCell>
-                      <TableCell>
-                        {new Date(user.created_at).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={`/admin/users/${user.id}`}>
-                            Edit
-                          </Link>
-                        </Button>
-                      </TableCell>
+              {/* Desktop Table */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Role</TableHead>
+                      <TableHead>Phone</TableHead>
+                      <TableHead>Created At</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {users.map((user: User) => (
+                      <TableRow key={user.id}>
+                        <TableCell>
+                          {user.first_name} {user.last_name}
+                        </TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>
+                          <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                            {user.role}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{user.phone || '-'}</TableCell>
+                        <TableCell>
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to={`/admin/users/${user.id}`}>
+                              Edit
+                            </Link>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="md:hidden space-y-4">
+                {users.map((user: User) => (
+                  <Card key={user.id}>
+                    <CardContent className="p-4 space-y-3">
+                      <div className="space-y-1">
+                        <div className="font-medium">
+                          {user.first_name} {user.last_name}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {user.email}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
+                            {user.role}
+                          </Badge>
+                          {user.phone && (
+                            <span className="text-sm text-muted-foreground">
+                              {user.phone}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          Created: {new Date(user.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm" asChild className="w-full">
+                        <Link to={`/admin/users/${user.id}`}>
+                          Edit User
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -72,7 +72,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
           <Button 
             variant="ghost" 
             className={cn(
-              "justify-start",
+              "justify-start w-full",
               location.pathname === "/admin/dashboard" && "bg-accent"
             )} 
             asChild
@@ -94,7 +94,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/posts" && "bg-accent"
               )} 
               asChild
@@ -107,7 +107,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/posts/create" && "bg-accent"
               )} 
               asChild
@@ -120,7 +120,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/posts/categories" && "bg-accent"
               )} 
               asChild
@@ -133,7 +133,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/posts/tags" && "bg-accent"
               )} 
               asChild
@@ -156,7 +156,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/users" && "bg-accent"
               )} 
               asChild
@@ -179,7 +179,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/categories" && "bg-accent"
               )} 
               asChild
@@ -192,7 +192,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/categories/create" && "bg-accent"
               )} 
               asChild
@@ -215,7 +215,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/media" && "bg-accent"
               )} 
               asChild
@@ -228,7 +228,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
             <Button 
               variant="ghost" 
               className={cn(
-                "justify-start",
+                "justify-start w-full",
                 location.pathname === "/admin/media/upload" && "bg-accent"
               )} 
               asChild

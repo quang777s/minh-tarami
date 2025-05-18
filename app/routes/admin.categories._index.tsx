@@ -17,6 +17,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { Form } from "@remix-run/react";
+import { Card, CardContent } from "~/components/ui/card";
 
 const translations = {
   en: enTranslations,
@@ -107,83 +108,131 @@ export default function AdminCategories() {
   const { user, profile, categories, locale, t } = useLoaderData<typeof loader>();
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="grid gap-6 md:grid-cols-[300px_1fr]">
+    <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-[300px_1fr]">
         {/* Admin Menu */}
         <div className="md:block">
           <AdminMenu t={t} />
         </div>
 
         {/* Main Content */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Header Section */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <div>
-              <h1 className="text-3xl font-bold">{t.menu.categories.title}</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-2xl md:text-3xl font-bold">{t.menu.categories.title}</h1>
+              <p className="text-sm md:text-base text-muted-foreground mt-1">
                 Manage categories and their hierarchy
               </p>
             </div>
-            <Button asChild>
+            <Button asChild className="w-full sm:w-auto">
               <Link to="/admin/categories/create">
                 {t.menu.categories.create}
               </Link>
             </Button>
           </div>
 
-          {/* Categories Table */}
+          {/* Categories List */}
           <div className="bg-card rounded-lg border shadow-sm">
             <div className="p-4 sm:p-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Parent Category</TableHead>
-                    <TableHead>Created At</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {categories.map((category: Category) => (
-                    <TableRow key={category.id}>
-                      <TableCell>{category.name}</TableCell>
-                      <TableCell>
-                        {category.parent_id 
-                          ? categories.find(c => c.id === category.parent_id)?.name || '-'
-                          : '-'}
-                      </TableCell>
-                      <TableCell>
-                        {new Date(category.created_at).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button variant="outline" size="sm" asChild>
-                            <Link to={`/admin/categories/${category.id}`}>
-                              Edit
-                            </Link>
-                          </Button>
-                          <Form method="post">
-                            <input type="hidden" name="action" value="delete" />
-                            <input type="hidden" name="categoryId" value={category.id} />
-                            <Button 
-                              variant="destructive" 
-                              size="sm" 
-                              type="submit"
-                              onClick={(e) => {
-                                if (!confirm('Are you sure you want to delete this category?')) {
-                                  e.preventDefault();
-                                }
-                              }}
-                            >
-                              Delete
-                            </Button>
-                          </Form>
-                        </div>
-                      </TableCell>
+              {/* Desktop Table */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Parent Category</TableHead>
+                      <TableHead>Created At</TableHead>
+                      <TableHead>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {categories.map((category: Category) => (
+                      <TableRow key={category.id}>
+                        <TableCell>{category.name}</TableCell>
+                        <TableCell>
+                          {category.parent_id 
+                            ? categories.find(c => c.id === category.parent_id)?.name || '-'
+                            : '-'}
+                        </TableCell>
+                        <TableCell>
+                          {new Date(category.created_at).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex gap-2">
+                            <Button variant="outline" size="sm" asChild>
+                              <Link to={`/admin/categories/${category.id}`}>
+                                Edit
+                              </Link>
+                            </Button>
+                            <Form method="post">
+                              <input type="hidden" name="action" value="delete" />
+                              <input type="hidden" name="categoryId" value={category.id} />
+                              <Button 
+                                variant="destructive" 
+                                size="sm" 
+                                type="submit"
+                                onClick={(e) => {
+                                  if (!confirm('Are you sure you want to delete this category?')) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </Form>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="md:hidden space-y-4">
+                {categories.map((category: Category) => (
+                  <Card key={category.id}>
+                    <CardContent className="p-4 space-y-3">
+                      <div className="space-y-1">
+                        <div className="font-medium">{category.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          Parent: {category.parent_id 
+                            ? categories.find(c => c.id === category.parent_id)?.name || '-'
+                            : '-'}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Created: {new Date(category.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" asChild className="flex-1">
+                          <Link to={`/admin/categories/${category.id}`}>
+                            Edit
+                          </Link>
+                        </Button>
+                        <Form method="post" className="flex-1">
+                          <input type="hidden" name="action" value="delete" />
+                          <input type="hidden" name="categoryId" value={category.id} />
+                          <Button 
+                            variant="destructive" 
+                            size="sm" 
+                            type="submit"
+                            className="w-full"
+                            onClick={(e) => {
+                              if (!confirm('Are you sure you want to delete this category?')) {
+                                e.preventDefault();
+                              }
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </Form>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>

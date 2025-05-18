@@ -1,5 +1,5 @@
 import { json, redirect } from "@remix-run/node";
-import type { LoaderFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getUser, isUserLoggedIn } from "~/lib/supabase/auth.supabase.server";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
@@ -8,18 +8,20 @@ import { AdminMenu } from "~/components/admin-menu";
 import { getLocale } from "~/i18n/i18n.server";
 import enTranslations from "~/i18n/locales/en.json";
 import viTranslations from "~/i18n/locales/vi.json";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
+import { Form } from "@remix-run/react";
+import { Card, CardContent } from "~/components/ui/card";
+import { X } from "lucide-react";
 
 const translations = {
   en: enTranslations,
   vi: viTranslations,
+};
+
+type Media = {
+  id: string;
+  name: string;
+  url: string;
+  created_at: string;
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -74,71 +76,98 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 };
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const action = formData.get("action") as string;
+  const mediaId = formData.get("mediaId") as string;
+
+  const supabase = createSupabaseServerClient(request);
+
+  if (action === "delete") {
+    const { error } = await supabase.client
+      .storage
+      .from('post-medias')
+      .remove([mediaId]);
+
+    if (error) {
+      return json({ error: "Failed to delete media file" });
+    }
+  }
+
+  return json({ success: true });
+};
+
 export default function AdminMedia() {
   const { user, profile, media, locale, t, supabaseUrl } = useLoaderData<typeof loader>();
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="grid gap-6 md:grid-cols-[300px_1fr]">
+    <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-[300px_1fr]">
         {/* Admin Menu */}
         <div className="md:block">
           <AdminMenu t={t} />
         </div>
 
         {/* Main Content */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Header Section */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <div>
-              <h1 className="text-3xl font-bold">{t.menu.media.library}</h1>
-              <p className="text-muted-foreground mt-1">
+              <h1 className="text-2xl md:text-3xl font-bold">{t.menu.media.library}</h1>
+              <p className="text-sm md:text-base text-muted-foreground mt-1">
                 Manage your media files
               </p>
             </div>
-            <Button asChild>
+            <Button asChild className="w-full sm:w-auto">
               <Link to="/admin/media/upload">
                 {t.menu.media.upload}
               </Link>
             </Button>
           </div>
 
-          {/* Media List */}
+          {/* Media Grid */}
           <div className="bg-card rounded-lg border shadow-sm">
             <div className="p-4 sm:p-6">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Size</TableHead>
-                    <TableHead>Created At</TableHead>
-                    <TableHead>Preview</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {media.map((file) => (
-                    <TableRow key={file.id}>
-                      <TableCell>{file.name}</TableCell>
-                      <TableCell>{file.metadata?.mimetype || '-'}</TableCell>
-                      <TableCell>
-                        {file.metadata?.size 
-                          ? `${Math.round(file.metadata.size / 1024)} KB`
-                          : '-'}
-                      </TableCell>
-                      <TableCell>
-                        {new Date(file.created_at).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {media.map((file) => (
+                  <Card key={file.id} className="group relative">
+                    <CardContent className="p-2">
+                      <div className="aspect-square relative rounded-md overflow-hidden">
                         <img
                           src={`${supabaseUrl}/storage/v1/object/public/post-medias/${file.name}`}
                           alt={file.name}
-                          className="h-10 w-10 object-cover rounded"
+                          className="w-full h-full object-cover"
                         />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <Form method="post" className="absolute top-2 right-2">
+                            <input type="hidden" name="action" value="delete" />
+                            <input type="hidden" name="mediaId" value={file.name} />
+                            <Button
+                              variant="destructive"
+                              size="icon"
+                              type="submit"
+                              className="h-8 w-8"
+                              onClick={(e) => {
+                                if (!confirm('Are you sure you want to delete this file?')) {
+                                  e.preventDefault();
+                                }
+                              }}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </Form>
+                        </div>
+                      </div>
+                      <div className="mt-2">
+                        <p className="text-sm font-medium truncate">{file.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(file.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>
