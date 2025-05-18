@@ -32,14 +32,16 @@ type AdminMenuProps = {
       users: {
         title: string;
         all: string;
-        roles: string;
-        permissions: string;
+      };
+      categories: {
+        title: string;
+        all: string;
+        create: string;
       };
       media: {
         title: string;
         library: string;
         upload: string;
-        categories: string;
       };
     };
   };
@@ -164,16 +166,26 @@ export function AdminMenu({ t }: AdminMenuProps) {
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>
+          </div>
+        </div>
+
+        {/* Categories Section */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-lg font-semibold">
+            <FileText className="h-5 w-5" />
+            <span>{t.menu.categories.title}</span>
+          </div>
+          <div className="grid gap-2 pl-7">
             <Button 
               variant="ghost" 
               className={cn(
                 "justify-start",
-                location.pathname === "/admin/users/roles" && "bg-accent"
+                location.pathname === "/admin/categories" && "bg-accent"
               )} 
               asChild
             >
-              <Link to="/admin/users/roles">
-                {t.menu.users.roles}
+              <Link to="/admin/categories">
+                {t.menu.categories.all}
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>
@@ -181,12 +193,12 @@ export function AdminMenu({ t }: AdminMenuProps) {
               variant="ghost" 
               className={cn(
                 "justify-start",
-                location.pathname === "/admin/users/permissions" && "bg-accent"
+                location.pathname === "/admin/categories/create" && "bg-accent"
               )} 
               asChild
             >
-              <Link to="/admin/users/permissions">
-                {t.menu.users.permissions}
+              <Link to="/admin/categories/create">
+                {t.menu.categories.create}
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>
@@ -223,19 +235,6 @@ export function AdminMenu({ t }: AdminMenuProps) {
             >
               <Link to="/admin/media/upload">
                 {t.menu.media.upload}
-                <ChevronRight className="ml-auto h-4 w-4" />
-              </Link>
-            </Button>
-            <Button 
-              variant="ghost" 
-              className={cn(
-                "justify-start",
-                location.pathname === "/admin/media/categories" && "bg-accent"
-              )} 
-              asChild
-            >
-              <Link to="/admin/media/categories">
-                {t.menu.media.categories}
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>

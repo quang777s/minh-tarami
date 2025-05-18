@@ -40,9 +40,12 @@
       },
       "users": {
         "title": "Users",
-        "all": "All Users",
-        "roles": "User Roles",
-        "permissions": "Permissions"
+        "all": "All Users"
+      },
+      "categories": {
+        "title": "Categories",
+        "all": "All Categories",
+        "create": "Create Category"
       },
       "media": {
         "title": "Media",

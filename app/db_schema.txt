@@ -8,3 +8,20 @@ profiles
   phone (varchar)
   email (varchar)
 
+categories
+  id (int)
+  name (varchar)
+  parent_id (int)
+  created_at (timestamp)
+  updated_at (timestamp)
+
+posts
+  id (int)
+  title (varchar)
+  slug (varchar)
+  post_type (varchar)
+  body (text)
+  created_at (timestamp)
+  updated_at (timestamp)
+  publish_at (timestamp)
+  category_id (int)

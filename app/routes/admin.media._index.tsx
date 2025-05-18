@@ -1,5 +1,5 @@
 import { json, redirect } from "@remix-run/node";
-import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { getUser, isUserLoggedIn } from "~/lib/supabase/auth.supabase.server";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
@@ -16,22 +16,10 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { Badge } from "~/components/ui/badge";
 
 const translations = {
   en: enTranslations,
   vi: viTranslations,
-};
-
-type User = {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-  created_at: string;
-  updated_at: string;
-  phone: string | null;
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -54,7 +42,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     .eq('user_id', user.id)
     .single();
 
-
   if (error || !profile) {
     throw redirect("/user");
   }
@@ -64,17 +51,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect("/user");
   }
 
-  // Get all users from profiles table
-  const { data, error: usersError } = await supabase.client
-    .from('profiles')
-    .select('*')
-    .order('created_at', { ascending: false });
+  // Get all media files
+  const { data: media, error: mediaError } = await supabase.client
+    .storage
+    .from('post-medias')
+    .list();
 
-  if (usersError) {
-    throw new Error('Failed to fetch users');
+  if (mediaError) {
+    throw new Error('Failed to fetch media files');
   }
-
-  const users = data as User[];
 
   // Get current locale
   const locale = await getLocale(request);
@@ -82,36 +67,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ 
     user, 
     profile,
-    users,
+    media,
     locale,
-    t: translations[locale].admin
+    t: translations[locale].admin,
+    supabaseUrl: process.env.SUPABASE_URL
   });
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const formData = await request.formData();
-  const action = formData.get("action") as string;
-  const userId = formData.get("userId") as string;
-
-  const supabase = createSupabaseServerClient(request);
-
-  if (action === "updateRole") {
-    const newRole = formData.get("role") as string;
-    const { error } = await supabase.client
-      .from('profiles')
-      .update({ role: newRole })
-      .eq('id', userId);
-
-    if (error) {
-      return json({ error: "Failed to update user role" });
-    }
-  }
-
-  return json({ success: true });
-};
-
-export default function AdminUsers() {
-  const { user, profile, users, locale, t } = useLoaderData<typeof loader>();
+export default function AdminMedia() {
+  const { user, profile, media, locale, t, supabaseUrl } = useLoaderData<typeof loader>();
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -126,49 +90,50 @@ export default function AdminUsers() {
           {/* Header Section */}
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
             <div>
-              <h1 className="text-3xl font-bold">{t.menu.users.all}</h1>
+              <h1 className="text-3xl font-bold">{t.menu.media.library}</h1>
               <p className="text-muted-foreground mt-1">
-                Manage user accounts and roles
+                Manage your media files
               </p>
             </div>
+            <Button asChild>
+              <Link to="/admin/media/upload">
+                {t.menu.media.upload}
+              </Link>
+            </Button>
           </div>
 
-          {/* Users Table */}
+          {/* Media List */}
           <div className="bg-card rounded-lg border shadow-sm">
             <div className="p-4 sm:p-6">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Phone</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Size</TableHead>
                     <TableHead>Created At</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>Preview</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {users.map((user: User) => (
-                    <TableRow key={user.id}>
+                  {media.map((file) => (
+                    <TableRow key={file.id}>
+                      <TableCell>{file.name}</TableCell>
+                      <TableCell>{file.metadata?.mimetype || '-'}</TableCell>
                       <TableCell>
-                        {user.first_name} {user.last_name}
-                      </TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>
-                        <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                          {user.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{user.phone || '-'}</TableCell>
-                      <TableCell>
-                        {new Date(user.created_at).toLocaleDateString()}
+                        {file.metadata?.size 
+                          ? `${Math.round(file.metadata.size / 1024)} KB`
+                          : '-'}
                       </TableCell>
                       <TableCell>
-                        <Button variant="outline" size="sm" asChild>
-                          <Link to={`/admin/users/${user.id}`}>
-                            Edit
-                          </Link>
-                        </Button>
+                        {new Date(file.created_at).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        <img
+                          src={`${supabaseUrl}/storage/v1/object/public/post-medias/${file.name}`}
+                          alt={file.name}
+                          className="h-10 w-10 object-cover rounded"
+                        />
                       </TableCell>
                     </TableRow>
                   ))}

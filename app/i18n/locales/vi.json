@@ -30,6 +30,7 @@
     },
     "menu": {
       "title": "Menu Quản Trị",
+      "dashboard": "Bảng Điều Khiển",
       "posts": {
         "title": "Bài Viết",
         "all": "Tất Cả Bài Viết",
@@ -39,12 +40,15 @@
       },
       "users": {
         "title": "Người Dùng",
-        "all": "Tất Cả Người Dùng",
-        "roles": "Vai Trò Người Dùng",
-        "permissions": "Quyền Hạn"
+        "all": "Tất Cả Người Dùng"
+      },
+      "categories": {
+        "title": "Danh Mục",
+        "all": "Tất Cả Danh Mục",
+        "create": "Tạo Danh Mục"
       },
       "media": {
-        "title": "Phương Tiện",
+        "title": "Media",
         "library": "Thư Viện Media",
         "upload": "Tải Lên Media",
         "categories": "Danh Mục Media"

@@ -1,0 +1,25 @@
+CREATE OR REPLACE FUNCTION get_users_with_profiles()
+RETURNS TABLE (
+    id UUID,
+    email varchar,
+    profile JSONB
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        u.id,
+        u.email,
+        jsonb_build_object(
+            'first_name', p.first_name,
+            'last_name', p.last_name,
+            'role', p.role,
+            'created_at', p.created_at,
+            'updated_at', p.updated_at,
+            'phone', p.phone
+        ) AS profile
+    FROM
+        auth.users u
+    LEFT JOIN
+        profiles p ON u.id = p.id;
+END;
+$$ LANGUAGE plpgsql;
