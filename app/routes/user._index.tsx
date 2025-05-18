@@ -17,6 +17,14 @@ export default function UserIndex() {
       </div>
       <div>
         <p>
+          <Link className="bg-sky-500 rounded p-2" to="/user/profile">
+            My Profile
+          </Link>{" "}
+          to view your profile details
+        </p>
+      </div>
+      <div>
+        <p>
           <Form action="/logout" method="post">
             <button className="bg-sky-500 rounded p-2" type="submit">
               Sign Out

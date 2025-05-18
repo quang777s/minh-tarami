@@ -1,0 +1,54 @@
+{
+  "admin": {
+    "title": "Bảng Điều Khiển Admin",
+    "welcome": "Chào mừng đến khu vực quản trị. Tại đây bạn có thể quản lý ứng dụng của mình.",
+    "information": {
+      "title": "Thông Tin Admin",
+      "email": "Email",
+      "userId": "ID Người Dùng",
+      "role": "Vai Trò"
+    },
+    "quickActions": {
+      "title": "Thao Tác Nhanh",
+      "manageUsers": "Quản Lý Người Dùng",
+      "systemSettings": "Cài Đặt Hệ Thống",
+      "viewLogs": "Xem Nhật Ký"
+    },
+    "systemStatus": {
+      "title": "Trạng Thái Hệ Thống",
+      "databaseStatus": "Trạng Thái Cơ Sở Dữ Liệu",
+      "lastUpdated": "Cập Nhật Lần Cuối",
+      "connected": "Đã Kết Nối"
+    },
+    "navigation": {
+      "userDashboard": "Bảng Điều Khiển",
+      "myProfile": "Hồ Sơ Của Tôi"
+    },
+    "toast": {
+      "comingSoon": "Sắp Ra Mắt",
+      "underDevelopment": "Tính năng này đang được phát triển."
+    },
+    "menu": {
+      "title": "Menu Quản Trị",
+      "posts": {
+        "title": "Bài Viết",
+        "all": "Tất Cả Bài Viết",
+        "create": "Tạo Bài Viết",
+        "categories": "Danh Mục",
+        "tags": "Thẻ"
+      },
+      "users": {
+        "title": "Người Dùng",
+        "all": "Tất Cả Người Dùng",
+        "roles": "Vai Trò Người Dùng",
+        "permissions": "Quyền Hạn"
+      },
+      "media": {
+        "title": "Phương Tiện",
+        "library": "Thư Viện Media",
+        "upload": "Tải Lên Media",
+        "categories": "Danh Mục Media"
+      }
+    }
+  }
+} 

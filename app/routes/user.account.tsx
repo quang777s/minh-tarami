@@ -10,9 +10,17 @@ export default function UserAccount() {
       <div>
         <p>
           <Link className="bg-sky-500 rounded p-2" to="/user">
-            User Account
+            Dashboard
           </Link>{" "}
           to go back to user index
+        </p>
+      </div>
+      <div>
+        <p>
+          <Link className="bg-sky-500 rounded p-2" to="/user/profile">
+            My Profile
+          </Link>{" "}
+          to view your profile details
         </p>
       </div>
     </div>

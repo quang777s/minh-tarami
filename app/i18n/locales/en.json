@@ -1,0 +1,55 @@
+{
+  "admin": {
+    "title": "Admin Dashboard",
+    "welcome": "Welcome to the admin area. Here you can manage your application.",
+    "information": {
+      "title": "Admin Information",
+      "email": "Email",
+      "userId": "User ID",
+      "role": "Role"
+    },
+    "quickActions": {
+      "title": "Quick Actions",
+      "manageUsers": "Manage Users",
+      "systemSettings": "System Settings",
+      "viewLogs": "View Logs"
+    },
+    "systemStatus": {
+      "title": "System Status",
+      "databaseStatus": "Database Status",
+      "lastUpdated": "Last Updated",
+      "connected": "Connected"
+    },
+    "navigation": {
+      "userDashboard": "User Dashboard",
+      "myProfile": "My Profile"
+    },
+    "toast": {
+      "comingSoon": "Coming Soon",
+      "underDevelopment": "This feature is under development."
+    },
+    "menu": {
+      "title": "Admin Menu",
+      "dashboard": "Dashboard",
+      "posts": {
+        "title": "Posts",
+        "all": "All Posts",
+        "create": "Create Post",
+        "categories": "Categories",
+        "tags": "Tags"
+      },
+      "users": {
+        "title": "Users",
+        "all": "All Users",
+        "roles": "User Roles",
+        "permissions": "Permissions"
+      },
+      "media": {
+        "title": "Media",
+        "library": "Media Library",
+        "upload": "Upload Media",
+        "categories": "Media Categories"
+      }
+    }
+  }
+} 
