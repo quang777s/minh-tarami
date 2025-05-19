@@ -1,8 +1,14 @@
-import pkg from '@remix-run/dev';
-const { defineConfig } = pkg;
+// import pkg from '@remix-run/dev';
+// const { defineConfig } = pkg;
+// export default defineConfig({
+//   ignoredRouteFiles: ["**/*.css"],
+//   tailwind: true,
+//   postcss: true,
+// });
 
-export default defineConfig({
+// New code directly exporting the config object
+export default {
   ignoredRouteFiles: ["**/*.css"],
   tailwind: true,
   postcss: true,
-});
+};
