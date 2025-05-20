@@ -70,7 +70,7 @@ export default function Index() {
 
             <h2 className="text-2xl font-bold mt-12 mb-4">THÔNG TIN LIÊN HỆ</h2>
             <ul className="list-none space-y-2 mb-8">
-              <li>Email nhận hồ sơ & video thử vai: <a href="mailto:anvybuy@gmail.com" className="text-blue-400 hover:text-blue-300">anvybuy@gmail.com</a></li>
+              <li>Email nhận hồ sơ & video thử vai: <a href="mailto:taramind.media@gmail.com" className="text-blue-400 hover:text-blue-300">taramind.media@gmail.com</a></li>
               <li>Số điện thoại Zalo/Hotline hỗ trợ casting: <a href="tel:0927666653" className="text-blue-400 hover:text-blue-300">0927.6666.53</a></li>
               <li>Fanpage chính thức: <a href="#" className="text-blue-400 hover:text-blue-300">HỆ THỐNG 999 - mật mã tái sinh</a></li>
             </ul>
