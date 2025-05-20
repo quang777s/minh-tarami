@@ -13,6 +13,7 @@ import { Toaster } from "~/components/ui/toaster";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
+  { rel: "icon", type: "image/png", href: "/favicon-32x32.png" },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
@@ -25,7 +26,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="flex flex-col items-center justify-center min-h-screen font-sans">
+      <body className="min-h-screen font-sans">
         <Outlet />
         <Toaster />
         <ScrollRestoration />
