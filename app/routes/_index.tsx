@@ -1,102 +1,19 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { useState, useEffect } from "react";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Taramind - The Essence of Hospitality" },
+    { title: "Taramind - Casting Diễn Viên - Phim Ngắn Tâm Linh: Hệ Thống 999" },
     {
       name: "description",
-      content:
-        "Taramind - A Vietnamese-based lifestyle group that develops, owns, and operates a diversified portfolio of luxury dining, beverage, and nightlife entertainment venues.",
+      content: "Công ty Công nghệ Truyền thông Taramind chính thức mời gọi các bạn diễn viên tiềm năng – không phân biệt giới tính, độ tuổi, kinh nghiệm – cùng bước vào đấu trường tâm linh kỳ 9 trong vũ trụ giả tưởng Hệ Thống 999.",
     },
   ];
 };
 
-const slides = [
-  {
-    id: "home",
-    image: "/after-the-rain.jpg",
-    title: "THE ESSENCE OF HOSPITALITY",
-    subtitle: "Luxury dining, beverage, and nightlife entertainment venues",
-  },
-  {
-    id: "contact",
-    image: "/shooting-star.png",
-    title: "CONTACT US",
-    subtitle: "Get in touch with our team",
-  },
-  {
-    id: "gift-card",
-    image: "/milky-way.jpg",
-    title: "GIFT CARDS",
-    subtitle: "Share the experience with your loved ones",
-  },
-  {
-    id: "membership",
-    image: "/after-the-rain.jpg",
-    title: "MEMBERSHIP",
-    subtitle: "Join our exclusive community",
-  },
-  {
-    id: "careers",
-    image: "/shooting-star.png",
-    title: "CAREERS",
-    subtitle: "Join our growing team",
-  },
-  {
-    id: "consulting",
-    image: "/milky-way.jpg",
-    title: "CONSULTING",
-    subtitle: "Expert hospitality solutions",
-  },
-  {
-    id: "partners",
-    image: "/after-the-rain.jpg",
-    title: "OUR PARTNERS",
-    subtitle: "Building lasting relationships",
-  },
-  {
-    id: "events",
-    image: "/shooting-star.png",
-    title: "YOUR EVENTS",
-    subtitle: "Create unforgettable moments",
-  },
-  {
-    id: "team",
-    image: "/milky-way.jpg",
-    title: "OUR TEAM",
-    subtitle: "Meet the people behind the experience",
-  },
-  {
-    id: "about",
-    image: "/after-the-rain.jpg",
-    title: "ABOUT US",
-    subtitle: "Our story and vision",
-  },
-];
-
 export default function Index() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleMenuClick = (id: string) => {
-    const slideIndex = slides.findIndex((slide) => slide.id === id);
-    if (slideIndex !== -1) {
-      setCurrentSlide(slideIndex);
-      setIsMenuOpen(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black text-white">
       {/* Navigation */}
       <nav className="fixed w-full bg-black/50 backdrop-blur-sm z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -108,194 +25,83 @@ export default function Index() {
                 className="h-8 w-auto"
               />
             </div>
-            
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-white hover:text-gray-300 focus:outline-none"
-              >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  {isMenuOpen ? (
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  ) : (
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  )}
-                </svg>
-              </button>
-            </div>
-
-            {/* Desktop menu */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-2">
-                <button 
-                  onClick={() => handleMenuClick("contact")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Contact
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("gift-card")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Gift Card
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("membership")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Membership
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("careers")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Careers
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("consulting")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Consulting
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("partners")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Our Partners
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("events")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Your Events
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("team")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  Our Team
-                </button>
-                <button 
-                  onClick={() => handleMenuClick("about")}
-                  className="text-white hover:text-gray-300 px-2 py-1 text-sm"
-                >
-                  About Us
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile menu */}
-          <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-sm">
-              <button 
-                onClick={() => handleMenuClick("contact")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Contact
-              </button>
-              <button 
-                onClick={() => handleMenuClick("gift-card")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Gift Card
-              </button>
-              <button 
-                onClick={() => handleMenuClick("membership")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Membership
-              </button>
-              <button 
-                onClick={() => handleMenuClick("careers")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Careers
-              </button>
-              <button 
-                onClick={() => handleMenuClick("consulting")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Consulting
-              </button>
-              <button 
-                onClick={() => handleMenuClick("partners")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Our Partners
-              </button>
-              <button 
-                onClick={() => handleMenuClick("events")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Your Events
-              </button>
-              <button 
-                onClick={() => handleMenuClick("team")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                Our Team
-              </button>
-              <button 
-                onClick={() => handleMenuClick("about")}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              >
-                About Us
-              </button>
-            </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section with Slides */}
-      <section className="relative h-screen w-full">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <div className="absolute inset-0 bg-black/50"></div>
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${slide.image})` }}
-            ></div>
-            <div className="relative z-10 h-full w-full flex items-center justify-center text-center">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 text-white">
-                  {slide.title}
-                </h1>
-                <p className="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-white px-4">
-                  {slide.subtitle}
-                </p>
-                <Link
-                  to="#outlets"
-                  className="bg-white text-black px-6 md:px-8 py-2 md:py-3 rounded-full hover:bg-gray-100 transition text-sm md:text-base"
-                >
-                  Discover Our Venues
-                </Link>
-              </div>
+      {/* Main Content */}
+      <main className="pt-16 pb-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">
+            CASTING DIỄN VIÊN – PHIM NGẮN TÂM LINH: HỆ THỐNG 999
+          </h1>
+
+          <div className="prose prose-invert max-w-none">
+            <p className="text-lg mb-8">
+              Công ty Công nghệ Truyền thông Taramind chính thức mời gọi các bạn diễn viên tiềm năng – không phân biệt giới tính, độ tuổi, kinh nghiệm – cùng bước vào đấu trường tâm linh kỳ 9 trong vũ trụ giả tưởng Hệ Thống 999.
+            </p>
+
+            <h2 className="text-2xl font-bold mt-12 mb-4">MỤC ĐÍCH DỰ ÁN</h2>
+            <p className="mb-8">
+              "Hệ Thống 999" là chuỗi phim ngắn – đầu tư thử nghiệm với ngân sách 2 TỶ VNĐ – khai thác chủ đề tâm linh – nghiệp duyên – đấu trường linh hồn, nơi mỗi nhân vật là đại diện cho một tầng hệ thống phi vật lý.
+            </p>
+            <p className="mb-8">
+              Mỗi vai diễn không chỉ đơn thuần là diễn xuất – mà còn là một hành trình tự khai phá nội tâm, chạm đến ký ức, năng lượng và sự thức tỉnh.
+            </p>
+
+            <h2 className="text-2xl font-bold mt-12 mb-4">THÔNG BÁO DÀNH CHO ỨNG VIÊN CASTING</h2>
+            <ul className="list-disc pl-6 mb-8 space-y-2">
+              <li>Vui lòng theo dõi fanpage để cập nhật liên tục tuyến nhân vật, nội dung thử vai, và lời thoại để quay video thử.</li>
+              <li>Mỗi ứng viên được gửi lời thoại và tình huống riêng để tự quay và gửi về.</li>
+              <li>Kết quả vòng lọc hồ sơ sẽ được phản hồi qua email/số điện thoại vào ngày 30/06/2025.</li>
+              <li>Các bạn vượt qua vòng đầu sẽ được hẹn gặp trực tiếp để casting vai chính thức vào ngày 07/07/2025.</li>
+            </ul>
+
+            <div className="mb-8">
+              <a 
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdimPU6ediynHKB8wfPNQVnKsdb35DTF-DKH6_9J1IgAFKRVQ/viewform" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
+              >
+                BẢNG PHỎNG VẤN CASTING – PHIM HỆ THỐNG 999
+              </a>
             </div>
+
+            <h2 className="text-2xl font-bold mt-12 mb-4">THÔNG TIN LIÊN HỆ</h2>
+            <ul className="list-none space-y-2 mb-8">
+              <li>Email nhận hồ sơ & video thử vai: <a href="mailto:anvybuy@gmail.com" className="text-blue-400 hover:text-blue-300">anvybuy@gmail.com</a></li>
+              <li>Số điện thoại Zalo/Hotline hỗ trợ casting: <a href="tel:0927666653" className="text-blue-400 hover:text-blue-300">0927.6666.53</a></li>
+              <li>Fanpage chính thức: <a href="#" className="text-blue-400 hover:text-blue-300">HỆ THỐNG 999 - mật mã tái sinh</a></li>
+            </ul>
+
+            <h2 className="text-2xl font-bold mt-12 mb-4">THÔNG ĐIỆP TỪ ĐẠI DIỆN SẢN XUẤT</h2>
+            <blockquote className="border-l-4 border-gray-600 pl-4 italic mb-8">
+              "Chúng tôi không tìm diễn viên giỏi – mà tìm những người thật.
+              <br />
+              Ai dám sống thật, dám khai mở năng lượng, và dám đứng lên đối mặt với chính mình… đó là người mà 'Hệ Thống 999' cần."
+            </blockquote>
+
+            <h2 className="text-2xl font-bold mt-12 mb-4">CHÚNG TÔI KHÔNG TÌM NGƯỜI LÀM VIỆC MIỄN PHÍ</h2>
+            <p className="mb-4">
+              Công ty chúng tôi hoạt động dựa trên điều kiện rõ ràng, minh bạch và có giá trị trao đổi cụ thể.
+            </p>
+            <p className="mb-4">
+              Mọi video thử vai mà các bạn gửi về sẽ không được đăng tải hoặc sử dụng vào bất kỳ mục đích nào nếu chưa có sự đồng thuận chính thức giữa hai bên.
+            </p>
+            <p className="mb-4">
+              Chúng tôi sẽ chỉ sử dụng video đó khi đã trao đổi rõ ràng:
+            </p>
+            <ul className="list-disc pl-6 mb-8 space-y-2">
+              <li>Các bạn muốn cống hiến cho dự án?</li>
+              <li>Hay muốn chuyển nhượng bản quyền video để công ty sử dụng làm tư liệu phát hành?</li>
+            </ul>
+            <p className="mb-8">
+              Tất cả đều cần sự tự nguyện – tôn trọng lẫn nhau – và thỏa thuận rõ ràng trước khi bất kỳ hành động nào diễn ra.
+            </p>
           </div>
-        ))}
-      </section>
+        </div>
+      </main>
 
       {/* Fixed Copyright Bar */}
       <div className="fixed bottom-0 w-full bg-black/50 backdrop-blur-sm py-3 z-50">
