@@ -63,7 +63,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   // Get all categories
   const { data: categories, error: categoriesError } = await supabase.client
-    .from('categories')
+    .from('tara_categories')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -92,7 +92,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (action === "delete") {
     const { error } = await supabase.client
-      .from('categories')
+      .from('tara_categories')
       .delete()
       .eq('id', categoryId);
 

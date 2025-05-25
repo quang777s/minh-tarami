@@ -60,7 +60,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   // Get the category to edit
   const { data: category, error: categoryError } = await supabase.client
-    .from('categories')
+    .from('tara_categories')
     .select('*')
     .eq('id', params.categoryId)
     .single();
@@ -71,7 +71,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   // Get all categories for parent selection
   const { data: categories, error: categoriesError } = await supabase.client
-    .from('categories')
+    .from('tara_categories')
     .select('*')
     .neq('id', category.id) // Exclude current category from parent options
     .order('name', { ascending: true });
@@ -101,7 +101,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
   const { error } = await supabase.client
-    .from('categories')
+    .from('tara_categories')
     .update({
       name,
       parent_id: parentId === "none" ? null : parseInt(parentId),

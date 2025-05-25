@@ -24,7 +24,8 @@ tara_posts
   body (text)
   created_at (timestamp)
   updated_at (timestamp)
-  publish_at (timestamp)
+  published_at (timestamp)
+  featured_image (varchar)
   category_id (int)
 
 categories
@@ -42,5 +43,6 @@ posts
   body (text)
   created_at (timestamp)
   updated_at (timestamp)
-  publish_at (timestamp)
+  published_at (timestamp)
+  featured_image (varchar)
   category_id (int)

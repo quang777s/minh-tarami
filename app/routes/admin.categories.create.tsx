@@ -60,7 +60,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   // Get all categories for parent selection
   const { data: categories, error: categoriesError } = await supabase.client
-    .from('categories')
+    .from('tara_categories')
     .select('*')
     .order('name', { ascending: true });
 
@@ -88,7 +88,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
   const { error } = await supabase.client
-    .from('categories')
+    .from('tara_categories')
     .insert({
       name,
       parent_id: parentId === "none" ? null : parseInt(parentId),

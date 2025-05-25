@@ -39,9 +39,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Get user's profile to check role
   const supabase = createSupabaseServerClient(request);
   const { data: profile, error } = await supabase.client
-    .from('profiles')
-    .select('*')
-    .eq('user_id', user.id)
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user.id)
     .single();
 
   if (error || !profile) {
@@ -49,30 +49,29 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   // Check if user has admin role
-  if (profile.role !== 'admin') {
+  if (profile.role !== "admin") {
     throw redirect("/user");
   }
 
   // Get all media files
-  const { data: media, error: mediaError } = await supabase.client
-    .storage
-    .from('post-medias')
+  const { data: media, error: mediaError } = await supabase.client.storage
+    .from("taramind")
     .list();
 
   if (mediaError) {
-    throw new Error('Failed to fetch media files');
+    throw new Error("Failed to fetch media files");
   }
 
   // Get current locale
   const locale = await getLocale(request);
-  
-  return json({ 
-    user, 
+
+  return json({
+    user,
     profile,
     media,
     locale,
     t: translations[locale].admin,
-    supabaseUrl: process.env.SUPABASE_URL
+    supabaseUrl: process.env.SUPABASE_URL,
   });
 };
 
@@ -84,9 +83,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
   if (action === "delete") {
-    const { error } = await supabase.client
-      .storage
-      .from('post-medias')
+    const { error } = await supabase.client.storage
+      .from("taramind")
       .remove([mediaId]);
 
     if (error) {
@@ -98,7 +96,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function AdminMedia() {
-  const { user, profile, media, locale, t, supabaseUrl } = useLoaderData<typeof loader>();
+  const { user, profile, media, locale, t, supabaseUrl } =
+    useLoaderData<typeof loader>();
 
   return (
     <div className="container mx-auto px-4 py-4 md:py-8 max-w-7xl">
@@ -113,15 +112,15 @@ export default function AdminMedia() {
           {/* Header Section */}
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold">{t.menu.media.library}</h1>
+              <h1 className="text-2xl md:text-3xl font-bold">
+                {t.menu.media.library}
+              </h1>
               <p className="text-sm md:text-base text-muted-foreground mt-1">
                 Manage your media files
               </p>
             </div>
             <Button asChild className="w-full sm:w-auto">
-              <Link to="/admin/media/upload">
-                {t.menu.media.upload}
-              </Link>
+              <Link to="/admin/media/upload">{t.menu.media.upload}</Link>
             </Button>
           </div>
 
@@ -134,21 +133,32 @@ export default function AdminMedia() {
                     <CardContent className="p-2">
                       <div className="aspect-square relative rounded-md overflow-hidden">
                         <img
-                          src={`${supabaseUrl}/storage/v1/object/public/post-medias/${file.name}`}
+                          src={`${supabaseUrl}/storage/v1/object/public/taramind/${file.name}`}
                           alt={file.name}
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <Form method="post" className="absolute top-2 right-2">
+                          <Form
+                            method="post"
+                            className="absolute top-2 right-2"
+                          >
                             <input type="hidden" name="action" value="delete" />
-                            <input type="hidden" name="mediaId" value={file.name} />
+                            <input
+                              type="hidden"
+                              name="mediaId"
+                              value={file.name}
+                            />
                             <Button
                               variant="destructive"
                               size="icon"
                               type="submit"
                               className="h-8 w-8"
                               onClick={(e) => {
-                                if (!confirm('Are you sure you want to delete this file?')) {
+                                if (
+                                  !confirm(
+                                    "Are you sure you want to delete this file?"
+                                  )
+                                ) {
                                   e.preventDefault();
                                 }
                               }}
@@ -159,7 +169,9 @@ export default function AdminMedia() {
                         </div>
                       </div>
                       <div className="mt-2">
-                        <p className="text-sm font-medium truncate">{file.name}</p>
+                        <p className="text-sm font-medium truncate">
+                          {file.name}
+                        </p>
                         <p className="text-xs text-muted-foreground">
                           {new Date(file.created_at).toLocaleDateString()}
                         </p>
@@ -174,4 +186,4 @@ export default function AdminMedia() {
       </div>
     </div>
   );
-} 
+}
