@@ -10,6 +10,7 @@ import {
 } from "@remix-run/react";
 import styles from "./tailwind.css";
 import { Toaster } from "~/components/ui/toaster";
+import "~/styles/rich-text-editor.css";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },

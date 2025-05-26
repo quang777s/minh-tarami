@@ -1,6 +1,6 @@
 import { json, redirect } from "@remix-run/node";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { Link, useLoaderData, Form } from "@remix-run/react";
 import { getUser, isUserLoggedIn } from "~/lib/supabase/auth.supabase.server";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import { Button } from "~/components/ui/button";
@@ -93,6 +93,29 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 };
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  if (intent === "delete") {
+    const postId = formData.get("postId");
+    const supabase = createSupabaseServerClient(request);
+
+    const { error } = await supabase.client
+      .from("tara_posts")
+      .delete()
+      .eq("id", postId);
+
+    if (error) {
+      return json({ error: "Failed to delete post" });
+    }
+
+    return redirect("/admin/posts");
+  }
+
+  return null;
+};
+
 export default function AdminPosts() {
   const { user, profile, posts, locale, t } = useLoaderData<typeof loader>();
 
@@ -156,17 +179,22 @@ export default function AdminPosts() {
                                 Edit
                               </Link>
                             </Button>
-                            <Button 
-                              variant="destructive" 
-                              size="sm"
-                              onClick={() => {
-                                if (confirm('Are you sure you want to delete this post?')) {
-                                  // TODO: Implement delete functionality
-                                }
-                              }}
-                            >
-                              Delete
-                            </Button>
+                            <Form method="post">
+                              <input type="hidden" name="intent" value="delete" />
+                              <input type="hidden" name="postId" value={post.id} />
+                              <Button 
+                                variant="destructive" 
+                                size="sm"
+                                type="submit"
+                                onClick={(e) => {
+                                  if (!confirm('Are you sure you want to delete this post?')) {
+                                    e.preventDefault();
+                                  }
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </Form>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -203,18 +231,23 @@ export default function AdminPosts() {
                             Edit
                           </Link>
                         </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm"
-                          className="flex-1"
-                          onClick={() => {
-                            if (confirm('Are you sure you want to delete this post?')) {
-                              // TODO: Implement delete functionality
-                            }
-                          }}
-                        >
-                          Delete
-                        </Button>
+                        <Form method="post">
+                          <input type="hidden" name="intent" value="delete" />
+                          <input type="hidden" name="postId" value={post.id} />
+                          <Button 
+                            variant="destructive" 
+                            size="sm"
+                            className="flex-1"
+                            type="submit"
+                            onClick={(e) => {
+                              if (!confirm('Are you sure you want to delete this post?')) {
+                                e.preventDefault();
+                              }
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </Form>
                       </div>
                     </CardContent>
                   </Card>

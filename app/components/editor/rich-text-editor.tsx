@@ -5,20 +5,20 @@ import { cn } from "~/lib/utils";
 
 interface RichTextEditorProps {
   onChange: (data: OutputData) => void;
-  value?: OutputData;
   initialData?: OutputData;
   className?: string;
 }
 
 export function RichTextEditor({
   onChange,
-  value,
   initialData,
   className,
 }: RichTextEditorProps) {
   const [editor, setEditor] = useState<any>(null);
   const editorRef = useRef<HTMLDivElement>(null);
   const isInitializedRef = useRef(false);
+  const editorInstanceRef = useRef<any>(null);
+  const isInitializingRef = useRef(false);
 
   const handleEditorChange = useCallback(
     async (editorInstance: any) => {
@@ -27,7 +27,6 @@ export function RichTextEditor({
 
         await editorInstance.isReady;
         const data = await editorInstance.save();
-        console.log("data", data);
         onChange(data);
       } catch (error) {
         console.error("Error saving editor content:", error);
@@ -36,13 +35,19 @@ export function RichTextEditor({
     [onChange]
   );
 
-  const debouncedOnChange = useDebounce(handleEditorChange, 3000);
+  const debouncedOnChange = useDebounce(handleEditorChange, 500);
 
   useEffect(() => {
-    let editorInstance: any = null;
-
     const initEditor = async () => {
-      if (!editorRef.current || typeof window === "undefined") return;
+      if (
+        !editorRef.current ||
+        typeof window === "undefined" ||
+        isInitializedRef.current ||
+        isInitializingRef.current
+      )
+        return;
+
+      isInitializingRef.current = true;
 
       try {
         const EditorJS = (await import("@editorjs/editorjs")).default;
@@ -54,15 +59,10 @@ export function RichTextEditor({
         const Paragraph = (await import("editorjs-paragraph-with-alignment"))
           .default;
 
-        editorInstance = new EditorJS({
+        editorInstanceRef.current = new EditorJS({
           holder: editorRef.current,
-          data: value || initialData,
           tools: {
-            // header: Header,
-            header: {
-              class: Header,
-              inlineToolbar: ["link"],
-            },
+            header: Header,
             list: List,
             embed: Embed,
             paragraph: Paragraph,
@@ -98,49 +98,41 @@ export function RichTextEditor({
             },
           },
           onChange: () => {
-            if (editorInstance) {
-              debouncedOnChange(editorInstance);
+            if (editorInstanceRef.current) {
+              debouncedOnChange(editorInstanceRef.current);
             }
           },
         });
 
-        await editorInstance.isReady;
-        setEditor(editorInstance);
+        await editorInstanceRef.current.isReady;
+        setEditor(editorInstanceRef.current);
         isInitializedRef.current = true;
+
+        // Set initial data if it exists
+        if (initialData) {
+          await editorInstanceRef.current.render(initialData);
+        }
       } catch (error) {
         console.error("Error initializing editor:", error);
+      } finally {
+        isInitializingRef.current = false;
       }
     };
 
     initEditor();
 
     return () => {
-      if (editorInstance && isInitializedRef.current) {
+      if (editorInstanceRef.current && isInitializedRef.current) {
         try {
-          editorInstance.destroy();
+          editorInstanceRef.current.destroy();
         } catch (error) {
           console.error("Error destroying editor:", error);
         }
         isInitializedRef.current = false;
+        editorInstanceRef.current = null;
       }
     };
-  }, [initialData, debouncedOnChange, value]);
-
-  // Update editor content when value changes
-  useEffect(() => {
-    const updateContent = async () => {
-      if (!editor || !isInitializedRef.current || !value) return;
-
-      try {
-        await editor.isReady;
-        await editor.render(value);
-      } catch (error) {
-        console.error("Error updating editor content:", error);
-      }
-    };
-
-    updateContent();
-  }, [editor, value]);
+  }, []); // Empty dependency array to ensure it only runs once
 
   return (
     <div

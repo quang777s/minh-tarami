@@ -315,7 +315,6 @@ export default function CreatePost() {
                   <Label>Content</Label>
                   <RichTextEditor 
                     onChange={setEditorData} 
-                    value={editorData}
                     initialData={{
                       time: Date.now(),
                       blocks: [],

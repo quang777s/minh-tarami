@@ -21,6 +21,17 @@ import { useState, useEffect } from "react";
 import { RichTextEditor } from "~/components/editor/rich-text-editor";
 import { ImageSelector } from "~/components/editor/image-selector";
 import type { OutputData } from "@editorjs/editorjs";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "~/components/ui/alert-dialog";
 
 const translations = {
   en: enTranslations,
@@ -110,9 +121,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   // Get current locale
   const locale = await getLocale(request);
-  
-  return json({ 
-    user, 
+
+  return json({
+    user,
     profile,
     post,
     categories,
@@ -125,6 +136,24 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {
   const formData = await request.formData();
+  const intent = formData.get("intent");
+
+  // Handle delete action
+  if (intent === "delete") {
+    const supabase = createSupabaseServerClient(request);
+    const { error } = await supabase.client
+      .from("tara_posts")
+      .delete()
+      .eq("id", params.id);
+
+    if (error) {
+      return json({ error: "Failed to delete post" });
+    }
+
+    return redirect("/admin/posts");
+  }
+
+  // Handle update action
   const title = formData.get("title") as string;
   let slug = formData.get("slug") as string;
   const post_type = formData.get("post_type") as string;
@@ -154,7 +183,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       category_id: category_id === "none" ? null : parseInt(category_id),
       featured_image,
       published_at: published_at || null,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     })
     .eq("id", params.id);
 
@@ -169,15 +198,20 @@ export default function EditPost() {
   const { user, profile, post, categories, media, locale, t, supabaseUrl } =
     useLoaderData<typeof loader>();
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string>(post.featured_image || "");
+  const [selectedImage, setSelectedImage] = useState<string>(
+    post.featured_image || ""
+  );
   const [slug, setSlug] = useState<string>(post.slug);
   const [editorData, setEditorData] = useState<OutputData>();
   const submit = useSubmit();
+
+  console.log("++++ editorData", editorData);
 
   // Initialize editor with post content
   useEffect(() => {
     try {
       const content = JSON.parse(post.body);
+      console.log("++++ content", content);
       setEditorData(content);
     } catch (error) {
       console.error("Failed to parse post content:", error);
@@ -199,7 +233,7 @@ export default function EditPost() {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    
+
     // If slug is empty, generate it from title
     if (!formData.get("slug")) {
       const title = formData.get("title") as string;
@@ -210,7 +244,7 @@ export default function EditPost() {
     if (editorData) {
       formData.set("body", JSON.stringify(editorData));
     }
-    
+
     submit(formData, { method: "post" });
   };
 
@@ -232,9 +266,7 @@ export default function EditPost() {
           {/* Header Section */}
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold">
-                Edit Post
-              </h1>
+              <h1 className="text-2xl md:text-3xl font-bold">Edit Post</h1>
               <p className="text-sm md:text-base text-muted-foreground mt-1">
                 Edit post content and settings
               </p>
@@ -258,9 +290,9 @@ export default function EditPost() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="slug">Slug</Label>
-                    <Input 
-                      id="slug" 
-                      name="slug" 
+                    <Input
+                      id="slug"
+                      name="slug"
                       className="w-full"
                       value={slug}
                       onChange={handleSlugChange}
@@ -271,7 +303,11 @@ export default function EditPost() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="post_type">Post Type</Label>
-                    <Select name="post_type" required defaultValue={post.post_type}>
+                    <Select
+                      name="post_type"
+                      required
+                      defaultValue={post.post_type}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select post type" />
                       </SelectTrigger>
@@ -284,7 +320,10 @@ export default function EditPost() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="category_id">Category</Label>
-                    <Select name="category_id" defaultValue={post.category_id?.toString() || "none"}>
+                    <Select
+                      name="category_id"
+                      defaultValue={post.category_id?.toString() || "none"}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
@@ -335,28 +374,31 @@ export default function EditPost() {
                     name="published_at"
                     type="datetime-local"
                     className="w-full"
-                    defaultValue={post.published_at ? new Date(post.published_at).toISOString().slice(0, 16) : ""}
+                    defaultValue={
+                      post.published_at
+                        ? new Date(post.published_at).toISOString().slice(0, 16)
+                        : ""
+                    }
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label>Content</Label>
-                  <RichTextEditor 
-                    onChange={setEditorData} 
-                    value={editorData}
-                    initialData={{
-                      time: Date.now(),
-                      blocks: [],
-                      version: "2.24.3"
-                    }}
-                  />
+                  {editorData && (
+                    <RichTextEditor
+                      onChange={setEditorData}
+                      initialData={editorData}
+                    />
+                  )}
                 </div>
 
-                <div className="flex justify-end gap-4">
-                  <Button variant="outline" asChild>
-                    <Link to="/admin/posts">Cancel</Link>
-                  </Button>
-                  <Button type="submit">Update Post</Button>
+                <div className="flex justify-between gap-4">
+                  <div className="flex gap-4">
+                    <Button variant="outline" asChild>
+                      <Link to="/admin/posts">Cancel</Link>
+                    </Button>
+                    <Button type="submit">Update Post</Button>
+                  </div>
                 </div>
               </Form>
             </div>
@@ -373,4 +415,4 @@ export default function EditPost() {
       />
     </div>
   );
-} 
+}
