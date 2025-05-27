@@ -13,6 +13,8 @@ import {
   ChevronRight,
   Menu,
   X,
+  BookOpen,
+  Newspaper,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "~/lib/utils";
@@ -22,12 +24,15 @@ type AdminMenuProps = {
     menu: {
       title: string;
       dashboard: string;
-      posts: {
+      pages: {
         title: string;
         all: string;
         create: string;
-        categories: string;
-        tags: string;
+      };
+      blogs: {
+        title: string;
+        all: string;
+        create: string;
       };
       users: {
         title: string;
@@ -84,23 +89,23 @@ export function AdminMenu({ t }: AdminMenuProps) {
           </Button>
         </div>
 
-        {/* Posts Section */}
+        {/* Pages Section */}
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-lg font-semibold">
-            <FileText className="h-5 w-5" />
-            <span>{t.menu.posts.title}</span>
+            <BookOpen className="h-5 w-5" />
+            <span>{t.menu.pages.title}</span>
           </div>
           <div className="grid gap-2 pl-7">
             <Button 
               variant="ghost" 
               className={cn(
                 "justify-start w-full",
-                location.pathname === "/admin/posts" && "bg-accent"
+                location.pathname === "/admin/pages" && "bg-accent"
               )} 
               asChild
             >
-              <Link to="/admin/posts">
-                {t.menu.posts.all}
+              <Link to="/admin/pages">
+                {t.menu.pages.all}
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>
@@ -108,12 +113,48 @@ export function AdminMenu({ t }: AdminMenuProps) {
               variant="ghost" 
               className={cn(
                 "justify-start w-full",
-                location.pathname === "/admin/posts/create" && "bg-accent"
+                location.pathname === "/admin/pages/create" && "bg-accent"
               )} 
               asChild
             >
-              <Link to="/admin/posts/create">
-                {t.menu.posts.create}
+              <Link to="/admin/pages/create">
+                {t.menu.pages.create}
+                <ChevronRight className="ml-auto h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Blogs Section */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-lg font-semibold">
+            <Newspaper className="h-5 w-5" />
+            <span>{t.menu.blogs.title}</span>
+          </div>
+          <div className="grid gap-2 pl-7">
+            <Button 
+              variant="ghost" 
+              className={cn(
+                "justify-start w-full",
+                location.pathname === "/admin/blogs" && "bg-accent"
+              )} 
+              asChild
+            >
+              <Link to="/admin/blogs">
+                {t.menu.blogs.all}
+                <ChevronRight className="ml-auto h-4 w-4" />
+              </Link>
+            </Button>
+            <Button 
+              variant="ghost" 
+              className={cn(
+                "justify-start w-full",
+                location.pathname === "/admin/blogs/create" && "bg-accent"
+              )} 
+              asChild
+            >
+              <Link to="/admin/blogs/create">
+                {t.menu.blogs.create}
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>
@@ -245,7 +286,7 @@ export function AdminMenu({ t }: AdminMenuProps) {
       >
         <div
           className={cn(
-            "fixed inset-y-0 left-0 w-[300px] bg-background p-4 shadow-lg transition-transform duration-200 ease-in-out",
+            "fixed inset-y-0 left-0 w-[300px] bg-white p-4 shadow-lg transition-transform duration-200 ease-in-out",
             isOpen ? "translate-x-0" : "-translate-x-full"
           )}
           onClick={(e) => e.stopPropagation()}

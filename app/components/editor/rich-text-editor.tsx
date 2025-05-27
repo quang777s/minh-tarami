@@ -51,7 +51,7 @@ export function RichTextEditor({
 
       try {
         const EditorJS = (await import("@editorjs/editorjs")).default;
-        const Header = (await import("@editorjs/header")).default;
+        const Header = (await import("editorjs-header-with-alignment")).default;
         const List = (await import("@editorjs/list")).default;
         const Image = (await import("@editorjs/image")).default;
         const Embed = (await import("@editorjs/embed")).default;

@@ -31,12 +31,15 @@
     "menu": {
       "title": "Menu Quản Trị",
       "dashboard": "Bảng Điều Khiển",
-      "posts": {
-        "title": "Bài Viết",
-        "all": "Tất Cả Bài Viết",
-        "create": "Tạo Bài Viết",
-        "categories": "Danh Mục",
-        "tags": "Thẻ"
+      "pages": {
+        "title": "Trang",
+        "all": "Tất Cả Trang",
+        "create": "Tạo Trang"
+      },
+      "blogs": {
+        "title": "Blog",
+        "all": "Tất Cả Blog",
+        "create": "Tạo Blog"
       },
       "users": {
         "title": "Người Dùng",
