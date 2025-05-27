@@ -96,9 +96,6 @@ export default function AdminDashboard() {
             <div className="flex flex-wrap gap-2">
               <LanguageSwitcher currentLocale={locale} />
               <Button variant="outline" asChild>
-                <Link to="/user">{t.navigation.userDashboard}</Link>
-              </Button>
-              <Button variant="outline" asChild>
                 <Link to="/user/profile">{t.navigation.myProfile}</Link>
               </Button>
             </div>
@@ -145,7 +142,7 @@ export default function AdminDashboard() {
                     {t.quickActions.manageUsers}
                   </Link>
                 </Button>
-                <Button 
+                {/* <Button 
                   className="w-full justify-start" 
                   variant="outline"
                   onClick={() => {
@@ -168,7 +165,7 @@ export default function AdminDashboard() {
                   }}
                 >
                   {t.quickActions.viewLogs}
-                </Button>
+                </Button> */}
               </div>
             </div>
 

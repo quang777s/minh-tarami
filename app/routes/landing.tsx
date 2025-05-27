@@ -5,6 +5,14 @@ import { json } from "@remix-run/node";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import type { OutputData } from "@editorjs/editorjs";
 import EditorJSParser from "editorjs-parser";
+import { getLocale } from "~/i18n/i18n.server";
+import enTranslations from "~/i18n/locales/en.json";
+import viTranslations from "~/i18n/locales/vi.json";
+
+const translations = {
+  en: enTranslations,
+  vi: viTranslations,
+};
 
 export const meta: MetaFunction = () => {
   return [
@@ -39,14 +47,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw new Error("Failed to fetch pages");
   }
 
-  return json({ pages });
+  // Get current locale
+  const locale = await getLocale(request);
+
+  return json({ pages, locale, t: translations[locale].landing });
 };
 
 // Initialize EditorJS parser
 const parser = new EditorJSParser();
 
 export default function Landing() {
-  const { pages } = useLoaderData<typeof loader>();
+  const { pages, locale, t } = useLoaderData<typeof loader>();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -58,7 +69,8 @@ export default function Landing() {
   }, [pages.length]);
 
   const handleMenuClick = (slug: string) => {
-    const slideIndex = pages.findIndex((page) => page.slug === slug);
+    const reversedPages = [...pages].reverse();
+    const slideIndex = reversedPages.findIndex((page) => page.slug === slug);
     if (slideIndex !== -1) {
       setCurrentSlide(slideIndex);
       setIsMenuOpen(false);
@@ -74,7 +86,7 @@ export default function Landing() {
             <div className="flex-shrink-0">
               <img
                 src="/logo/taramind-logo.jpg"
-                alt="Taramind"
+                alt={t.logo.alt}
                 className="h-8 w-auto"
               />
             </div>
@@ -84,6 +96,7 @@ export default function Landing() {
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-white hover:text-gray-300 focus:outline-none"
+                aria-label={isMenuOpen ? t.menu.close : t.menu.open}
               >
                 <svg
                   className="h-6 w-6"
@@ -113,7 +126,7 @@ export default function Landing() {
             {/* Desktop menu */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-2">
-                {pages.map((page) => (
+                {[...pages].reverse().map((page) => (
                   <button
                     key={page.id}
                     onClick={() => handleMenuClick(page.slug)}
@@ -129,7 +142,7 @@ export default function Landing() {
           {/* Mobile menu */}
           <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
             <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-sm">
-              {pages.map((page) => (
+              {[...pages].reverse().map((page) => (
                 <button
                   key={page.id}
                   onClick={() => handleMenuClick(page.slug)}
@@ -145,7 +158,7 @@ export default function Landing() {
 
       {/* Hero Section with Slides */}
       <section className="relative h-screen w-full">
-        {pages.map((page, index) => (
+        {[...pages].reverse().map((page, index) => (
           <div
             key={page.id}
             className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? "opacity-100" : "opacity-0"
@@ -174,7 +187,7 @@ export default function Landing() {
       {/* Fixed Copyright Bar */}
       <div className="fixed bottom-0 w-full bg-black/50 backdrop-blur-sm py-3 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-white text-sm">© 2024 TARAMIND. All Rights Reserved.</p>
+          <p className="text-white text-sm">{t.copyright}</p>
         </div>
       </div>
     </div>

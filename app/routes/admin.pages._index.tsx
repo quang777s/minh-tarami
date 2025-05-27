@@ -135,7 +135,7 @@ export default function AdminPages() {
             <div>
               <h1 className="text-2xl md:text-3xl font-bold">{t.menu.pages.title}</h1>
               <p className="text-sm md:text-base text-muted-foreground mt-1">
-                Manage all pages and their content
+                {t.descriptions.pages}
               </p>
             </div>
             <Button asChild className="w-full sm:w-auto">

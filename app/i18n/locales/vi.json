@@ -56,6 +56,81 @@
         "upload": "Tải Lên Media",
         "categories": "Danh Mục Media"
       }
+    },
+    "descriptions": {
+      "pages": "Quản lý tất cả các trang và nội dung",
+      "blogs": "Quản lý tất cả bài viết blog và nội dung",
+      "users": "Quản lý tài khoản người dùng và vai trò",
+      "categories": "Quản lý danh mục nội dung",
+      "media": "Quản lý tệp media của bạn",
+      "mediaUpload": "Tải lên tệp media mới"
+    }
+  },
+  "landing": {
+    "logo": {
+      "alt": "Taramind"
+    },
+    "menu": {
+      "open": "Mở menu",
+      "close": "Đóng menu"
+    },
+    "copyright": "© 2024 TARAMIND. Bảo lưu mọi quyền."
+  },
+  "user": {
+    "profile": {
+      "title": "Hồ Sơ Của Tôi",
+      "description": "Xem và quản lý thông tin hồ sơ của bạn",
+      "information": {
+        "title": "Thông Tin Hồ Sơ",
+        "email": "Email",
+        "userId": "ID Người Dùng",
+        "name": "Tên",
+        "emailVerified": "Đã Xác Nhận Email",
+        "lastSignIn": "Đăng Nhập Lần Cuối",
+        "notProvided": "Chưa cung cấp"
+      },
+      "actions": {
+        "dashboard": "Bảng Điều Khiển",
+        "accountSettings": "Cài Đặt Tài Khoản",
+        "adminDashboard": "Bảng Điều Khiển Admin"
+      }
+    },
+    "dashboard": {
+      "title": "Bảng Điều Khiển",
+      "description": "Chào mừng đến với bảng điều khiển cá nhân của bạn",
+      "quickLinks": {
+        "title": "Liên Kết Nhanh",
+        "profile": "Xem Hồ Sơ",
+        "account": "Cài Đặt Tài Khoản",
+        "admin": "Bảng Điều Khiển Admin"
+      },
+      "recentActivity": {
+        "title": "Hoạt Động Gần Đây",
+        "noActivity": "Không có hoạt động gần đây"
+      }
+    },
+    "account": {
+      "title": "Cài Đặt Tài Khoản",
+      "description": "Quản lý cài đặt và tùy chọn tài khoản của bạn",
+      "sections": {
+        "profile": {
+          "title": "Cài Đặt Hồ Sơ",
+          "description": "Cập nhật thông tin cá nhân của bạn"
+        },
+        "security": {
+          "title": "Bảo Mật",
+          "description": "Quản lý mật khẩu và cài đặt bảo mật"
+        },
+        "notifications": {
+          "title": "Thông Báo",
+          "description": "Cấu hình tùy chọn thông báo"
+        }
+      },
+      "actions": {
+        "save": "Lưu Thay Đổi",
+        "cancel": "Hủy",
+        "back": "Quay Lại Bảng Điều Khiển"
+      }
     }
   }
 } 

@@ -129,7 +129,7 @@ export default function AdminUsers() {
             <div>
               <h1 className="text-2xl md:text-3xl font-bold">{t.menu.users.all}</h1>
               <p className="text-sm md:text-base text-muted-foreground mt-1">
-                Manage user accounts and roles
+                {t.descriptions.users}
               </p>
             </div>
           </div>

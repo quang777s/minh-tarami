@@ -56,6 +56,81 @@
         "upload": "Upload Media",
         "categories": "Media Categories"
       }
+    },
+    "descriptions": {
+      "pages": "Manage all pages and their content",
+      "blogs": "Manage all blog posts and their content",
+      "users": "Manage user accounts and roles",
+      "categories": "Manage content categories",
+      "media": "Manage your media files",
+      "mediaUpload": "Upload new media files"
+    }
+  },
+  "landing": {
+    "logo": {
+      "alt": "Taramind"
+    },
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "copyright": "© 2024 TARAMIND. All Rights Reserved."
+  },
+  "user": {
+    "profile": {
+      "title": "My Profile",
+      "description": "View and manage your profile information",
+      "information": {
+        "title": "Profile Information",
+        "email": "Email",
+        "userId": "User ID",
+        "name": "Name",
+        "emailVerified": "Email Verified",
+        "lastSignIn": "Last Sign In",
+        "notProvided": "Not provided"
+      },
+      "actions": {
+        "dashboard": "Dashboard",
+        "accountSettings": "Account Settings",
+        "adminDashboard": "Admin Dashboard"
+      }
+    },
+    "dashboard": {
+      "title": "User Dashboard",
+      "description": "Welcome to your personal dashboard",
+      "quickLinks": {
+        "title": "Quick Links",
+        "profile": "View Profile",
+        "account": "Account Settings",
+        "admin": "Admin Dashboard"
+      },
+      "recentActivity": {
+        "title": "Recent Activity",
+        "noActivity": "No recent activity"
+      }
+    },
+    "account": {
+      "title": "Account Settings",
+      "description": "Manage your account settings and preferences",
+      "sections": {
+        "profile": {
+          "title": "Profile Settings",
+          "description": "Update your personal information"
+        },
+        "security": {
+          "title": "Security",
+          "description": "Manage your password and security settings"
+        },
+        "notifications": {
+          "title": "Notifications",
+          "description": "Configure your notification preferences"
+        }
+      },
+      "actions": {
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "back": "Back to Dashboard"
+      }
     }
   }
 } 

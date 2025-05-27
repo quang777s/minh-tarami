@@ -226,7 +226,7 @@ export default function UploadMedia() {
                 {t.menu.media.upload}
               </h1>
               <p className="text-sm md:text-base text-muted-foreground mt-1">
-                Upload new media files
+                {t.descriptions.mediaUpload}
               </p>
             </div>
             <Button variant="outline" asChild className="w-full sm:w-auto">

@@ -116,7 +116,7 @@ export default function AdminMedia() {
                 {t.menu.media.library}
               </h1>
               <p className="text-sm md:text-base text-muted-foreground mt-1">
-                Manage your media files
+                {t.descriptions.media}
               </p>
             </div>
             <Button asChild className="w-full sm:w-auto">
