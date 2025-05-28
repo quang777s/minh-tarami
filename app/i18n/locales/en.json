@@ -55,7 +55,8 @@
         "library": "Media Library",
         "upload": "Upload Media",
         "categories": "Media Categories"
-      }
+      },
+      "logout": "Logout"
     },
     "descriptions": {
       "pages": "Manage all pages and their content",
@@ -130,6 +131,40 @@
         "save": "Save Changes",
         "cancel": "Cancel",
         "back": "Back to Dashboard"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "description": "Enter your credentials to access your account",
+      "form": {
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "Enter your password",
+        "submit": "Sign In",
+        "submitting": "Signing in...",
+        "noAccount": "Don't have an account?",
+        "register": "Create an account"
+      }
+    },
+    "register": {
+      "title": "Create Account",
+      "description": "Enter your information to create your account",
+      "form": {
+        "name": "Full Name",
+        "namePlaceholder": "Enter your full name",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "password": "Password",
+        "passwordPlaceholder": "Create a password",
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordPlaceholder": "Confirm your password",
+        "submit": "Create Account",
+        "submitting": "Creating account...",
+        "hasAccount": "Already have an account?",
+        "login": "Sign in"
       }
     }
   }

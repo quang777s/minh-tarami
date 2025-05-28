@@ -55,7 +55,8 @@
         "library": "Thư Viện Media",
         "upload": "Tải Lên Media",
         "categories": "Danh Mục Media"
-      }
+      },
+      "logout": "Đăng Xuất"
     },
     "descriptions": {
       "pages": "Quản lý tất cả các trang và nội dung",
@@ -130,6 +131,40 @@
         "save": "Lưu Thay Đổi",
         "cancel": "Hủy",
         "back": "Quay Lại Bảng Điều Khiển"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Chào Mừng Trở Lại",
+      "description": "Nhập thông tin đăng nhập để truy cập tài khoản của bạn",
+      "form": {
+        "email": "Email",
+        "emailPlaceholder": "Nhập email của bạn",
+        "password": "Mật Khẩu",
+        "passwordPlaceholder": "Nhập mật khẩu của bạn",
+        "submit": "Đăng Nhập",
+        "submitting": "Đang đăng nhập...",
+        "noAccount": "Chưa có tài khoản?",
+        "register": "Tạo tài khoản"
+      }
+    },
+    "register": {
+      "title": "Tạo Tài Khoản",
+      "description": "Nhập thông tin để tạo tài khoản của bạn",
+      "form": {
+        "name": "Họ và Tên",
+        "namePlaceholder": "Nhập họ và tên của bạn",
+        "email": "Email",
+        "emailPlaceholder": "Nhập email của bạn",
+        "password": "Mật Khẩu",
+        "passwordPlaceholder": "Tạo mật khẩu",
+        "confirmPassword": "Xác Nhận Mật Khẩu",
+        "confirmPasswordPlaceholder": "Xác nhận mật khẩu của bạn",
+        "submit": "Tạo Tài Khoản",
+        "submitting": "Đang tạo tài khoản...",
+        "hasAccount": "Đã có tài khoản?",
+        "login": "Đăng nhập"
       }
     }
   }

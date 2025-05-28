@@ -1,13 +1,11 @@
 profiles
-  id (uuid, Foreign key relation to: auth.users)
+  id (int)
+  user_id (uuid, Foreign key relation to: auth.users)
   role (varchar)
-  first_name (varchar)
-  last_name (varchar)
   created_at (varchar)
   updated_at (varchar)
   phone (varchar)
   email (varchar)
-  is_deleted (boolean)
 
 tara_categories
   id (int)

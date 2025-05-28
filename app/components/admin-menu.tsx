@@ -1,4 +1,4 @@
-import { Link, useLocation } from "@remix-run/react";
+import { Link, useLocation, Form } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -15,6 +15,7 @@ import {
   X,
   BookOpen,
   Newspaper,
+  LogOut,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "~/lib/utils";
@@ -48,6 +49,7 @@ type AdminMenuProps = {
         library: string;
         upload: string;
       };
+      logout: string;
     };
   };
 };
@@ -254,6 +256,20 @@ export function AdminMenu({ t }: AdminMenuProps) {
               </Link>
             </Button>
           </div>
+        </div>
+
+        {/* Logout Button */}
+        <div className="pt-4 border-t">
+          <Form action="/logout" method="post">
+            <Button 
+              variant="ghost" 
+              className="justify-start w-full text-red-500 hover:text-red-600 hover:bg-red-50"
+              type="submit"
+            >
+              <LogOut className="h-5 w-5 mr-2" />
+              {t.menu.logout}
+            </Button>
+          </Form>
         </div>
       </CardContent>
     </Card>

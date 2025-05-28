@@ -1,57 +1,73 @@
+import { json, redirect } from "@remix-run/node";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
-import { Form, useActionData } from "@remix-run/react";
-import { isUserLoggedIn } from "~/lib/supabase/auth.supabase.server";
+import { Form, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import { createServiceRoleClient } from "~/lib/supabase/supabase.service.server";
+import { getLocale } from "~/i18n/i18n.server";
+import enTranslations from "~/i18n/locales/en.json";
+import viTranslations from "~/i18n/locales/vi.json";
+import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Alert, AlertDescription } from "~/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+
+const translations = {
+  en: enTranslations,
+  vi: viTranslations,
+};
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  if (await isUserLoggedIn(request)) {
-    throw redirect("/user");
+  const supabase = createSupabaseServerClient(request);
+  const { data: { session } } = await supabase.client.auth.getSession();
+
+  if (session) {
+    return redirect("/user");
   }
 
-  return null;
+  const locale = await getLocale(request);
+  return json({ locale, t: translations[locale].auth.register });
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const supabase = createSupabaseServerClient(request);
   const formData = await request.formData();
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const confirmPassword = formData.get("confirmPassword") as string;
+  const fullName = formData.get("name") as string;
+  const supabase = createSupabaseServerClient(request);
 
-  // Validate passwords match
   if (password !== confirmPassword) {
-    return { error: "Passwords do not match" };
+    return json({ error: "Passwords do not match" });
   }
 
   // Validate password strength
   if (password.length < 6) {
-    return { error: "Password must be at least 6 characters long" };
+    return json({ error: "Password must be at least 6 characters long" });
   }
 
-  const { data: authData, error: signUpError } =
-    await supabase.client.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${new URL(request.url).origin}/auth/callback`,
-      },
-    });
+  const { data: authData, error: signUpError } = await supabase.client.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${new URL(request.url).origin}/auth/callback`,
+      data: {
+        full_name: fullName
+      }
+    },
+  });
 
   if (signUpError) {
-    return { error: signUpError.message };
+    return json({ error: signUpError.message });
   }
-
-  console.log(authData);
 
   if (authData.user) {
     try {
       // Create profile record using service role client
       const serviceClient = createServiceRoleClient();
-      console.log("Creating profile for user:", authData.user.id);
 
-      const { data: profileData, error: profileError } = await serviceClient
+      const { error: profileError } = await serviceClient
         .from("profiles")
         .insert([
           {
@@ -59,114 +75,114 @@ export const action = async ({ request }: ActionFunctionArgs) => {
             email: email,
             role: "customer",
             created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            phone: null
           },
-        ])
-        .select()
-        .single();
+        ]);
 
       if (profileError) {
-        console.error("Profile creation error:", {
-          error: profileError,
-          code: profileError.code,
-          message: profileError.message,
-          details: profileError.details,
-          hint: profileError.hint,
-        });
-
+        console.error("Profile creation error:", profileError);
         // Try to delete the auth user since profile creation failed
         await supabase.client.auth.admin.deleteUser(authData.user.id);
-        return {
-          error: `Failed to create user profile: ${profileError.message}`,
-        };
+        return json({ error: `Failed to create user profile: ${profileError.message}` });
       }
-
-      console.log("Profile created successfully:", profileData);
     } catch (error) {
       console.error("Unexpected error during profile creation:", error);
-      return { error: "An unexpected error occurred during profile creation" };
+      return json({ error: "An unexpected error occurred during profile creation" });
     }
   }
 
-  // Redirect to login page with success message
-  throw redirect(
-    "/login?message=Registration successful. Please check your email to verify your account."
-  );
+  return redirect("/login?message=Registration successful. Please check your email to verify your account.");
 };
 
 export default function Register() {
-  const actionResponse = useActionData<typeof action>();
+  const { t } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
   return (
-    <div className="flex flex-col gap-5">
-      <div>
-        <h1 className="text-3xl font-bold underline pb-5">Register</h1>
-        <p>Create a new account to get started.</p>
-      </div>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <Card className="bg-gray-900 border-gray-800">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl font-bold text-white">{t.title}</CardTitle>
+            <CardDescription className="text-gray-400">{t.description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form method="post" className="space-y-4">
+              {actionData?.error && (
+                <Alert variant="destructive" className="bg-red-900/50 border-red-800">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{actionData.error}</AlertDescription>
+                </Alert>
+              )}
+              
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-gray-200">{t.form.name}</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder={t.form.namePlaceholder}
+                  required
+                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                />
+              </div>
 
-      <Form method="post" className="flex flex-col gap-4">
-        {actionResponse?.error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-            {actionResponse.error}
-          </div>
-        )}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-gray-200">{t.form.email}</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder={t.form.emailPlaceholder}
+                  required
+                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                />
+              </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="email" className="font-medium">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            required
-            className="border rounded p-2"
-          />
-        </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-gray-200">{t.form.password}</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder={t.form.passwordPlaceholder}
+                  required
+                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                />
+              </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="password" className="font-medium">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-            className="border rounded p-2"
-          />
-        </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-gray-200">{t.form.confirmPassword}</Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder={t.form.confirmPasswordPlaceholder}
+                  required
+                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                />
+              </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="confirmPassword" className="font-medium">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Confirm your password"
-            required
-            className="border rounded p-2"
-          />
-        </div>
+              <Button 
+                type="submit" 
+                className="w-full bg-white text-black hover:bg-gray-200"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? t.form.submitting : t.form.submit}
+              </Button>
 
-        <button
-          type="submit"
-          className="bg-sky-500 text-white rounded p-2 hover:bg-sky-600 transition-colors"
-        >
-          Register
-        </button>
-      </Form>
-
-      <div className="text-center">
-        <p>
-          Already have an account?{" "}
-          <a href="/login" className="text-sky-500 hover:underline">
-            Sign in
-          </a>
-        </p>
+              <div className="text-center text-sm text-gray-400">
+                <p>{t.form.hasAccount}</p>
+                <a href="/login" className="text-white hover:underline">
+                  {t.form.login}
+                </a>
+              </div>
+            </Form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
