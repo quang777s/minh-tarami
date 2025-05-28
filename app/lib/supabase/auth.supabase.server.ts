@@ -3,13 +3,14 @@ import { createSupabaseServerClient } from "./supabase.server";
 
 export const signInWithPassword = async (
   request: Request,
-  successRedirectPath: string
+  successRedirectPath: string,
+  email: string,
+  password: string
 ) => {
   const supabase = createSupabaseServerClient(request);
-  const formData = await request.formData();
   const { error } = await supabase.client.auth.signInWithPassword({
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
+    email,
+    password,
   });
 
   if (!error) {

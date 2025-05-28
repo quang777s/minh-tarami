@@ -11,8 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/com
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { Facebook } from "lucide-react";
+import { AlertCircle, Facebook } from "lucide-react";
 
 const translations = {
   en: enTranslations,
@@ -51,7 +50,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return redirect(data.url);
   }
 
-  return signInWithPassword(request, "/user");
+  // Handle email/password login
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  if (!email || !password) {
+    return json({ error: "Email and password are required" });
+  }
+
+  return signInWithPassword(request, "/user", email, password);
 };
 
 export default function Login() {

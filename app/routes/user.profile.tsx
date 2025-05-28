@@ -108,6 +108,11 @@ export default function UserProfile() {
                 {t.actions.adminDashboard}
               </Link>
             </Button>
+            <Button asChild variant="outline" className="flex-1">
+              <Link to="/user/data-deletion">
+                {t.actions.dataDeletion}
+              </Link>
+            </Button>
             <Form method="post" className="flex-1">
               <Button 
                 type="submit" 

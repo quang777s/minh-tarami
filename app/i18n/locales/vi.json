@@ -94,7 +94,41 @@
         "dashboard": "Bảng Điều Khiển",
         "accountSettings": "Cài Đặt Tài Khoản",
         "adminDashboard": "Bảng Điều Khiển Admin",
-        "logout": "Đăng Xuất"
+        "logout": "Đăng Xuất",
+        "dataDeletion": "Xóa Tài Khoản"
+      }
+    },
+    "dataDeletion": {
+      "title": "Xóa Tài Khoản",
+      "description": "Yêu cầu xóa vĩnh viễn tài khoản và dữ liệu liên quan",
+      "warning": {
+        "title": "Cảnh báo: Hành động này không thể hoàn tác",
+        "description": "Khi bạn xóa tài khoản, tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn và không thể khôi phục."
+      },
+      "information": {
+        "title": "Điều gì xảy ra khi bạn xóa tài khoản",
+        "description": "Chúng tôi muốn bạn hiểu rõ dữ liệu nào sẽ bị xóa và quy trình hoạt động như thế nào.",
+        "whatWillBeDeleted": "Các dữ liệu sau sẽ bị xóa vĩnh viễn:",
+        "deletionItems": [
+          "Thông tin tài khoản của bạn",
+          "Dữ liệu hồ sơ",
+          "Lịch sử hoạt động",
+          "Nội dung liên quan",
+          "Tùy chọn và cài đặt cá nhân"
+        ],
+        "process": {
+          "title": "Quy Trình Xóa",
+          "steps": [
+            "Tài khoản của bạn sẽ bị vô hiệu hóa ngay lập tức",
+            "Tất cả dữ liệu cá nhân của bạn sẽ bị xóa vĩnh viễn trong vòng 30 ngày",
+            "Bạn sẽ nhận được email xác nhận khi quá trình xóa hoàn tất",
+            "Bạn có thể tạo tài khoản mới bất cứ lúc nào"
+          ]
+        }
+      },
+      "actions": {
+        "cancel": "Hủy",
+        "confirmDeletion": "Vâng, Xóa Tài Khoản Của Tôi"
       }
     },
     "dashboard": {

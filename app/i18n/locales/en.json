@@ -94,7 +94,41 @@
         "dashboard": "Dashboard",
         "accountSettings": "Account Settings",
         "adminDashboard": "Admin Dashboard",
-        "logout": "Logout"
+        "logout": "Logout",
+        "dataDeletion": "Delete Account"
+      }
+    },
+    "dataDeletion": {
+      "title": "Delete Your Account",
+      "description": "Request permanent deletion of your account and associated data",
+      "warning": {
+        "title": "Warning: This action cannot be undone",
+        "description": "Once you delete your account, all your data will be permanently removed and cannot be recovered."
+      },
+      "information": {
+        "title": "What happens when you delete your account",
+        "description": "We want you to understand what data will be deleted and how the process works.",
+        "whatWillBeDeleted": "The following data will be permanently deleted:",
+        "deletionItems": [
+          "Your account information",
+          "Profile data",
+          "Activity history",
+          "Associated content",
+          "Personal preferences and settings"
+        ],
+        "process": {
+          "title": "Deletion Process",
+          "steps": [
+            "Your account will be immediately deactivated",
+            "All your personal data will be permanently deleted within 30 days",
+            "You will receive a confirmation email once the deletion is complete",
+            "You can create a new account at any time"
+          ]
+        }
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "confirmDeletion": "Yes, Delete My Account"
       }
     },
     "dashboard": {
