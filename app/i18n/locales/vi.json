@@ -93,7 +93,8 @@
       "actions": {
         "dashboard": "Bảng Điều Khiển",
         "accountSettings": "Cài Đặt Tài Khoản",
-        "adminDashboard": "Bảng Điều Khiển Admin"
+        "adminDashboard": "Bảng Điều Khiển Admin",
+        "logout": "Đăng Xuất"
       }
     },
     "dashboard": {
@@ -146,7 +147,8 @@
         "submit": "Đăng Nhập",
         "submitting": "Đang đăng nhập...",
         "noAccount": "Chưa có tài khoản?",
-        "register": "Tạo tài khoản"
+        "register": "Tạo tài khoản",
+        "facebookLogin": "Tiếp tục với Facebook"
       }
     },
     "register": {

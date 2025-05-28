@@ -1,13 +1,13 @@
-import { json } from "@remix-run/node";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
+import { Link, useLoaderData, Form } from "@remix-run/react";
 import { getUser, isUserLoggedIn } from "~/lib/supabase/auth.supabase.server";
-import { redirect } from "@remix-run/node";
 import { getLocale } from "~/i18n/i18n.server";
 import enTranslations from "~/i18n/locales/en.json";
 import viTranslations from "~/i18n/locales/vi.json";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 
 const translations = {
   en: enTranslations,
@@ -27,6 +27,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const locale = await getLocale(request);
   
   return json({ user, locale, t: translations[locale].user.profile });
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const supabase = createSupabaseServerClient(request);
+  await supabase.client.auth.signOut();
+  return redirect("/login");
 };
 
 export default function UserProfile() {
@@ -102,6 +108,15 @@ export default function UserProfile() {
                 {t.actions.adminDashboard}
               </Link>
             </Button>
+            <Form method="post" className="flex-1">
+              <Button 
+                type="submit" 
+                variant="destructive" 
+                className="w-full"
+              >
+                {t.actions.logout}
+              </Button>
+            </Form>
           </div>
         </div>
       </div>

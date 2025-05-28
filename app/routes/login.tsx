@@ -12,6 +12,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { Facebook } from "lucide-react";
 
 const translations = {
   en: enTranslations,
@@ -31,6 +32,25 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const provider = formData.get("provider");
+
+  if (provider === "facebook") {
+    const supabase = createSupabaseServerClient(request);
+    const { data, error } = await supabase.client.auth.signInWithOAuth({
+      provider: "facebook",
+      options: {
+        redirectTo: `${new URL(request.url).origin}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      return json({ error: error.message });
+    }
+
+    return redirect(data.url);
+  }
+
   return signInWithPassword(request, "/user");
 };
 
@@ -88,6 +108,27 @@ export default function Login() {
               >
                 {isSubmitting ? t.form.submitting : t.form.submit}
               </Button>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-gray-700" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-gray-900 px-2 text-gray-400">Or continue with</span>
+                </div>
+              </div>
+
+              <Form method="post">
+                <input type="hidden" name="provider" value="facebook" />
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="w-full bg-[#1877F2] text-white hover:bg-[#1877F2]/90 border-none"
+                >
+                  <Facebook className="mr-2 h-4 w-4" />
+                  {t.form.facebookLogin}
+                </Button>
+              </Form>
 
               <div className="text-center text-sm text-gray-400">
                 <p>{t.form.noAccount}</p>

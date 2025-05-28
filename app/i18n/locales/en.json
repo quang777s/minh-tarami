@@ -93,7 +93,8 @@
       "actions": {
         "dashboard": "Dashboard",
         "accountSettings": "Account Settings",
-        "adminDashboard": "Admin Dashboard"
+        "adminDashboard": "Admin Dashboard",
+        "logout": "Logout"
       }
     },
     "dashboard": {
@@ -146,7 +147,8 @@
         "submit": "Sign In",
         "submitting": "Signing in...",
         "noAccount": "Don't have an account?",
-        "register": "Create an account"
+        "register": "Create an account",
+        "facebookLogin": "Continue with Facebook"
       }
     },
     "register": {
