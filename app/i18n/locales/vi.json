@@ -167,5 +167,64 @@
         "login": "Đăng nhập"
       }
     }
+  },
+  "privacyPolicy": {
+    "title": "Chính sách bảo mật",
+    "lastUpdated": "Cập nhật lần cuối: Tháng 3 năm 2024",
+    "backToHome": "Trở về trang chủ",
+    "sections": {
+      "introduction": {
+        "title": "Giới thiệu",
+        "content": "Chính sách bảo mật này mô tả cách chúng tôi thu thập, sử dụng và xử lý thông tin cá nhân của bạn khi bạn sử dụng trang web và dịch vụ của chúng tôi."
+      },
+      "informationCollection": {
+        "title": "Thông tin chúng tôi thu thập",
+        "content": "Chúng tôi thu thập thông tin mà bạn cung cấp trực tiếp cho chúng tôi, bao gồm:",
+        "items": [
+          "Tên và thông tin liên hệ",
+          "Thông tin đăng nhập tài khoản",
+          "Thông tin hồ sơ",
+          "Tùy chọn liên lạc"
+        ]
+      },
+      "informationUsage": {
+        "title": "Cách chúng tôi sử dụng thông tin của bạn",
+        "content": "Chúng tôi sử dụng thông tin thu thập để:",
+        "items": [
+          "Cung cấp và duy trì dịch vụ của chúng tôi",
+          "Xử lý giao dịch của bạn",
+          "Gửi thông tin cập nhật quan trọng",
+          "Cải thiện dịch vụ của chúng tôi",
+          "Liên lạc với bạn"
+        ]
+      },
+      "dataSecurity": {
+        "title": "Bảo mật dữ liệu",
+        "content": "Chúng tôi thực hiện các biện pháp bảo mật phù hợp để bảo vệ thông tin cá nhân của bạn khỏi việc truy cập, thay đổi, tiết lộ hoặc phá hủy trái phép."
+      },
+      "cookies": {
+        "title": "Cookie và theo dõi",
+        "content": "Chúng tôi sử dụng cookie và các công nghệ theo dõi tương tự để theo dõi hoạt động trên trang web của chúng tôi và lưu trữ một số thông tin để cải thiện trải nghiệm của bạn."
+      },
+      "thirdParty": {
+        "title": "Dịch vụ bên thứ ba",
+        "content": "Chúng tôi có thể sử dụng các dịch vụ bên thứ ba để thu thập, giám sát và phân tích thông tin này để cải thiện chức năng của trang web."
+      },
+      "userRights": {
+        "title": "Quyền của bạn",
+        "content": "Bạn có quyền:",
+        "items": [
+          "Truy cập thông tin cá nhân của bạn",
+          "Sửa dữ liệu không chính xác",
+          "Yêu cầu xóa dữ liệu của bạn",
+          "Phản đối việc xử lý dữ liệu",
+          "Tính di động của dữ liệu"
+        ]
+      },
+      "contact": {
+        "title": "Liên hệ chúng tôi",
+        "content": "Nếu bạn có bất kỳ câu hỏi nào về Chính sách bảo mật này, vui lòng liên hệ với chúng tôi tại privacy@example.com."
+      }
+    }
   }
 } 

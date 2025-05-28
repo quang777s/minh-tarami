@@ -167,5 +167,64 @@
         "login": "Sign in"
       }
     }
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: March 2024",
+    "backToHome": "Back to Home",
+    "sections": {
+      "introduction": {
+        "title": "Introduction",
+        "content": "This Privacy Policy describes how we collect, use, and handle your personal information when you use our website and services."
+      },
+      "informationCollection": {
+        "title": "Information We Collect",
+        "content": "We collect information that you provide directly to us, including:",
+        "items": [
+          "Name and contact information",
+          "Account credentials",
+          "Profile information",
+          "Communication preferences"
+        ]
+      },
+      "informationUsage": {
+        "title": "How We Use Your Information",
+        "content": "We use the information we collect to:",
+        "items": [
+          "Provide and maintain our services",
+          "Process your transactions",
+          "Send you important updates",
+          "Improve our services",
+          "Communicate with you"
+        ]
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "content": "We implement appropriate security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction."
+      },
+      "cookies": {
+        "title": "Cookies and Tracking",
+        "content": "We use cookies and similar tracking technologies to track activity on our website and hold certain information to improve your experience."
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "content": "We may use third-party services that collect, monitor, and analyze this information to improve our website's functionality."
+      },
+      "userRights": {
+        "title": "Your Rights",
+        "content": "You have the right to:",
+        "items": [
+          "Access your personal information",
+          "Correct inaccurate data",
+          "Request deletion of your data",
+          "Object to data processing",
+          "Data portability"
+        ]
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "If you have any questions about this Privacy Policy, please contact us at privacy@example.com."
+      }
+    }
   }
 } 
