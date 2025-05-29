@@ -22,7 +22,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { AlertCircle, Facebook, Mail } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 const translations = {
   en: enTranslations,
@@ -47,6 +47,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const provider = formData.get("provider");
 
+  // Commented out Google login for now
+  /*
   if (provider === "google") {
     const supabase = createSupabaseServerClient(request);
     const { data, error } = await supabase.client.auth.signInWithOAuth({
@@ -62,6 +64,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     return redirect(data.url);
   }
+  */
 
   // Handle email/password login
   const email = formData.get("email") as string;
@@ -140,6 +143,7 @@ export default function Login() {
                 {isSubmitting ? t.form.submitting : t.form.submit}
               </Button>
 
+              {/* Commented out social login section
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t border-gray-700" />
@@ -160,19 +164,6 @@ export default function Login() {
                 >
                   <Mail className="mr-2 h-4 w-4" />
                   {t.form.googleLogin || "Continue with Google"}
-                </Button>
-              </Form>
-
-              {/* Commented out Facebook login for now
-              <Form method="post">
-                <input type="hidden" name="provider" value="facebook" />
-                <Button
-                  type="submit"
-                  variant="outline"
-                  className="w-full bg-[#1877F2] text-white hover:bg-[#1877F2]/90 border-none"
-                >
-                  <Facebook className="mr-2 h-4 w-4" />
-                  {t.form.facebookLogin}
                 </Button>
               </Form>
               */}
