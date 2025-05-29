@@ -182,7 +182,8 @@
         "submitting": "Đang đăng nhập...",
         "noAccount": "Chưa có tài khoản?",
         "register": "Tạo tài khoản",
-        "facebookLogin": "Tiếp tục với Facebook"
+        "facebookLogin": "Tiếp tục với Facebook",
+        "googleLogin": "Tiếp tục với Google"
       }
     },
     "register": {

@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/com
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { AlertCircle, Facebook } from "lucide-react";
+import { AlertCircle, Facebook, Mail } from "lucide-react";
 
 const translations = {
   en: enTranslations,
@@ -34,12 +34,17 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const provider = formData.get("provider");
 
-  if (provider === "facebook") {
+  if (provider === "google") {
     const supabase = createSupabaseServerClient(request);
     const { data, error } = await supabase.client.auth.signInWithOAuth({
-      provider: "facebook",
+      provider: "google",
       options: {
         redirectTo: `${new URL(request.url).origin}/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+        skipBrowserRedirect: false,
       },
     });
 
@@ -126,6 +131,19 @@ export default function Login() {
               </div>
 
               <Form method="post">
+                <input type="hidden" name="provider" value="google" />
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="w-full bg-white text-gray-900 hover:bg-gray-100 border-none"
+                >
+                  <Mail className="mr-2 h-4 w-4" />
+                  {t.form.googleLogin || "Continue with Google"}
+                </Button>
+              </Form>
+
+              {/* Commented out Facebook login for now
+              <Form method="post">
                 <input type="hidden" name="provider" value="facebook" />
                 <Button
                   type="submit"
@@ -136,6 +154,7 @@ export default function Login() {
                   {t.form.facebookLogin}
                 </Button>
               </Form>
+              */}
 
               <div className="text-center text-sm text-gray-400">
                 <p>{t.form.noAccount}</p>

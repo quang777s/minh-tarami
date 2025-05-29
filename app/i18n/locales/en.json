@@ -182,7 +182,8 @@
         "submitting": "Signing in...",
         "noAccount": "Don't have an account?",
         "register": "Create an account",
-        "facebookLogin": "Continue with Facebook"
+        "facebookLogin": "Continue with Facebook",
+        "googleLogin": "Continue with Google"
       }
     },
     "register": {
