@@ -1,13 +1,24 @@
 import { json, redirect } from "@remix-run/node";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { Form, useActionData, useLoaderData, useNavigation } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import { signInWithPassword } from "~/lib/supabase/auth.supabase.server";
 import { getLocale } from "~/i18n/i18n.server";
 import enTranslations from "~/i18n/locales/en.json";
 import viTranslations from "~/i18n/locales/vi.json";
 import { Button } from "~/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Alert, AlertDescription } from "~/components/ui/alert";
@@ -20,7 +31,9 @@ const translations = {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
-  const { data: { session } } = await supabase.client.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.client.auth.getSession();
 
   if (session) {
     return redirect("/user");
@@ -40,11 +53,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       provider: "google",
       options: {
         redirectTo: `${new URL(request.url).origin}/auth/callback`,
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-        skipBrowserRedirect: false,
       },
     });
 
@@ -77,20 +85,29 @@ export default function Login() {
       <div className="w-full max-w-md">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-white">{t.title}</CardTitle>
-            <CardDescription className="text-gray-400">{t.description}</CardDescription>
+            <CardTitle className="text-2xl font-bold text-white">
+              {t.title}
+            </CardTitle>
+            <CardDescription className="text-gray-400">
+              {t.description}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Form method="post" className="space-y-4">
               {actionData?.error && (
-                <Alert variant="destructive" className="bg-red-900/50 border-red-800">
+                <Alert
+                  variant="destructive"
+                  className="bg-red-900/50 border-red-800"
+                >
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>{actionData.error}</AlertDescription>
                 </Alert>
               )}
-              
+
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-200">{t.form.email}</Label>
+                <Label htmlFor="email" className="text-gray-200">
+                  {t.form.email}
+                </Label>
                 <Input
                   id="email"
                   name="email"
@@ -102,7 +119,9 @@ export default function Login() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-gray-200">{t.form.password}</Label>
+                <Label htmlFor="password" className="text-gray-200">
+                  {t.form.password}
+                </Label>
                 <Input
                   id="password"
                   name="password"
@@ -113,8 +132,8 @@ export default function Login() {
                 />
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full bg-white text-black hover:bg-gray-200"
                 disabled={isSubmitting}
               >
@@ -126,7 +145,9 @@ export default function Login() {
                   <span className="w-full border-t border-gray-700" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-gray-900 px-2 text-gray-400">Or continue with</span>
+                  <span className="bg-gray-900 px-2 text-gray-400">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 

@@ -45,9 +45,12 @@ export const getUser = async (request: Request) => {
 
 export const isUserLoggedIn = async (request: Request) => {
   const supabase = createSupabaseServerClient(request);
-  const {
-    data: { session },
-  } = await supabase.client.auth.getSession();
+  const { data: { user }, error } = await supabase.client.auth.getUser();
 
-  return !!session;
+  if (error) {
+    console.error("Error checking user authentication:", error);
+    return false;
+  }
+
+  return !!user;
 };
