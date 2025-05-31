@@ -183,7 +183,32 @@
         "noAccount": "Don't have an account?",
         "register": "Create an account",
         "facebookLogin": "Continue with Facebook",
-        "googleLogin": "Continue with Google"
+        "googleLogin": "Continue with Google",
+        "forgotPassword": "Forgot password?"
+      }
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "description": "Enter your email address and we'll send you a link to reset your password",
+      "successMessage": "If an account exists with that email, you will receive a password reset link shortly",
+      "form": {
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "submit": "Send Reset Link",
+        "submitting": "Sending...",
+        "backToLogin": "Back to login"
+      }
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Enter your new password below",
+      "form": {
+        "password": "New Password",
+        "passwordPlaceholder": "Enter your new password",
+        "confirmPassword": "Confirm Password",
+        "confirmPasswordPlaceholder": "Confirm your new password",
+        "submit": "Reset Password",
+        "submitting": "Resetting..."
       }
     },
     "register": {

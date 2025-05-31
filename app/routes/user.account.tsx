@@ -28,6 +28,7 @@ const translations = {
 type ActionData = {
   success?: boolean;
   error?: string;
+  type?: 'profile' | 'password';
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -47,20 +48,57 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const displayName = formData.get("displayName") as string;
-
+  const formType = formData.get("formType") as string;
   const supabase = createSupabaseServerClient(request);
 
-  // Update user metadata
-  const { error } = await supabase.client.auth.updateUser({
-    data: { full_name: displayName },
-  });
+  if (formType === 'profile') {
+    const displayName = formData.get("displayName") as string;
 
-  if (error) {
-    return json<ActionData>({ error: "Failed to update display name" });
+    // Update user metadata
+    const { error } = await supabase.client.auth.updateUser({
+      data: { full_name: displayName },
+    });
+
+    if (error) {
+      return json<ActionData>({ error: "Failed to update display name", type: 'profile' });
+    }
+
+    return json<ActionData>({ success: true, type: 'profile' });
+  } else if (formType === 'password') {
+    const currentPassword = formData.get("currentPassword") as string;
+    const newPassword = formData.get("newPassword") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+
+    if (newPassword !== confirmPassword) {
+      return json<ActionData>({ 
+        error: "New passwords do not match", 
+        type: 'password' 
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return json<ActionData>({ 
+        error: "Password must be at least 6 characters long", 
+        type: 'password' 
+      });
+    }
+
+    // Update password
+    const { error } = await supabase.client.auth.updateUser({
+      password: newPassword
+    });
+
+    if (error) {
+      return json<ActionData>({ 
+        error: "Failed to update password. Please try again.", 
+        type: 'password' 
+      });
+    }
+
+    return json<ActionData>({ success: true, type: 'password' });
   }
 
-  return json<ActionData>({ success: true });
+  return json<ActionData>({ error: "Invalid form type" });
 };
 
 export default function UserAccount() {
@@ -70,10 +108,11 @@ export default function UserAccount() {
 
   useEffect(() => {
     if (actionData?.success) {
-      console.log("Success");
       toast({
         title: "Success",
-        description: "Display name updated successfully",
+        description: actionData.type === 'profile' 
+          ? "Display name updated successfully"
+          : "Password updated successfully",
         className: "bg-gray-900 text-white border-gray-800",
       });
     } else if (actionData?.error) {
@@ -108,6 +147,7 @@ export default function UserAccount() {
             </CardHeader>
             <CardContent>
               <Form method="post" className="space-y-4">
+                <input type="hidden" name="formType" value="profile" />
                 <div className="space-y-2">
                   <Label htmlFor="displayName">Display Name</Label>
                   <Input
@@ -134,12 +174,40 @@ export default function UserAccount() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {/* Add security settings form here */}
-                <p className="text-gray-400">
-                  Security settings form coming soon...
-                </p>
-              </div>
+              <Form method="post" className="space-y-4">
+                <input type="hidden" name="formType" value="password" />
+                <div className="space-y-2">
+                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <Input
+                    id="currentPassword"
+                    name="currentPassword"
+                    type="password"
+                    placeholder="Enter your current password"
+                    className="text-white bg-gray-800 border-gray-700 focus:border-gray-600"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input
+                    id="newPassword"
+                    name="newPassword"
+                    type="password"
+                    placeholder="Enter your new password"
+                    className="text-white bg-gray-800 border-gray-700 focus:border-gray-600"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Confirm your new password"
+                    className="text-white bg-gray-800 border-gray-700 focus:border-gray-600"
+                  />
+                </div>
+                <Button type="submit">Update Password</Button>
+              </Form>
             </CardContent>
           </Card>
 
@@ -165,12 +233,6 @@ export default function UserAccount() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            {/* <Button variant="outline" className="flex-1">
-              {t.actions.save}
-            </Button> */}
-            {/* <Button variant="outline" className="flex-1">
-              {t.actions.cancel}
-            </Button> */}
             <Button asChild variant="outline" className="flex-1">
               <Link to="/user">{t.actions.back}</Link>
             </Button>

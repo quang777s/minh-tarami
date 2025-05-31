@@ -7,7 +7,6 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
-import { signInWithPassword } from "~/lib/supabase/auth.supabase.server";
 import { getLocale } from "~/i18n/i18n.server";
 import enTranslations from "~/i18n/locales/en.json";
 import viTranslations from "~/i18n/locales/vi.json";
@@ -30,54 +29,70 @@ const translations = {
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const supabase = createSupabaseServerClient(request);
-  const {
-    data: { session },
-  } = await supabase.client.auth.getSession();
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token");
 
-  if (session) {
-    return redirect("/user");
+  if (!token) {
+    return redirect("/login");
+  }
+
+  const supabase = createSupabaseServerClient(request);
+
+  const { data: verifyData, error: verifyError } =
+    await supabase.client.auth.verifyOtp({
+      token_hash: token,
+      type: "recovery",
+    });
+
+  if (verifyError) {
+    return json({ error: "Invalid or expired reset token" });
   }
 
   const locale = await getLocale(request);
-  return json({ locale, t: translations[locale].auth.login });
+  return json(
+    { locale, t: translations[locale].auth.resetPassword, token },
+    { headers: supabase.headers }
+  );
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const provider = formData.get("provider");
-
-  // Commented out Google login for now
-  /*
-  if (provider === "google") {
-    const supabase = createSupabaseServerClient(request);
-    const { data, error } = await supabase.client.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${new URL(request.url).origin}/auth/callback`,
-      },
-    });
-
-    if (error) {
-      return json({ error: error.message });
-    }
-
-    return redirect(data.url);
-  }
-  */
-
-  // Handle email/password login
-  const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token");
 
-  if (!email || !password) {
-    return json({ error: "Email and password are required" });
+  if (!token) {
+    return json({ error: "Reset token is missing" });
   }
 
-  return signInWithPassword(request, "/user", email, password);
+  if (!password || !confirmPassword) {
+    return json({ error: "All fields are required" });
+  }
+
+  if (password !== confirmPassword) {
+    return json({ error: "Passwords do not match" });
+  }
+
+  if (password.length < 6) {
+    return json({ error: "Password must be at least 6 characters long" });
+  }
+
+  const supabase = createSupabaseServerClient(request);
+
+  // Then update the password
+  const { error } = await supabase.client.auth.updateUser({
+    password: password,
+  });
+
+  if (error) {
+    return json({ error: error.message });
+  }
+
+  return redirect("/login?message=Password has been reset successfully");
 };
 
-export default function Login() {
+export default function ResetPassword() {
   const { t } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
@@ -108,20 +123,6 @@ export default function Login() {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-200">
-                  {t.form.email}
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder={t.form.emailPlaceholder}
-                  required
-                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
-                />
-              </div>
-
-              <div className="space-y-2">
                 <Label htmlFor="password" className="text-gray-200">
                   {t.form.password}
                 </Label>
@@ -133,11 +134,20 @@ export default function Login() {
                   required
                   className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
                 />
-                <div className="text-right">
-                  <a href="/forgot-password" className="text-sm text-gray-400 hover:text-white hover:underline">
-                    {t.form.forgotPassword}
-                  </a>
-                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-gray-200">
+                  {t.form.confirmPassword}
+                </Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder={t.form.confirmPasswordPlaceholder}
+                  required
+                  className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500"
+                />
               </div>
 
               <Button
@@ -147,38 +157,6 @@ export default function Login() {
               >
                 {isSubmitting ? t.form.submitting : t.form.submit}
               </Button>
-
-              {/* Commented out social login section
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-gray-700" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-gray-900 px-2 text-gray-400">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-
-              <Form method="post">
-                <input type="hidden" name="provider" value="google" />
-                <Button
-                  type="submit"
-                  variant="outline"
-                  className="w-full bg-white text-gray-900 hover:bg-gray-100 border-none"
-                >
-                  <Mail className="mr-2 h-4 w-4" />
-                  {t.form.googleLogin || "Continue with Google"}
-                </Button>
-              </Form>
-              */}
-
-              <div className="text-center text-sm text-gray-400">
-                <p>{t.form.noAccount}</p>
-                <a href="/register" className="text-white hover:underline">
-                  {t.form.register}
-                </a>
-              </div>
             </Form>
           </CardContent>
         </Card>
