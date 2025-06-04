@@ -25,6 +25,7 @@ tara_posts
   published_at (timestamp)
   featured_image (varchar)
   category_id (int)
+  order_index (int)
 
 categories
   id (int)

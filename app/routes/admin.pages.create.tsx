@@ -92,6 +92,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const body = formData.get("body") as string;
   const featured_image = formData.get("featured_image") as string;
   const published_at = formData.get("published_at") as string;
+  const order_index = parseInt(formData.get("order_index") as string) || 0;
 
   // Generate slug from title if empty
   if (!slug) {
@@ -113,7 +114,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     featured_image,
     published_at: published_at || null,
     created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString(),
+    order_index
   });
 
   if (error) {
@@ -267,6 +269,17 @@ export default function CreatePage() {
                     name="published_at"
                     type="datetime-local"
                     className="w-full"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="order_index">Order Index</Label>
+                  <Input
+                    id="order_index"
+                    name="order_index"
+                    type="number"
+                    className="w-full"
+                    defaultValue="0"
                   />
                 </div>
 

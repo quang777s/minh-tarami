@@ -157,7 +157,7 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section with Slides */}
-      <section className="relative h-screen w-full">
+      <section className="relative h-screen w-full bg-black">
         {[...pages].reverse().map((page, index) => (
           <div
             key={page.id}

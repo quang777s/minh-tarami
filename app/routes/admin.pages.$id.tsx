@@ -42,6 +42,7 @@ type Page = {
   category_id: number | null;
   featured_image: string | null;
   published_at: string | null;
+  order_index: number | null;
 };
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
@@ -135,6 +136,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const body = formData.get("body") as string;
   const featured_image = formData.get("featured_image") as string;
   const published_at = formData.get("published_at") as string;
+  const order_index = parseInt(formData.get("order_index") as string) || 0;
 
   // Generate slug from title if empty
   if (!slug) {
@@ -158,6 +160,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
       featured_image,
       published_at: published_at || null,
       updated_at: new Date().toISOString(),
+      order_index,
     })
     .eq("id", params.id)
     .eq("category_id", 1); // Ensure it's a page
@@ -326,6 +329,17 @@ export default function EditPage() {
                         ? new Date(page.published_at).toISOString().slice(0, 16)
                         : ""
                     }
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="order_index">Order Index</Label>
+                  <Input
+                    id="order_index"
+                    name="order_index"
+                    type="number"
+                    className="w-full"
+                    defaultValue={page.order_index || 0}
                   />
                 </div>
 
