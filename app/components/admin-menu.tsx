@@ -16,6 +16,7 @@ import {
   BookOpen,
   Newspaper,
   LogOut,
+  Home,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "~/lib/utils";
@@ -29,6 +30,7 @@ type AdminMenuProps = {
         title: string;
         all: string;
         create: string;
+        index: string;
       };
       blogs: {
         title: string;
@@ -50,6 +52,7 @@ type AdminMenuProps = {
         upload: string;
       };
       logout: string;
+      home: string;
     };
   };
 };
@@ -73,9 +76,24 @@ export function AdminMenu({ t }: AdminMenuProps) {
           <X className="h-4 w-4" />
         </Button>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-2">
+        {/* Home Link */}
+        <div>
+          <Button 
+            variant="ghost" 
+            className="justify-start w-full" 
+            asChild
+          >
+            <Link to="/">
+              <Home className="h-5 w-5 mr-2" />
+              {t.menu.home}
+              <ChevronRight className="ml-auto h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+
         {/* Dashboard Link */}
-        <div className="space-y-2">
+        <div>
           <Button 
             variant="ghost" 
             className={cn(
@@ -121,6 +139,19 @@ export function AdminMenu({ t }: AdminMenuProps) {
             >
               <Link to="/admin/pages/create">
                 {t.menu.pages.create}
+                <ChevronRight className="ml-auto h-4 w-4" />
+              </Link>
+            </Button>
+            <Button 
+              variant="ghost" 
+              className={cn(
+                "justify-start w-full",
+                location.pathname === "/admin/pages/index" && "bg-accent"
+              )} 
+              asChild
+            >
+              <Link to="/admin/pages/index">
+                {t.menu.pages.index}
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>

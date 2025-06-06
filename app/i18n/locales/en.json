@@ -31,10 +31,12 @@
     "menu": {
       "title": "Admin Menu",
       "dashboard": "Dashboard",
+      "home": "Home Page",
       "pages": {
         "title": "Pages",
         "all": "All Pages",
-        "create": "Create Page"
+        "create": "Create Page",
+        "index": "Index Page"
       },
       "blogs": {
         "title": "Blogs",

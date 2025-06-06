@@ -29,6 +29,7 @@ type User = {
   email: string;
   first_name: string;
   last_name: string;
+  name: string;
   role: string;
   created_at: string;
   updated_at: string;
@@ -154,7 +155,7 @@ export default function AdminUsers() {
                     {users.map((user: User) => (
                       <TableRow key={user.id}>
                         <TableCell>
-                          {user.first_name} {user.last_name}
+                          {user.name}
                         </TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>

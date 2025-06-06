@@ -6,6 +6,7 @@ profiles
   updated_at (varchar)
   phone (varchar)
   email (varchar)
+  name (varchar)
 
 tara_categories
   id (int)

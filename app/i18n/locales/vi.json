@@ -31,10 +31,12 @@
     "menu": {
       "title": "Menu Quản Trị",
       "dashboard": "Bảng Điều Khiển",
+      "home": "Trang Chủ",
       "pages": {
         "title": "Trang",
         "all": "Tất Cả Trang",
-        "create": "Tạo Trang"
+        "create": "Tạo Trang",
+        "index": "Trang chủ"
       },
       "blogs": {
         "title": "Blog",
