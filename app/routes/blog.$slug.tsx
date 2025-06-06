@@ -1,5 +1,5 @@
-import type { MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData, useLocation } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useState, useEffect } from "react";
 import { json } from "@remix-run/node";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
@@ -12,64 +12,59 @@ const translations = {
   vi: viTranslations,
 };
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Taramind - The Essence of Hospitality" },
-    {
-      name: "description",
-      content:
-        "Taramind - A Vietnamese-based lifestyle group that develops, owns, and operates a diversified portfolio of luxury dining, beverage, and nightlife entertainment venues.",
-    },
-  ];
-};
-
-type Page = {
+type Blog = {
   id: number;
   title: string;
   slug: string;
   featured_image: string | null;
   body: string;
+  published_at: string | null;
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
-  // Fetch pages (posts with category_id = 1)
-  const { data: pages, error } = await supabase.client
+  // Fetch all blog posts for menu
+  const { data: blogs, error: blogsError } = await supabase.client
+    .from("tara_posts")
+    .select("*")
+    .eq("category_id", 2)
+    .order("order_index", { ascending: true });
+
+  if (blogsError) {
+    throw new Error("Failed to fetch blog posts");
+  }
+
+  // Fetch the specific blog post
+  const { data: blog, error: blogError } = await supabase.client
+    .from("tara_posts")
+    .select("*")
+    .eq("category_id", 2)
+    .eq("slug", params.slug)
+    .single();
+
+  if (blogError || !blog) {
+    throw new Error("Blog post not found");
+  }
+
+  const { data: pages, error: pagesError } = await supabase.client
     .from("tara_posts")
     .select("*")
     .eq("category_id", 1)
     .order("order_index", { ascending: true });
 
-  if (error) {
-    throw new Error("Failed to fetch pages");
-  }
-
   // Get current locale
   const locale = await getLocale(request);
 
-  return json({ pages, locale, t: translations[locale].landing });
+  return json({ blog, blogs, pages, locale, t: translations[locale].landing });
 };
 
-export default function Landing() {
-  const { pages, locale, t } = useLoaderData<typeof loader>();
-  const [currentSlide, setCurrentSlide] = useState(0);
+export default function BlogPost() {
+  const { blog, blogs, pages, locale, t } = useLoaderData<typeof loader>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
-
-  // Handle hash-based navigation
-  useEffect(() => {
-    const hash = window.location.hash.slice(1); // Remove the # symbol
-    if (hash) {
-      const slideIndex = pages.findIndex((page) => page.slug === hash);
-      if (slideIndex !== -1) {
-        setCurrentSlide(slideIndex);
-      }
-    }
-  }, [pages]);
 
   useEffect(() => {
-    // Set black background for landing page
+    // Set black background for blog page
     document.documentElement.classList.add("bg-black");
     document.body.classList.add("bg-black");
 
@@ -80,21 +75,6 @@ export default function Landing() {
     };
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % pages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [pages.length]);
-
-  const handleMenuClick = (slug: string) => {
-    const slideIndex = pages.findIndex((page) => page.slug === slug);
-    if (slideIndex !== -1) {
-      setCurrentSlide(slideIndex);
-      setIsMenuOpen(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-black">
       {/* Navigation */}
@@ -102,11 +82,13 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-12">
             <div className="flex-shrink-0">
-              <img
-                src="/logo/taramind-logo.jpg"
-                alt={t.logo.alt}
-                className="h-8 w-auto"
-              />
+              <Link to="/">
+                <img
+                  src="/logo/taramind-logo.jpg"
+                  alt={t.logo.alt}
+                  className="h-8 w-auto"
+                />
+              </Link>
             </div>
 
             {/* Mobile menu button */}
@@ -144,19 +126,19 @@ export default function Landing() {
             {/* Desktop menu */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-2">
-                {pages.map((page) => (
-                  <button
+                {pages?.map((page) => (
+                  <Link
                     key={page.id}
-                    onClick={() => handleMenuClick(page.slug)}
-                    className="text-white hover:text-gray-300 px-2 py-1 text-sm"
+                    to={`/landing#${page.slug}`}
+                    className={`text-white hover:text-gray-300 px-2 py-1 text-sm}`}
                   >
                     {page.title}
-                  </button>
+                  </Link>
                 ))}
                 <Link
                   to={`/blog/nh-n-v-t`}
                   className={`text-white hover:text-gray-300 px-2 py-1 text-sm ${
-                    location.pathname === `/blog/nh-n-v-t` ? "font-bold" : ""
+                    blog.slug === blog.slug ? "font-bold" : ""
                   }`}
                 >
                   Nhân Vật
@@ -168,18 +150,21 @@ export default function Landing() {
           {/* Mobile menu */}
           <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"}`}>
             <div className="px-2 pt-2 pb-3 space-y-1 bg-black backdrop-blur-sm">
-              {pages.map((page) => (
-                <button
+              {pages?.map((page) => (
+                <Link
                   key={page.id}
-                  onClick={() => handleMenuClick(page.slug)}
-                  className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+                  to={`/landing#${page.slug}`}
+                  className={`block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm`}
                 >
                   {page.title}
-                </button>
+                </Link>
               ))}
               <Link
                 to={`/blog/nh-n-v-t`}
-                className={`block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm`}
+                className={`block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm ${
+                  blog.slug === "nh-n-v-t" ? "font-bold" : ""
+                }`}
+                onClick={() => setIsMenuOpen(false)}
               >
                 Nhân Vật
               </Link>
@@ -188,39 +173,41 @@ export default function Landing() {
         </div>
       </nav>
 
-      {/* Hero Section with Slides */}
-      <section className="relative h-screen w-full bg-black">
-        {pages.map((page, index) => (
+      {/* Blog Content */}
+      <section className="relative min-h-screen w-full bg-black pt-10">
+        <div className="relative">
+          <div className="absolute inset-0 bg-black/50"></div>
           <div
-            key={page.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <div className="absolute inset-0 bg-black/50"></div>
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url(${
-                  page.featured_image || "/default-slide.jpg"
-                })`,
-              }}
-            ></div>
-            <div className="relative z-10 h-full w-full flex items-center justify-center text-center pt-20 pb-12">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 text-white">
-                  {page.title}
-                </h1>
-                <div
-                  className="text-lg md:text-xl lg:text-xl mb-6 md:mb-8 text-white px-4 max-w-3xl mx-auto prose prose-invert pb-24"
-                  dangerouslySetInnerHTML={{
-                    __html: page.body,
-                  }}
-                />
-              </div>
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url(${
+                blog.featured_image || "/default-slide.jpg"
+              })`,
+            }}
+          ></div>
+          <div className="relative z-10 w-full flex justify-center pt-20 pb-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 text-white text-center">
+                {blog.title}
+              </h1>
+              {blog.published_at && (
+                <p className="text-white/80 mb-8">
+                  {new Date(blog.published_at).toLocaleDateString(locale, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              )}
+              <div
+                className="text-lg md:text-xl lg:text-xl mb-6 md:mb-8 text-white px-4 max-w-3xl mx-auto prose prose-invert pb-24"
+                dangerouslySetInnerHTML={{
+                  __html: blog.body,
+                }}
+              />
             </div>
           </div>
-        ))}
+        </div>
       </section>
 
       {/* Fixed Copyright Bar */}

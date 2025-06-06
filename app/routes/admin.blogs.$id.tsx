@@ -17,10 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { useState, useEffect } from "react";
-import { RichTextEditor } from "~/components/editor/rich-text-editor";
+import { useState } from "react";
+import RichTextEditor from "~/components/RichTextEditor";
 import { ImageSelector } from "~/components/editor/image-selector";
-import type { OutputData } from "@editorjs/editorjs";
 
 const translations = {
   en: enTranslations,
@@ -180,18 +179,8 @@ export default function EditBlog() {
     blog.featured_image || ""
   );
   const [slug, setSlug] = useState<string>(blog.slug);
-  const [editorData, setEditorData] = useState<OutputData>();
+  const [content, setContent] = useState<string>(blog.body);
   const submit = useSubmit();
-
-  // Initialize editor with blog content
-  useEffect(() => {
-    try {
-      const content = JSON.parse(blog.body);
-      setEditorData(content);
-    } catch (error) {
-      console.error("Failed to parse blog content:", error);
-    }
-  }, [blog.body]);
 
   const generateSlug = (title: string) => {
     return title
@@ -215,10 +204,8 @@ export default function EditBlog() {
       formData.set("slug", generateSlug(title));
     }
 
-    // Add editor data to form
-    if (editorData) {
-      formData.set("body", JSON.stringify(editorData));
-    }
+    // Add editor content to form
+    formData.set("body", content);
 
     submit(formData, { method: "post" });
   };
@@ -345,12 +332,10 @@ export default function EditBlog() {
 
                 <div className="space-y-2">
                   <Label>Content</Label>
-                  {editorData && (
-                    <RichTextEditor
-                      onChange={setEditorData}
-                      initialData={editorData}
-                    />
-                  )}
+                  <RichTextEditor
+                    value={content}
+                    onChange={setContent}
+                  />
                 </div>
 
                 <div className="flex justify-between gap-4">

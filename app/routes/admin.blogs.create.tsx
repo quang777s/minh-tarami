@@ -18,9 +18,8 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { useState } from "react";
-import { RichTextEditor } from "~/components/editor/rich-text-editor";
+import RichTextEditor from "~/components/RichTextEditor";
 import { ImageSelector } from "~/components/editor/image-selector";
-import type { OutputData } from "@editorjs/editorjs";
 
 const translations = {
   en: enTranslations,
@@ -131,7 +130,7 @@ export default function CreateBlog() {
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [slug, setSlug] = useState<string>("");
-  const [editorData, setEditorData] = useState<OutputData>();
+  const [content, setContent] = useState<string>("");
   const submit = useSubmit();
 
   const generateSlug = (title: string) => {
@@ -156,17 +155,8 @@ export default function CreateBlog() {
       formData.set("slug", generateSlug(title));
     }
 
-    // Add editor data to form
-    if (editorData) {
-      formData.set("body", JSON.stringify(editorData));
-    } else {
-      // If no editor data, set empty content
-      formData.set("body", JSON.stringify({
-        time: Date.now(),
-        blocks: [],
-        version: "2.24.3"
-      }));
-    }
+    // Add editor content to form
+    formData.set("body", content);
     
     submit(formData, { method: "post" });
   };
@@ -286,12 +276,8 @@ export default function CreateBlog() {
                 <div className="space-y-2">
                   <Label>Content</Label>
                   <RichTextEditor 
-                    onChange={setEditorData} 
-                    initialData={{
-                      time: Date.now(),
-                      blocks: [],
-                      version: "2.24.3"
-                    }}
+                    value={content}
+                    onChange={setContent}
                   />
                 </div>
 

@@ -58,6 +58,9 @@ export function RichTextEditor({
         const Table = (await import("@editorjs/table")).default;
         const Paragraph = (await import("editorjs-paragraph-with-alignment"))
           .default;
+        const LinkInlineTool = (await import("@coolbytes/editorjs-link"))
+          .default;
+        const Hyperlink = (await import("editorjs-hyperlink")).default;
 
         editorInstanceRef.current = new EditorJS({
           holder: editorRef.current,
@@ -67,6 +70,38 @@ export function RichTextEditor({
             embed: Embed,
             paragraph: Paragraph,
             table: Table,
+            // link: {
+            //   class: Link,
+            //   config: {
+            //     endpoint: "/api/fetch-url", // Optional: endpoint for link preview
+            //     headers: {
+            //       "Content-Type": "application/json",
+            //     },
+            //   },
+            // },
+            // hyperlink: {
+            //   class: Hyperlink,
+            //   config: {
+            //     shortcut: "CMD+L",
+            //     target: "_blank",
+            //     rel: "nofollow",
+            //     availableTargets: ["_blank", "_self"],
+            //     availableRels: ["author", "noreferrer"],
+            //     validate: false,
+            //   },
+            // },
+            link: {
+              // Cấu hình LinkInlineTool
+              class: LinkInlineTool,
+              config: {
+                shortcut: "CMD+L", // Phím tắt
+                placeholder: "Nhập URL",
+                targets: ["_self", "_blank"], // Cho phép chọn target
+                defaultTarget: "_blank", // Mặc định mở tab mới
+                relations: [], // Các thuộc tính rel cho link
+                validate: true, // Kiểm tra URL
+              },
+            },
             image: {
               class: Image,
               config: {

@@ -18,9 +18,8 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { useState, useEffect } from "react";
-import { RichTextEditor } from "~/components/editor/rich-text-editor";
+import RichTextEditor from "~/components/RichTextEditor";
 import { ImageSelector } from "~/components/editor/image-selector";
-import type { OutputData } from "@editorjs/editorjs";
 
 const translations = {
   en: enTranslations,
@@ -180,14 +179,13 @@ export default function EditPage() {
     page.featured_image || ""
   );
   const [slug, setSlug] = useState<string>(page.slug);
-  const [editorData, setEditorData] = useState<OutputData>();
+  const [content, setContent] = useState<string>(page.body);
   const submit = useSubmit();
 
   // Initialize editor with page content
   useEffect(() => {
     try {
-      const content = JSON.parse(page.body);
-      setEditorData(content);
+      setContent(page.body);
     } catch (error) {
       console.error("Failed to parse page content:", error);
     }
@@ -215,10 +213,8 @@ export default function EditPage() {
       formData.set("slug", generateSlug(title));
     }
 
-    // Add editor data to form
-    if (editorData) {
-      formData.set("body", JSON.stringify(editorData));
-    }
+    // Add editor content to form
+    formData.set("body", content);
 
     submit(formData, { method: "post" });
   };
@@ -345,12 +341,7 @@ export default function EditPage() {
 
                 <div className="space-y-2">
                   <Label>Content</Label>
-                  {editorData && (
-                    <RichTextEditor
-                      onChange={setEditorData}
-                      initialData={editorData}
-                    />
-                  )}
+                  <RichTextEditor value={content} onChange={setContent} />
                 </div>
 
                 <div className="flex justify-between gap-4">
@@ -366,7 +357,9 @@ export default function EditPage() {
                       variant="destructive"
                       type="submit"
                       onClick={(e) => {
-                        if (!confirm('Are you sure you want to delete this page?')) {
+                        if (
+                          !confirm("Are you sure you want to delete this page?")
+                        ) {
                           e.preventDefault();
                         }
                       }}
@@ -390,4 +383,4 @@ export default function EditPage() {
       />
     </div>
   );
-} 
+}

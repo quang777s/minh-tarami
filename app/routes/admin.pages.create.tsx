@@ -18,9 +18,8 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { useState } from "react";
-import { RichTextEditor } from "~/components/editor/rich-text-editor";
+import RichTextEditor from "~/components/RichTextEditor";
 import { ImageSelector } from "~/components/editor/image-selector";
-import type { OutputData } from "@editorjs/editorjs";
 
 const translations = {
   en: enTranslations,
@@ -73,9 +72,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   // Get current locale
   const locale = await getLocale(request);
-  
-  return json({ 
-    user, 
+
+  return json({
+    user,
     profile,
     media,
     locale,
@@ -115,7 +114,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     published_at: published_at || null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    order_index
+    order_index,
   });
 
   if (error) {
@@ -131,7 +130,7 @@ export default function CreatePage() {
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [slug, setSlug] = useState<string>("");
-  const [editorData, setEditorData] = useState<OutputData>();
+  const [content, setContent] = useState<string>("");
   const submit = useSubmit();
 
   const generateSlug = (title: string) => {
@@ -149,25 +148,16 @@ export default function CreatePage() {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    
+
     // If slug is empty, generate it from title
     if (!formData.get("slug")) {
       const title = formData.get("title") as string;
       formData.set("slug", generateSlug(title));
     }
 
-    // Add editor data to form
-    if (editorData) {
-      formData.set("body", JSON.stringify(editorData));
-    } else {
-      // If no editor data, set empty content
-      formData.set("body", JSON.stringify({
-        time: Date.now(),
-        blocks: [],
-        version: "2.24.3"
-      }));
-    }
-    
+    // Add editor content to form
+    formData.set("body", content);
+
     submit(formData, { method: "post" });
   };
 
@@ -214,9 +204,9 @@ export default function CreatePage() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="slug">Slug</Label>
-                    <Input 
-                      id="slug" 
-                      name="slug" 
+                    <Input
+                      id="slug"
+                      name="slug"
                       className="w-full"
                       value={slug}
                       onChange={handleSlugChange}
@@ -285,14 +275,7 @@ export default function CreatePage() {
 
                 <div className="space-y-2">
                   <Label>Content</Label>
-                  <RichTextEditor 
-                    onChange={setEditorData} 
-                    initialData={{
-                      time: Date.now(),
-                      blocks: [],
-                      version: "2.24.3"
-                    }}
-                  />
+                  <RichTextEditor value={content} onChange={setContent} />
                 </div>
 
                 <div className="flex justify-end gap-4">
@@ -316,4 +299,4 @@ export default function CreatePage() {
       />
     </div>
   );
-} 
+}
