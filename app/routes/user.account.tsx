@@ -3,7 +3,7 @@ import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
 import { Link, useLoaderData, Form, useActionData } from "@remix-run/react";
 import { getUser, isUserLoggedIn } from "~/lib/supabase/auth.supabase.server";
 import { redirect } from "@remix-run/node";
-import { getLocale } from "~/i18n/i18n.server";
+// import { getLocale } from "~/i18n/i18n.server";
 import enTranslations from "~/i18n/locales/en.json";
 import viTranslations from "~/i18n/locales/vi.json";
 import { Button } from "~/components/ui/button";
@@ -19,6 +19,7 @@ import { Label } from "~/components/ui/label";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import { useToast } from "~/hooks/use-toast";
 import { useEffect } from "react";
+import Menu from "~/components/Menu";
 
 const translations = {
   en: enTranslations,
@@ -37,13 +38,34 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect("/login");
   }
 
+  const supabase = createSupabaseServerClient(request);
+
   // Get user data
   const user = await getUser(request);
 
-  // Get current locale
-  const locale = await getLocale(request);
+  // Fetch pages for menu
+  const { data: pages, error: pagesError } = await supabase.client
+    .from("tara_posts")
+    .select("*")
+    .eq("category_id", 1)
+    .order("order_index", { ascending: true });
 
-  return json({ user, locale, t: translations[locale].user.account });
+  if (pagesError || !pages) {
+    throw new Error("Failed to fetch pages");
+  }
+
+  // Get current locale
+  const locale = "vi";
+  // const locale = await getLocale(request);
+
+  return json({ 
+    user, 
+    pages,
+    locale, 
+    menuT: translations[locale].landing,
+    accountT: translations[locale].user.account,
+    isLoggedIn: true 
+  });
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -55,12 +77,29 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const displayName = formData.get("displayName") as string;
 
     // Update user metadata
-    const { error } = await supabase.client.auth.updateUser({
+    const { error: userError } = await supabase.client.auth.updateUser({
       data: { full_name: displayName },
     });
 
-    if (error) {
+    if (userError) {
       return json<ActionData>({ error: "Failed to update display name", type: 'profile' });
+    }
+
+    // Get the current user's ID
+    const { data: { session } } = await supabase.client.auth.getSession();
+    if (!session?.user.id) {
+      return json<ActionData>({ error: "User not found", type: 'profile' });
+    }
+
+    // Update the name in profiles table
+    const { error: profileError } = await supabase.client
+      .from('profiles')
+      .update({ name: displayName })
+      .eq('user_id', session.user.id);
+
+    if (profileError) {
+      console.error("Failed to update profile name:", profileError);
+      return json<ActionData>({ error: "Failed to update profile name", type: 'profile' });
     }
 
     return json<ActionData>({ success: true, type: 'profile' });
@@ -102,22 +141,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function UserAccount() {
-  const { user, t } = useLoaderData<typeof loader>();
+  const { user, pages, menuT, accountT, isLoggedIn } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const { toast } = useToast();
 
   useEffect(() => {
     if (actionData?.success) {
       toast({
-        title: "Success",
+        title: "Thành công",
         description: actionData.type === 'profile' 
-          ? "Display name updated successfully"
-          : "Password updated successfully",
+          ? "Cập nhật tên hiển thị thành công"
+          : "Cập nhật mật khẩu thành công",
         className: "bg-gray-900 text-white border-gray-800",
       });
     } else if (actionData?.error) {
       toast({
-        title: "Error",
+        title: "Lỗi",
         description: actionData.error,
         variant: "destructive",
         className: "bg-red-900 text-white border-red-800",
@@ -127,38 +166,39 @@ export default function UserAccount() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <Menu pages={pages} t={menuT} isLoggedIn={isLoggedIn} />
+      <div className="container mx-auto px-4 py-8 max-w-4xl pt-20">
         <div className="space-y-6">
           {/* Header */}
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold">{t.title}</h1>
-            <p className="text-gray-400">{t.description}</p>
+            <h1 className="text-3xl font-bold">{accountT.title}</h1>
+            <p className="text-gray-400">{accountT.description}</p>
           </div>
 
           {/* Profile Settings */}
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-xl">
-                {t.sections.profile.title}
+                {accountT.sections.profile.title}
               </CardTitle>
               <CardDescription>
-                {t.sections.profile.description}
+                {accountT.sections.profile.description}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Form method="post" className="space-y-4">
                 <input type="hidden" name="formType" value="profile" />
                 <div className="space-y-2">
-                  <Label htmlFor="displayName">Display Name</Label>
+                  <Label htmlFor="displayName">Tên hiển thị</Label>
                   <Input
                     id="displayName"
                     name="displayName"
                     defaultValue={user?.user_metadata?.full_name || ""}
-                    placeholder="Enter your display name"
+                    placeholder="Nhập tên hiển thị của bạn"
                     className="text-white bg-gray-800 border-gray-700 focus:border-gray-600"
                   />
                 </div>
-                <Button type="submit">Save Changes</Button>
+                <Button type="submit">Lưu thay đổi</Button>
               </Form>
             </CardContent>
           </Card>
@@ -167,46 +207,46 @@ export default function UserAccount() {
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-xl">
-                {t.sections.security.title}
+                {accountT.sections.security.title}
               </CardTitle>
               <CardDescription>
-                {t.sections.security.description}
+                {accountT.sections.security.description}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Form method="post" className="space-y-4">
                 <input type="hidden" name="formType" value="password" />
                 <div className="space-y-2">
-                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <Label htmlFor="currentPassword">Mật khẩu hiện tại</Label>
                   <Input
                     id="currentPassword"
                     name="currentPassword"
                     type="password"
-                    placeholder="Enter your current password"
+                    placeholder="Nhập mật khẩu hiện tại"
                     className="text-white bg-gray-800 border-gray-700 focus:border-gray-600"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
+                  <Label htmlFor="newPassword">Mật khẩu mới</Label>
                   <Input
                     id="newPassword"
                     name="newPassword"
                     type="password"
-                    placeholder="Enter your new password"
+                    placeholder="Nhập mật khẩu mới"
                     className="text-white bg-gray-800 border-gray-700 focus:border-gray-600"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Label htmlFor="confirmPassword">Xác nhận mật khẩu mới</Label>
                   <Input
                     id="confirmPassword"
                     name="confirmPassword"
                     type="password"
-                    placeholder="Confirm your new password"
+                    placeholder="Xác nhận mật khẩu mới"
                     className="text-white bg-gray-800 border-gray-700 focus:border-gray-600"
                   />
                 </div>
-                <Button type="submit">Update Password</Button>
+                <Button type="submit">Cập nhật mật khẩu</Button>
               </Form>
             </CardContent>
           </Card>
@@ -215,17 +255,16 @@ export default function UserAccount() {
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-xl">
-                {t.sections.notifications.title}
+                {accountT.sections.notifications.title}
               </CardTitle>
               <CardDescription>
-                {t.sections.notifications.description}
+                {accountT.sections.notifications.description}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {/* Add notification settings form here */}
                 <p className="text-gray-400">
-                  Notification settings form coming soon...
+                  Tính năng cài đặt thông báo sẽ sớm ra mắt...
                 </p>
               </div>
             </CardContent>
@@ -234,7 +273,7 @@ export default function UserAccount() {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Button asChild variant="outline" className="flex-1">
-              <Link to="/user">{t.actions.back}</Link>
+              <Link to="/user">{accountT.actions.back}</Link>
             </Button>
           </div>
         </div>
