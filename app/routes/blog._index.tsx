@@ -74,8 +74,8 @@ export default function BlogList() {
 
   useEffect(() => {
     // Set black background for blog page
-    document.documentElement.classList.add("bg-black");
-    document.body.classList.add("bg-black");
+    document.documentElement.classList.add("bg-dark");
+    document.body.classList.add("bg-dark");
 
     // Cleanup function to remove black background when leaving the page
     return () => {
@@ -85,11 +85,11 @@ export default function BlogList() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-dark">
       <Menu pages={pages} t={t} isLoggedIn={isLoggedIn} />
 
       {/* Blog List Content */}
-      <section className="relative min-h-screen w-full bg-black pt-24 pb-24">
+      <section className="relative min-h-screen w-full bg-dark pt-24 pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-12 text-white text-center">
             Blog Posts

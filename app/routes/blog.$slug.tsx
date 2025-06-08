@@ -196,7 +196,7 @@ export default function BlogPost() {
       <Menu pages={pages} t={t} isLoggedIn={isLoggedIn} />
 
       {/* Blog Content */}
-      <section className="relative min-h-screen w-full bg-black pt-10">
+      <section className="relative min-h-screen w-full bg-dark pt-10">
         <div className="relative">
           <div className="absolute inset-0 bg-black/50"></div>
           <div
@@ -209,11 +209,11 @@ export default function BlogPost() {
           ></div>
           <div className="relative z-10 w-full flex justify-center pt-20 pb-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 text-white text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white font-vietnamese">
                 {blog.title}
               </h1>
               {blog.published_at && (
-                <p className="text-white/80 mb-8">
+                <p className="text-white mb-8 font-vietnamese">
                   {new Date(blog.published_at).toLocaleDateString(locale, {
                     year: "numeric",
                     month: "long",
@@ -222,7 +222,7 @@ export default function BlogPost() {
                 </p>
               )}
               <div
-                className="text-lg md:text-xl lg:text-xl mb-6 md:mb-8 text-white px-4 max-w-3xl mx-auto prose prose-invert pb-24"
+                className="prose prose-invert prose-white max-w-none font-vietnamese text-white"
                 dangerouslySetInnerHTML={{
                   __html: blog.body,
                 }}
