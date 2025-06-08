@@ -120,6 +120,12 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               >
                 Trang Chủ
               </Link>
+              <Link
+                to={`/blog/he-thong-tri-tue`}
+                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+              >
+                Hệ Thống Trí Tuệ
+              </Link>
               {pages?.map((page) =>
                 onMenuClick ? (
                   <button
@@ -147,6 +153,12 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                   Blogger
                 </Link>
               )}
+              <Link
+                to={`/blog/tuyen-nhan-vat`}
+                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+              >
+                Tuyển Nhân Vật
+              </Link>
               <Link
                 to={`/blog/nh-n-v-t`}
                 className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
@@ -183,6 +195,13 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
             >
               Trang Chủ
             </Link>
+            <Link
+              to={`/blog/he-thong-tri-tue`}
+              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Hệ Thống Trí Tuệ
+            </Link>
             {pages?.map((page) =>
               onMenuClick ? (
                 <button
@@ -214,6 +233,13 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 Blogger
               </Link>
             )}
+            <Link
+              to={`/blog/tuyen-nhan-vat`}
+              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Tuyển Nhân Vật
+            </Link>
             <Link
               to={`/blog/nh-n-v-t`}
               className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
