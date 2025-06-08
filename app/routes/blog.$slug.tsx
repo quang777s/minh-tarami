@@ -196,7 +196,7 @@ export default function BlogPost() {
       <Menu pages={pages} t={t} isLoggedIn={isLoggedIn} />
 
       {/* Blog Content */}
-      <section className="relative min-h-screen w-full bg-dark pt-10">
+      <section className="relative min-h-screen w-full">
         <div className="relative">
           <div className="absolute inset-0 bg-black/50"></div>
           <div

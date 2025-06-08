@@ -95,49 +95,47 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-dark">
-      <div className="container mx-auto px-4 py-8">
-        <Menu pages={pages} t={t} onMenuClick={handleMenuClick} isLoggedIn={isLoggedIn} />
+      <Menu pages={pages} t={t} onMenuClick={handleMenuClick} isLoggedIn={isLoggedIn} />
 
-        {/* Hero Section with Slides */}
-        <section className="relative h-screen w-full bg-black">
-          {pages.map((page, index) => (
+      {/* Hero Section with Slides */}
+      <section className="relative h-screen w-full">
+        {pages.map((page, index) => (
+          <div
+            key={page.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className="absolute inset-0 bg-black/50"></div>
             <div
-              key={page.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <div className="absolute inset-0 bg-black/50"></div>
-              <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{
-                  backgroundImage: `url(${
-                    page.featured_image || "/default-slide.jpg"
-                  })`,
-                }}
-              ></div>
-              <div className="relative z-10 h-full w-full flex items-center justify-center text-center pt-20 pb-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 text-white font-vietnamese">
-                    {page.title}
-                  </h1>
-                  <div
-                    className="text-lg md:text-xl lg:text-xl mb-6 md:mb-8 text-white px-4 max-w-3xl mx-auto prose prose-invert prose-white pb-24 font-vietnamese"
-                    dangerouslySetInnerHTML={{
-                      __html: page.body,
-                    }}
-                  />
-                </div>
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${
+                  page.featured_image || "/default-slide.jpg"
+                })`,
+              }}
+            ></div>
+            <div className="relative z-10 h-full w-full flex items-center justify-center text-center pt-20 pb-12">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 text-white font-vietnamese">
+                  {page.title}
+                </h1>
+                <div
+                  className="text-lg md:text-xl lg:text-xl mb-6 md:mb-8 text-white px-4 max-w-3xl mx-auto prose prose-invert prose-white pb-24 font-vietnamese"
+                  dangerouslySetInnerHTML={{
+                    __html: page.body,
+                  }}
+                />
               </div>
             </div>
-          ))}
-        </section>
-
-        {/* Fixed Copyright Bar */}
-        <div className="fixed bottom-0 w-full bg-black backdrop-blur-sm py-3 z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-white text-sm">{t.copyright}</p>
           </div>
+        ))}
+      </section>
+
+      {/* Fixed Copyright Bar */}
+      <div className="fixed bottom-0 w-full bg-black backdrop-blur-sm py-3 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-white text-sm">{t.copyright}</p>
         </div>
       </div>
     </div>
