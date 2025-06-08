@@ -17,6 +17,7 @@ import {
   Newspaper,
   LogOut,
   Home,
+  MessageSquare,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "~/lib/utils";
@@ -45,6 +46,10 @@ type AdminMenuProps = {
         title: string;
         all: string;
         create: string;
+      };
+      comments: {
+        title: string;
+        all: string;
       };
       media: {
         title: string;
@@ -234,6 +239,29 @@ export function AdminMenu({ t }: AdminMenuProps) {
             >
               <Link to="/admin/categories/create">
                 {t.menu.categories.create}
+                <ChevronRight className="ml-auto h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Comments Section */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-lg font-semibold">
+            <MessageSquare className="h-5 w-5" />
+            <span>{t.menu.comments.title}</span>
+          </div>
+          <div className="grid gap-2 pl-7">
+            <Button 
+              variant="ghost" 
+              className={cn(
+                "justify-start w-full",
+                location.pathname === "/admin/comments" && "bg-accent"
+              )} 
+              asChild
+            >
+              <Link to="/admin/comments">
+                {t.menu.comments.all}
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>

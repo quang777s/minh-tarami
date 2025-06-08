@@ -52,6 +52,10 @@
         "all": "Tất Cả Danh Mục",
         "create": "Tạo Danh Mục"
       },
+      "comments": {
+        "title": "Bình Luận",
+        "all": "Tất Cả Bình Luận"
+      },
       "media": {
         "title": "Media",
         "library": "Thư Viện Media",
@@ -65,6 +69,7 @@
       "blogs": "Quản lý tất cả bài viết blog và nội dung",
       "users": "Quản lý tài khoản người dùng và vai trò",
       "categories": "Quản lý danh mục nội dung",
+      "comments": "Quản lý bình luận trên trang web",
       "media": "Quản lý tệp media của bạn",
       "mediaUpload": "Tải lên tệp media mới"
     }

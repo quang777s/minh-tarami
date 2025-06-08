@@ -52,6 +52,10 @@
         "all": "All Categories",
         "create": "Create Category"
       },
+      "comments": {
+        "title": "Comments",
+        "all": "All Comments"
+      },
       "media": {
         "title": "Media",
         "library": "Media Library",
@@ -65,6 +69,7 @@
       "blogs": "Manage all blog posts and their content",
       "users": "Manage user accounts and roles",
       "categories": "Manage content categories",
+      "comments": "Manage comments across the website",
       "media": "Manage your media files",
       "mediaUpload": "Upload new media files"
     }
