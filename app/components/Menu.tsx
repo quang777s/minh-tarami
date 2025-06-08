@@ -154,6 +154,12 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 </Link>
               )}
               <Link
+                to={`/blog/doi-ngu`}
+                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+              >
+                Đội Ngũ
+              </Link>
+              <Link
                 to={`/blog/tuyen-nhan-vat`}
                 className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
               >
@@ -241,6 +247,13 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 Blogger
               </Link>
             )}
+            <Link
+              to={`/blog/doi-ngu`}
+              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Đội Ngũ
+            </Link>
             <Link
               to={`/blog/tuyen-nhan-vat`}
               className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"

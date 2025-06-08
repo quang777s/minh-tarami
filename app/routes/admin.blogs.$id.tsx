@@ -20,6 +20,7 @@ import {
 import { useState } from "react";
 import RichTextEditor from "~/components/RichTextEditor";
 import { ImageSelector } from "~/components/editor/image-selector";
+import { X } from "lucide-react";
 
 const translations = {
   en: enTranslations,
@@ -290,11 +291,22 @@ export default function EditBlog() {
                       Select Image
                     </Button>
                     {selectedImage && (
-                      <img
-                        src={selectedImage}
-                        alt="Featured"
-                        className="h-20 w-20 object-cover rounded"
-                      />
+                      <div className="relative">
+                        <img
+                          src={selectedImage}
+                          alt="Featured"
+                          className="h-20 w-20 object-cover rounded"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
+                          onClick={() => setSelectedImage("")}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
                     )}
                   </div>
                   <input
