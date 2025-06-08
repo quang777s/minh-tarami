@@ -8,6 +8,8 @@ import enTranslations from "~/i18n/locales/en.json";
 import viTranslations from "~/i18n/locales/vi.json";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
+import Menu from "~/components/Menu";
 
 const translations = {
   en: enTranslations,
@@ -20,21 +22,46 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect("/login");
   }
 
+  const supabase = createSupabaseServerClient(request);
+
   // Get user data
   const user = await getUser(request);
   
-  // Get current locale
-  const locale = await getLocale(request);
+  // Fetch pages for menu
+  const { data: pages, error: pagesError } = await supabase.client
+    .from("tara_posts")
+    .select("*")
+    .eq("category_id", 1)
+    .order("order_index", { ascending: true });
+
+  if (pagesError || !pages) {
+    throw new Error("Failed to fetch pages");
+  }
+
+  // Force Vietnamese locale for user dashboard
+  const locale = "vi";
   
-  return json({ user, locale, t: translations[locale].user.dashboard });
+  return json({ 
+    user, 
+    pages,
+    locale, 
+    t: {
+      ...translations[locale].user.dashboard,
+      logo: translations[locale].landing.logo,
+      menu: translations[locale].landing.menu
+    },
+    isLoggedIn: true 
+  });
 };
 
 export default function UserDashboard() {
-  const { user, t } = useLoaderData<typeof loader>();
+  const { user, pages, t, isLoggedIn } = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <Menu pages={pages} t={t} isLoggedIn={isLoggedIn} />
+      
+      <div className="container mx-auto px-4 py-8 max-w-4xl pt-20">
         <div className="space-y-6">
           {/* Header */}
           <div className="space-y-2">

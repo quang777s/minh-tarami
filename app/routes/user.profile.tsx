@@ -9,6 +9,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import { serialize } from "@supabase/ssr";
+import Menu from "~/components/Menu";
 
 const translations = {
   en: enTranslations,
@@ -21,13 +22,36 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect("/login");
   }
 
+  const supabase = createSupabaseServerClient(request);
+
   // Get user data
   const user = await getUser(request);
 
-  // Get current locale
-  const locale = await getLocale(request);
+  // Fetch pages for menu
+  const { data: pages, error: pagesError } = await supabase.client
+    .from("tara_posts")
+    .select("*")
+    .eq("category_id", 1)
+    .order("order_index", { ascending: true });
 
-  return json({ user, locale, t: translations[locale].user.profile });
+  if (pagesError || !pages) {
+    throw new Error("Failed to fetch pages");
+  }
+
+  // Force Vietnamese locale for user profile
+  const locale = "vi";
+
+  return json({ 
+    user, 
+    pages,
+    locale, 
+    t: {
+      ...translations[locale].user.profile,
+      logo: translations[locale].landing.logo,
+      menu: translations[locale].landing.menu
+    },
+    isLoggedIn: true 
+  });
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -37,12 +61,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   headers.append(
     "Set-Cookie",
     serialize("sb-ksgakvcptahiqmhyailu-auth-token", "", {
-      maxAge: 0, // This is the key to delete the cookie
-      expires: new Date(0), // Ensure it expires immediately (optional, but good practice with maxAge=0)
-      path: "/", // IMPORTANT: Must match the path the cookie was originally set with
-      // domain: 'yourdomain.com', // Optional: if the cookie was set for a specific domain
-      httpOnly: true, // IMPORTANT: Must match original settings if present
-      sameSite: "lax", // IMPORTANT: Must match original settings if present
+      maxAge: 0,
+      expires: new Date(0),
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     })
   );
@@ -52,11 +75,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function UserProfile() {
-  const { user, t } = useLoaderData<typeof loader>();
+  const { user, pages, t, isLoggedIn } = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <Menu pages={pages} t={t} isLoggedIn={isLoggedIn} />
+      
+      <div className="container mx-auto px-4 py-8 max-w-4xl pt-20">
         <div className="space-y-6">
           {/* Header */}
           <div className="space-y-2">
@@ -134,9 +159,11 @@ export default function UserProfile() {
             <Button asChild variant="outline" className="flex-1">
               <Link to="/user/data-deletion">{t.actions.dataDeletion}</Link>
             </Button>
-            <Button asChild variant="destructive" className="flex-1">
-              <Link to="/logout">{t.actions.logout}</Link>
-            </Button>
+            <Form method="post">
+              <Button type="submit" variant="destructive" className="w-full">
+                {t.actions.logout}
+              </Button>
+            </Form>
           </div>
         </div>
       </div>

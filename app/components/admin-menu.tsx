@@ -142,19 +142,6 @@ export function AdminMenu({ t }: AdminMenuProps) {
                 <ChevronRight className="ml-auto h-4 w-4" />
               </Link>
             </Button>
-            <Button 
-              variant="ghost" 
-              className={cn(
-                "justify-start w-full",
-                location.pathname === "/admin/pages/index" && "bg-accent"
-              )} 
-              asChild
-            >
-              <Link to="/admin/pages/index">
-                {t.menu.pages.index}
-                <ChevronRight className="ml-auto h-4 w-4" />
-              </Link>
-            </Button>
           </div>
         </div>
 
