@@ -181,6 +181,14 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                   </Link>
                 </>
               )}
+              {isLoggedIn && (
+                <Link
+                  to={`/logout`}
+                  className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+                >
+                  Đăng Xuất
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -264,6 +272,15 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                   Đăng Nhập
                 </Link>
               </>
+            )}
+            {isLoggedIn && (
+              <Link
+                to={`/logout`}
+                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Đăng Xuất
+              </Link>
             )}
           </div>
         </div>
