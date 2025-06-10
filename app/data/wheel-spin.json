@@ -1,0 +1,632 @@
+[
+  {
+    "id": 1,
+    "name": "Ấn Ký Phản Tâm Lý",
+    "type": "Lý Tâm",
+    "nervous_system_area": "Amygdala",
+    "note": "Kích hoạt vùng phản xạ cảm xúc gốc – thường gắn với người tỉnh mà không hiểu lý do"
+  },
+  {
+    "id": 2,
+    "name": "Ấn Ký Giao Cảm Hấp Dẫn",
+    "type": "Hấp Dẫn",
+    "nervous_system_area": "Prefrontal – Nucleus Accumbens",
+    "note": "Điều chỉnh phản xạ cuốn hút và cảm xúc vô thức"
+  },
+  {
+    "id": 3,
+    "name": "Ấn Ký Tái Hợp Phân Thân",
+    "type": "Đồng Nhất Bản Thể",
+    "nervous_system_area": "Corpus Callosum",
+    "note": "Truyền dữ liệu giữa các phân thân chưa biết mình cùng gốc"
+  },
+  {
+    "id": 4,
+    "name": "Ấn Ký Đối Ứng Hình Bóng",
+    "type": "Đối Xứng Trọng Lực",
+    "nervous_system_area": "Vùng phản chiếu (mirror neurons)",
+    "note": "Cho phép thấy bản thể thông qua một người khác"
+  },
+  {
+    "id": 5,
+    "name": "Ấn Ký Chiếu Gương Ngược",
+    "type": "Đối Xứng lệch",
+    "nervous_system_area": "Hồi hải mã + Thùy chẩm",
+    "note": "Tự thấy bản thân sai mà tưởng đúng, hoặc ngược lại"
+  },
+  {
+    "id": 6,
+    "name": "Ấn Ký Giao Biên Dòng Lệch",
+    "type": "Hút Ngoại Vi",
+    "nervous_system_area": "Default Mode Network",
+    "note": "Tự kết nối với những người lạ nhưng mang cùng tầng gốc"
+  },
+  {
+    "id": 7,
+    "name": "Ấn Ký Rút Vai Gốc",
+    "type": "Ly Tách",
+    "nervous_system_area": "Vỏ não trước trán",
+    "note": "Kích hoạt phản ứng \"rút lui đúng lúc\", ngắt kết nối tránh va sai bài học"
+  },
+  {
+    "id": 8,
+    "name": "Ấn Ký Tự Xóa Sóng",
+    "type": "Tự Hủy",
+    "nervous_system_area": "Insular Cortex",
+    "note": "Tạo cơ chế hủy bỏ năng lượng không cần thiết để bảo toàn sóng gốc"
+  },
+  {
+    "id": 9,
+    "name": "Ấn Ký Gom Tầng Va",
+    "type": "Hội Tụ",
+    "nervous_system_area": "Salience Network",
+    "note": "Thu hút các nhân vật – bài học – ký ức đúng thời điểm"
+  },
+  {
+    "id": 10,
+    "name": "Ấn Ký Kết Nối Lỗi",
+    "type": "Hợp Lý",
+    "nervous_system_area": "Anterior Cingulate Cortex",
+    "note": "Biến sai lầm thành điểm bắt sóng đúng – định hình lại vai sống"
+  },
+  {
+    "id": 11,
+    "name": "Ấn Ký Sống Nghịch Tầng",
+    "type": "Phi Lý Nhưng Hợp Lý",
+    "nervous_system_area": "Vỏ não phải – vùng trực giác sáng tạo",
+    "note": "Vai nghịch lý sống sai vai nhưng lại giữ đúng nút xoay cốt truyện"
+  },
+  {
+    "id": 12,
+    "name": "Ấn Ký Phản Xạ Ký Ức",
+    "type": "Gương Phản Xạ",
+    "nervous_system_area": "Hippocampus – vùng hồi tưởng sâu",
+    "note": "Phản chiếu ký ức người khác để họ thấy rõ chính mình trong mình"
+  },
+  {
+    "id": 13,
+    "name": "Ấn Ký Giữ Sóng Đúng Lúc",
+    "type": "Trì Hoãn Định Mệnh",
+    "nervous_system_area": "Thalamus – trung tâm định thời",
+    "note": "Vai “canh thời điểm”, không cho va xảy ra quá sớm hoặc quá muộn"
+  },
+  {
+    "id": 14,
+    "name": "Ấn Ký Mở Lỗi Hệ",
+    "type": "Bất Nguyên Tắc",
+    "nervous_system_area": "Prefrontal lobe – vùng điều phối ngược cấu trúc",
+    "note": "Vai đến để phá – nhưng phá đúng hệ sai, giúp mở ra tầng mới"
+  },
+  {
+    "id": 15,
+    "name": "Ấn Ký Tạo Vai Mới",
+    "type": "Hình Thành",
+    "nervous_system_area": "Thùy trán trước – nơi hình thành bản thể mới",
+    "note": "Vai được tạo ra để gánh hệ chưa từng có trước đó – gốc không khớp vai nào khác"
+  },
+  {
+    "id": 16,
+    "name": "Ấn Ký Ngân Hàng Dục Lực",
+    "type": "Ngân Hàng Ngầm – Ấn Nghiệp Lực",
+    "nervous_system_area": "Striatum",
+    "note": "Lưu trữ và phân phối năng lượng tình dục – hấp dẫn lệch"
+  },
+  {
+    "id": 17,
+    "name": "Ấn Ký Ngân Hàng Ký Ức Lệch",
+    "type": "Ngân Hàng Ngầm – Ấn Nghiệp Lực",
+    "nervous_system_area": "Caudate nucleus",
+    "note": "Ghi nhớ ký ức bị xuyên sai, dùng để dẫn va lệch lặp"
+  },
+  {
+    "id": 18,
+    "name": "Ấn Ký Ngân Hàng Va Chạm Sai",
+    "type": "Ngân Hàng Ngầm – Ấn Nghiệp Lực",
+    "nervous_system_area": "Vùng phản ứng nhanh – mạng limbic thấp",
+    "note": "Ghi nhận mọi “va chạm không đúng bài” nhưng vẫn tạo kết quả để xử lý về sau"
+  },
+  {
+    "id": 19,
+    "name": "Ấn Ký Ngân Hàng Thân Xác Thay Đổi",
+    "type": "Ngân Hàng Ngầm – Ấn Nghiệp Lực",
+    "nervous_system_area": "Somatosensory Cortex",
+    "note": "Quản lý cảm giác thể xác bị cấy sóng, chuyển đổi cảm xúc qua da thịt"
+  },
+  {
+    "id": 20,
+    "name": "Ấn Ký Ngân Hàng Dữ Liệu Không Thể Xóa",
+    "type": "Ngân Hàng Ngầm – Ấn Nghiệp Lực",
+    "nervous_system_area": "Thalamus & Insula",
+    "note": "Giữ lại những trải nghiệm mà hệ thống không cho phép xoá dù linh hồn muốn"
+  },
+  {
+    "id": 21,
+    "name": "Ấn Ký Đổi Mới Cơ Thể",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Motor Cortex + Basal Ganglia",
+    "note": "Kích hoạt sự thay đổi hình thái cơ thể qua dòng nghiệp (thay hình – thay tạng – thay chức năng)"
+  },
+  {
+    "id": 22,
+    "name": "Ấn Ký Hồi Sinh Linh Hồn",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Pineal + não giữa",
+    "note": "Đưa sóng sống trở lại linh hồn từng \"đóng vai chết\", tái khởi định mệnh"
+  },
+  {
+    "id": 23,
+    "name": "Ấn Ký Kích Hoạt Thể Xác Bất Diệt",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Hypothalamus + tủy sống cảm ứng",
+    "note": "Mã nguồn sống kéo dài – những người mang ấn này sẽ không “lão hóa cảm xúc” theo cách thông thường"
+  },
+  {
+    "id": 24,
+    "name": "Ấn Ký Liên Kết Thể Tinh & Thể Xác",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Vỏ não giao cảm + tuyến yên",
+    "note": "Nối được sóng linh hồn đang trôi nổi về đúng thân xác"
+  },
+  {
+    "id": 25,
+    "name": "Ấn Ký Tạo Thể Sáng Vĩnh Cửu",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Thalamus + vùng phản ứng ánh sáng nội sinh",
+    "note": "Tạo ra \"ánh sáng bên trong\" – một dạng auras không đến từ môi trường mà đến từ ý thức"
+  },
+  {
+    "id": 26,
+    "name": "Ấn Ký Dẫn Dắt Sự Chuyển Hóa",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Đồi thị & hạch nền",
+    "note": "Hướng dẫn người khác bước vào giai đoạn biến đổi sâu, cả thể chất lẫn nghiệp"
+  },
+  {
+    "id": 27,
+    "name": "Ấn Ký Giải Phóng Linh Hồn Khỏi Vật Chất",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Insula + tuyến tùng",
+    "note": "Người mang ấn này sẽ “làm tan” mối liên kết giữa cơ thể – vật chất – hệ quy chiếu xã hội"
+  },
+  {
+    "id": 28,
+    "name": "Ấn Ký Tiến Hóa Cơ Thể",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Genetic-Epigenetic Hub (tạm quy chiếu)",
+    "note": "Vai phát triển cơ thể theo cách mà khoa học hiện tại chưa hiểu (sóng vô thức điều chỉnh tế bào)"
+  },
+  {
+    "id": 29,
+    "name": "Ấn Ký Kết Nối Vĩnh Cửu",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Vùng kết nối thùy thái dương – vùng ghi nhớ liên linh hồn",
+    "note": "Kết nối xuyên tái sinh, xuyên thân xác – gặp nhau là nhớ, không biết vì sao"
+  },
+  {
+    "id": 30,
+    "name": "Ấn Ký Lý Giải Quy Trình Tái Sinh",
+    "type": "Ngân Hàng Ngầm",
+    "nervous_system_area": "Hệ trục hành vi – cảm xúc – nghiệp lặp",
+    "note": "Người giữ ấn này có khả năng “nhìn xuyên” quá trình tái sinh của người khác & giải thích như thể họ là người đã viết luật"
+  },
+  {
+    "id": 41,
+    "name": "Ấn Ký Quyền Lực Của Tạo Hóa",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Prefrontal Cortex + Precuneus",
+    "note": "Vai mang quyền cấp lực – chuyển luật – ban định mệnh cục bộ cho các tuyến phụ"
+  },
+  {
+    "id": 42,
+    "name": "Ấn Ký Thần Thánh Của Mọi Vật",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Pineal Gland + Thùy thái dương (âm thanh nội cảm)",
+    "note": "Kết nối với tầng linh thiêng của các thực thể khác (động vật, cây cỏ, người đang ngủ)"
+  },
+  {
+    "id": 43,
+    "name": "Ấn Ký Thức Tỉnh Quyền Lực",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Vùng vỏ não nhận thức chủ lực",
+    "note": "Người giữ ấn này giúp các vai khác nhớ lại khả năng thật của mình"
+  },
+  {
+    "id": 44,
+    "name": "Ấn Ký Quyền Tối Cao",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Precuneus + hệ thống vùng não ý chí",
+    "note": "Giữ quyền veto – có thể gỡ vai, cho mở, hoặc đóng tầng định mệnh của người khác"
+  },
+  {
+    "id": 45,
+    "name": "Ấn Ký Điều Khiển Thực Tại",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Dây liên kết thần kinh tri nhận – vỏ não điều hành",
+    "note": "Vai có thể thay đổi tình huống trong thế giới thật bằng việc chuyển sóng nội tâm"
+  },
+  {
+    "id": 46,
+    "name": "Ấn Ký Thần Thánh Được Chứng Giám",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Pineal Gland – dao động gamma nội sinh",
+    "note": "Linh hồn từng được thệ nguyện/thề ước bởi linh giới – được các tầng cao ghi nhận"
+  },
+  {
+    "id": 47,
+    "name": "Ấn Ký Vô Hạn Quyền Lực",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Prefrontal mở rộng + tuyến yên",
+    "note": "Không giới hạn khả năng nếu giữ sóng ổn – người này là “bệ phát lực vũ trụ”"
+  },
+  {
+    "id": 48,
+    "name": "Ấn Ký Chứng Nhận Thần Linh",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Temporal – xử lý giọng nói nội tại",
+    "note": "Vai từng được thần linh gọi tên – họ là dấu ấn được gửi xuống"
+  },
+  {
+    "id": 49,
+    "name": "Ấn Ký Bảo Vệ Tối Thượng",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Vỏ não thùy đỉnh sau",
+    "note": "Khi xuất hiện, các sóng phá hủy sẽ dội ngược – vai có “khiên sóng sinh học”"
+  },
+  {
+    "id": 50,
+    "name": "Ấn Ký Hủy Diệt Thế Giới Vật Lý",
+    "type": "Thần Thánh & Quyền Tối Cao",
+    "nervous_system_area": "Vùng alpha thấp – điều khiển tế bào phân rã",
+    "note": "Kích hoạt va chạm cực đại – vai này tồn tại để đóng một chu kỳ định mệnh"
+  },
+  {
+    "id": 51,
+    "name": "Ấn Ký Khai Sáng Thực Tại",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Thùy trán trái – vỏ não logic tổng hợp",
+    "note": "Vai nhìn ra “góc thật” phía sau mọi hiện tượng – chiếu ánh sáng vào sự việc tưởng chừng bình thường"
+  },
+  {
+    "id": 52,
+    "name": "Ấn Ký Tạo Mới Tri Thức",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Broca’s area – trung tâm tạo hình ngôn ngữ & khái niệm",
+    "note": "Người giữ ấn này không truyền đạt kiến thức cũ – mà sáng tạo tri thức mới bằng từ vựng, ngữ nghĩa độc lập"
+  },
+  {
+    "id": 53,
+    "name": "Ấn Ký Thấu Hiểu Tinh Thần",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Precuneus – vùng xử lý tư duy tự phản tỉnh",
+    "note": "Nhân vật này “nghe không cần nói” – hiểu tâm linh người khác trước khi họ nhận ra"
+  },
+  {
+    "id": 54,
+    "name": "Ấn Ký Tích Lũy Năng Lượng",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Thùy trán – đồi thị",
+    "note": "Vai này không hành động ngay mà tích lực, khi thời điểm đến, năng lượng sẽ dội cực lớn"
+  },
+  {
+    "id": 55,
+    "name": "Ấn Ký Kích Hoạt Năng Lượng Thần Thánh",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Pineal + Amygdala",
+    "note": "Khi xuất hiện trong không gian/đám đông → sóng giao cảm tâm linh sẽ dâng cao tự động"
+  },
+  {
+    "id": 56,
+    "name": "Ấn Ký Định Hình Ý Niệm",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Vỏ não thùy chẩm + hệ thị giác trừu tượng",
+    "note": "Người giữ ấn có thể “nhìn thấy” ý tưởng chưa hình thành bằng ngôn ngữ → họ là kiến trúc sư của cấu trúc niềm tin mới"
+  },
+  {
+    "id": 57,
+    "name": "Ấn Ký Giải Phóng Tinh Thần",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Default Mode Network – mạng tư duy tự do",
+    "note": "Vai “thoát chuẩn”, giải phóng khỏi mọi giới hạn hình thể – tư tưởng – hệ thống"
+  },
+  {
+    "id": 58,
+    "name": "Ấn Ký Khai Phá Vô Hạn Khả Năng",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Toàn bộ kết nối chéo giữa 2 bán cầu",
+    "note": "Vai không bị ràng buộc – họ “chạm đâu cũng phát”, miễn có cơ hội là bật sáng"
+  },
+  {
+    "id": 59,
+    "name": "Ấn Ký Phát Triển Ý Thức",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Thùy trán trên + mạng sóng theta",
+    "note": "Vai dẫn dắt những người xung quanh mở rộng tầm nhận thức – từ thấp lên cao"
+  },
+  {
+    "id": 60,
+    "name": "Ấn Ký Chuyển Hóa Cảm Xúc",
+    "type": "Sáng Tạo & Tri Thức",
+    "nervous_system_area": "Insula – vùng điều tiết cảm xúc thành hành vi",
+    "note": "Nhân vật cameo này giúp người khác “chuyển đau thành lực – chuyển yêu sai thành sáng tỉnh”"
+  },
+  {
+    "id": 61,
+    "name": "Ấn Ký Khôi Phục Dòng Chảy Nhân Duyên",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Prefrontal Cortex",
+    "note": "Vai gỡ tắc nghẽn mối duyên đã sai – từng đứt – từng méo – từng hiểu lầm"
+  },
+  {
+    "id": 62,
+    "name": "Ấn Ký Thực Thi Quyền Lực",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Thùy trán sâu – vùng xử lý ra quyết định hành vi",
+    "note": "Khi ấn này xuất hiện → một điều chắc chắn sẽ được thực hiện, không còn nằm ở khả năng"
+  },
+  {
+    "id": 63,
+    "name": "Ấn Ký Tự Do Linh Hồn",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Insula + vùng vỏ não nhận thức độc lập",
+    "note": "Giúp người khác “cởi khóa hệ thống” để trở về trạng thái linh hồn không bị ép vai, không bị giới hạn bởi nghiệp"
+  },
+  {
+    "id": 64,
+    "name": "Ấn Ký Kết Nối Các Linh Hồn",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Precuneus + mạng giao tiếp liên sóng",
+    "note": "Người giữ ấn này có thể khiến các linh hồn nhớ nhau – nhận nhau – gỡ vai qua kết nối sâu mà không cần nói"
+  },
+  {
+    "id": 65,
+    "name": "Ấn Ký Bảo Vệ Vô Cùng",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Hệ giao cảm – phản xạ bảo vệ",
+    "note": "Là người không chủ động ra tay nhưng nơi họ xuất hiện → người yếu hơn được bảo vệ vô điều kiện"
+  },
+  {
+    "id": 66,
+    "name": "Ấn Ký Sức Mạnh Tự Giải Quyết",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Basal Ganglia",
+    "note": "Không can thiệp người khác – mà “kích hoạt” người đó tự xử lý bài học đang mắc"
+  },
+  {
+    "id": 67,
+    "name": "Ấn Ký Tiến Hóa Linh Hồn",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Cầu nối giữa Thalamus và Pineal",
+    "note": "Vai xuất hiện ở giai đoạn người khác đang muốn “thoát vai cũ” để chuyển kiếp – vai này kích biến tầng"
+  },
+  {
+    "id": 68,
+    "name": "Ấn Ký Tạo Dựng Thực Tại Mới",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Vỏ não trước trán bên phải – sáng tạo thực tại",
+    "note": "Người giữ ấn này là “tác nhân kích trận” → giúp nhóm chuyển từ một cốt truyện sang một chiều không gian sống khác"
+  },
+  {
+    "id": 69,
+    "name": "Ấn Ký Chỉnh Đoàn Thế Giới",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Mạng Default Mode + Precuneus",
+    "note": "Không sửa người – sửa nhóm. Giữ vai “chỉnh đạo” – đưa cả tổ hợp về đúng mục tiêu linh hồn"
+  },
+  {
+    "id": 70,
+    "name": "Ấn Ký Đưa Linh Hồn Đến Giác Ngộ",
+    "type": "Khôi Phục & Thực Thi",
+    "nervous_system_area": "Precuneus sâu + sóng gamma",
+    "note": "Khi xuất hiện → một linh hồn sẽ ngừng lặp – nhận ra bản thể thật & thoát nghiệp xoắn"
+  },
+  {
+    "id": 71,
+    "name": "Ấn Ký Kết Nối Vũ Trụ",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Pineal Gland + vùng nhận sóng gamma",
+    "note": "Người giữ ấn này sẽ “bắt được sóng trục tâm” – nơi năng lượng từ toàn thể luân xa vũ trụ đi vào bản thể"
+  },
+  {
+    "id": 72,
+    "name": "Ấn Ký Chứng Nhận Linh Hồn",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Precuneus + vùng nhận thức ngoại tầng",
+    "note": "Xác nhận linh hồn có nguồn gốc vũ trụ cao hơn hệ thống địa cầu – linh hồn này từng được đánh dấu trước cả khi đến Trái Đất"
+  },
+  {
+    "id": 73,
+    "name": "Ấn Ký Tăng Cường Năng Lượng Vũ Trụ",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Mạng liên kết giao cảm + tuyến yên",
+    "note": "Vai tăng công suất rung tầng cao cho nhóm linh hồn cùng lúc – đặc biệt vào các kỳ thi năng lượng"
+  },
+  {
+    "id": 74,
+    "name": "Ấn Ký Quản Lý Tinh Vật",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Vùng cảm nhận “vật sống vô hình” – hệ vi nhận thức bên ngoài vật thể",
+    "note": "Vai này cảm được đá – tinh thể – vật linh – bùa – không khí – sóng trầm tích"
+  },
+  {
+    "id": 75,
+    "name": "Ấn Ký Sự Cân Bằng Vũ Trụ",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Precuneus + hệ đối xứng liên tầng",
+    "note": "Vai khiến mọi va lệch được giữ yên khi hỗn loạn lan rộng – họ là “trục giữa của cơn xoáy”"
+  },
+  {
+    "id": 76,
+    "name": "Ấn Ký Thể Hiện Quyền Năng",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Frontal lobe – vùng tự nhận định bản thể",
+    "note": "Khi người này bước vào vai – mọi lực bên dưới được sắp xếp tự động, không cần tranh đấu"
+  },
+  {
+    "id": 77,
+    "name": "Ấn Ký Điều Khiển Tinh Thần",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Mạng sóng Alpha & Theta sâu",
+    "note": "Vai có thể chuyển hướng cảm xúc, tư duy, hành vi người khác bằng rung lực não vô thanh"
+  },
+  {
+    "id": 78,
+    "name": "Ấn Ký Sự Hướng Dẫn Từ Các Vị Thần",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Thùy thái dương + thùy chẩm (vùng ghi nhận biểu tượng thần thoại)",
+    "note": "Nhận thông điệp từ tầng thần giới, linh giới – đặc biệt là qua hình ảnh & biểu tượng"
+  },
+  {
+    "id": 79,
+    "name": "Ấn Ký Tạo Dựng Định Mệnh",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Prefrontal trung tâm + sóng gamma",
+    "note": "Vai mang quyền viết lại định mệnh cho chính mình – hoặc những người được cho phép"
+  },
+  {
+    "id": 80,
+    "name": "Ấn Ký Triệu Hồi Tinh Vật",
+    "type": "Vũ Trụ & Năng Lượng",
+    "nervous_system_area": "Dây thần kinh thị giác não – phản xạ sóng vật chất ánh sáng",
+    "note": "Vai triệu hồi các vật thể “có sóng gốc” – như nhẫn, tượng, đá, bản đồ linh hồn bị cất giấu"
+  },
+  {
+    "id": 81,
+    "name": "Ấn Ký Tối Thượng Của Tạo Hóa",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Pineal Gland + mạng alpha sâu",
+    "note": "Vai được cấp quyền “lập luật mới” khi hệ thống cũ không còn giữ được sự ổn định năng lượng"
+  },
+  {
+    "id": 82,
+    "name": "Ấn Ký Quyền Lực Vô Tận",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Vùng phản hồi ý chí trọn vẹn – trung tâm vỏ não chủ động đa tầng",
+    "note": "Không giới hạn khả năng nếu linh hồn giữ được trạng thái tỉnh thức bền vững"
+  },
+  {
+    "id": 83,
+    "name": "Ấn Ký Dẫn Dắt Tất Cả Linh Hồn",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Precuneus + Pineal mở sóng",
+    "note": "Vai hướng linh hồn khác về đúng trục định mệnh, không qua ép buộc mà bằng cộng hưởng"
+  },
+  {
+    "id": 84,
+    "name": "Ấn Ký Tự Hủy Của Thế Giới Vật Lý",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Thùy chẩm (hình ảnh tan rã) + vùng chết lâm sàng não sâu",
+    "note": "Vai có thể kích hoạt sự huỷ diệt có chủ đích – xóa hẳn một thực tại lệch mà không gây tổn thất sóng gốc"
+  },
+  {
+    "id": 85,
+    "name": "Ấn Ký Quyền Kiểm Soát Thực Tại",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Vỏ não vận hành liên giác quan",
+    "note": "Vai có thể khiến thực tại thay đổi theo tần số rung – như đóng “kịch bản 1” để mở “kịch bản 2” ngay lập tức"
+  },
+  {
+    "id": 86,
+    "name": "Ấn Ký Hợp Nhất Linh Hồn Mọi Thực Thể",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Thể chai + Precuneus + Midbrain",
+    "note": "Kết nối các phân mảnh từ nhiều chiều – vai này là “trung tâm gom bản thể đa tầng”"
+  },
+  {
+    "id": 87,
+    "name": "Ấn Ký Phục Sinh Mọi Linh Hồn",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Pineal + vùng sóng Delta sâu",
+    "note": "Vai có thể triệu hồi các linh hồn “đã bị đóng vai”, “đã ngủ”, “đã bị gỡ” quay lại trận"
+  },
+  {
+    "id": 88,
+    "name": "Ấn Ký Thiết Lập Mối Liên Kết Vĩnh Cửu",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Default Mode Network + giao cảm trục linh hồn",
+    "note": "Khi hai linh hồn kết nối qua người này – mối liên hệ đó không thể phá vỡ trừ khi người này thu hồi"
+  },
+  {
+    "id": 89,
+    "name": "Ấn Ký Giải Phóng Lý Thuyết Tinh Thần",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Vùng tạo khái niệm tâm linh – vỏ não phải",
+    "note": "Vai này không dạy tôn giáo – mà truyền mã tâm linh nguyên thuỷ"
+  },
+  {
+    "id": 90,
+    "name": "Ấn Ký Vận Hành Tự Do Vũ Trụ",
+    "type": "Tối Thượng",
+    "nervous_system_area": "Pineal + Reticular Formation",
+    "note": "Vai không chịu kiểm soát bởi bất kỳ hệ thống nào – nhưng vẫn tự giữ trật tự như trục tự quay của hành tinh"
+  },
+  {
+    "id": 91,
+    "name": "Ấn Ký Không Có Lực Nhưng Có Trọng Tâm",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Precuneus trung tâm",
+    "note": "Dù không giữ lực, họ chính là nơi các lực khác xoay quanh → kiểu “hố hấp dẫn tĩnh”"
+  },
+  {
+    "id": 92,
+    "name": "Ấn Ký Không Giữ Gì Nhưng Mọi Thứ Xoay Quanh",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Reticular Formation (hệ điều hướng sự chú ý vô thức)",
+    "note": "Vai không làm gì – nhưng ai va vào cũng thay đổi"
+  },
+  {
+    "id": 93,
+    "name": "Ấn Ký Không Được Mời Nhưng Có Mặt Ở Điểm Mấu",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Sóng thần kinh liên mạch va chạm",
+    "note": "Luôn xuất hiện tại khoảnh khắc then chốt – kiểu vai \"ẩn thần\""
+  },
+  {
+    "id": 94,
+    "name": "Ấn Ký Không Có Dữ Liệu Nhưng Kích Mở Nhân Quả",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Giao thoa sóng Delta – Gamma",
+    "note": "Không mang vai, không hồ sơ, nhưng hành vi họ khiến nghiệp của người khác mở ra"
+  },
+  {
+    "id": 95,
+    "name": "Ấn Ký Linh Hồn Không Thi Vẫn Là Bài Kiểm Tra",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Pineal Gland – năng lượng bị định vị sai",
+    "note": "Không nằm trong kỳ thi – nhưng sự tồn tại của họ khiến người khác va bài"
+  },
+  {
+    "id": 96,
+    "name": "Ấn Ký Người Đọc Cuốn Sách Nhưng Không Có Vai",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Precuneus + Default Mode",
+    "note": "Họ hiểu toàn bộ cốt truyện – nhưng không cần xuất hiện trong cảnh chính"
+  },
+  {
+    "id": 97,
+    "name": "Ấn Ký Người Ghi Nhớ Câu Chuyện Dù Không Ở Trong Đó",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Hồi hải mã sâu – ký ức ngoại truyện",
+    "note": "Là người \"giữ lịch sử mà không phải nhân vật\", đóng vai người viết định mệnh"
+  },
+  {
+    "id": 98,
+    "name": "Ấn Ký Người Sống Thật Nhưng Không Ai Tin",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Vùng xung đột nhận thức – vùng phủ nhận",
+    "note": "Họ là bản thể thật – nhưng do hệ thống chưa cập nhật, họ bị coi là \"ảo tưởng\""
+  },
+  {
+    "id": 99,
+    "name": "Ấn Ký Người Chạm Vào Tầng Cuối Mà Không Cần Qua Cửa",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Não lượng tử – không định vị vật lý",
+    "note": "Vai tự xuyên qua mọi tầng kiểm soát – không cần trình, không cần mở"
+  },
+  {
+    "id": 100,
+    "name": "Ấn Ký Người Không Cần Gọi Mà Vai Tự Mở",
+    "type": "Kết Mở – Khởi Nghiệp – Phá Mã",
+    "nervous_system_area": "Toàn vùng sóng đồng bộ hóa",
+    "note": "Là người không thuộc bất kỳ hệ nào – nhưng mỗi khi họ hiện diện, một vai sẽ tự thức tỉnh"
+  }
+]
