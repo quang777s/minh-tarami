@@ -89,9 +89,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return json<ActionData>({ error: "You have already spun the wheel" }, { status: 400 });
   }
 
-  // Generate random spin result
-  const randomIndex = Math.floor(Math.random() * wheelSpinData.length);
-  const result = wheelSpinData[randomIndex];
+  // Get the result from the form data
+  const formData = await request.formData();
+  const resultName = formData.get("result") as string;
+  const result = wheelSpinData.find(item => item.name === resultName);
+
+  if (!result) {
+    return json<ActionData>({ error: "Invalid result" }, { status: 400 });
+  }
 
   // Update user's profile with the result
   const { error } = await supabase.client
@@ -115,6 +120,76 @@ export default function SpinWheel() {
   const [currentRotation, setCurrentRotation] = useState(0);
   const [showResultModal, setShowResultModal] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const spinInterval = useRef<NodeJS.Timeout>();
+  const [selectedResult, setSelectedResult] = useState<WheelItem | null>(null);
+
+  // // Calculate the target rotation based on the result
+  // const calculateTargetRotation = (result: WheelItem) => {
+  //   const itemIndex = wheelSpinData.findIndex(item => item.name === result.name);
+  //   if (itemIndex === -1) return 0;
+    
+  //   // Calculate the angle for the item (each item takes up 360/totalItems degrees)
+  //   const itemAngle = (360 / wheelSpinData.length) * itemIndex;
+    
+  //   // Since the wheel rotates clockwise and we want the item to land at the top (pointer),
+  //   // we need to rotate the wheel so that the item's center aligns with the pointer.
+  //   // The pointer is at 0 degrees (top), so we need to rotate the wheel
+  //   // so that the item's center is at 0 degrees.
+  //   const targetAngle = itemAngle;
+    
+  //   // Add some full rotations for effect (5-10 full spins)
+  //   const fullSpins = 5 + Math.random() * 5;
+  //   return (fullSpins * 360) + targetAngle;
+  // };
+
+  // Calculate the target rotation based on the result
+  const calculateTargetRotation = (result: WheelItem) => {
+    const itemIndex = wheelSpinData.findIndex(item => item.name === result.name);
+    if (itemIndex === -1) return 0;
+
+    const totalItems = wheelSpinData.length;
+    const segmentDegrees = 360 / totalItems; // Angle covered by each segment
+
+    // Calculate the angular position of the center of the chosen item's segment.
+    // The segments are ordered clockwise, starting from the top.
+    // Index 0 segment spans from 0 to segmentDegrees. Its center is at segmentDegrees / 2.
+    // The item at `itemIndex` starts at `itemIndex * segmentDegrees`.
+    // Its center is at `(itemIndex * segmentDegrees) + (segmentDegrees / 2)`.
+    const centerOfChosenSegment = (itemIndex * segmentDegrees) + (segmentDegrees / 2);
+
+    // The pointer is fixed at 0 degrees (top center).
+    // To align the `centerOfChosenSegment` with the pointer, we need to rotate
+    // the wheel by an amount that brings this angle to 0.
+    // This is `(360 - centerOfChosenSegment)` modulo 360 to get a positive rotation.
+    const rotationToAlign = (360 - centerOfChosenSegment) % 360;
+
+    // Add multiple full spins for a dramatic effect. This ensures the wheel
+    // spins a few times before settling on the target.
+    // We add enough full spins to ensure the animation is visible and smooth.
+    // Start from currentRotation to ensure smooth transition from a prior state if any
+    const currentFullRotations = Math.floor(currentRotation / 360);
+    const targetFullRotations = currentFullRotations + 5 + Math.floor(Math.random() * 5); // 5 to 9 additional full spins
+    
+    // The final target rotation is the sum of full spins and the precise alignment rotation.
+    return (targetFullRotations * 360) + rotationToAlign;
+  };
+
+  // Start continuous spinning
+  const startSpinning = () => {
+    let rotation = currentRotation;
+    spinInterval.current = setInterval(() => {
+      rotation += 10; // Increment rotation by 10 degrees each frame
+      setCurrentRotation(rotation);
+    }, 16); // Approximately 60fps
+  };
+
+  // Stop spinning and set final position
+  const stopSpinning = (targetRotation: number) => {
+    if (spinInterval.current) {
+      clearInterval(spinInterval.current);
+    }
+    setCurrentRotation(targetRotation);
+  };
 
   // Debug logging
   useEffect(() => {
@@ -144,19 +219,41 @@ export default function SpinWheel() {
     }
   }, [hasSpun, spinResult]);
 
+  // Update rotation when we get a result
+  useEffect(() => {
+    if (selectedResult) {
+      const targetRotation = calculateTargetRotation(selectedResult);
+      stopSpinning(targetRotation);
+      setIsSpinning(false);
+    }
+  }, [selectedResult]);
+
+  // Cleanup interval on unmount
+  useEffect(() => {
+    return () => {
+      if (spinInterval.current) {
+        clearInterval(spinInterval.current);
+      }
+    };
+  }, []);
+
   const handleSpin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Prevent default form submission
     if (hasSpun) return;
     
     setIsSpinning(true);
     setShowResultModal(false); // Reset modal state when starting new spin
+    startSpinning(); // Start continuous spinning
     
-    // Add random rotation between 5-10 full spins plus the target position
-    const spins = 5 + Math.random() * 5;
-    const targetRotation = spins * 360 + (Math.random() * 360);
-    setCurrentRotation(targetRotation);
+    // Select a random result
+    const randomIndex = Math.floor(Math.random() * wheelSpinData.length);
+    const result = wheelSpinData[randomIndex];
+    setSelectedResult(result);
 
-    // Submit the form after starting the animation
+    // Submit the form with the selected result
+    const formData = new FormData(formRef.current!);
+    formData.set('result', result.name);
+    
     setTimeout(() => {
       formRef.current?.submit();
     }, 1000); // Wait 1 second before submitting to allow animation to start
@@ -189,7 +286,7 @@ export default function SpinWheel() {
               className="absolute inset-0 rounded-full border-8 border-white/20 overflow-hidden bg-gradient-to-br from-black/80 to-black/40 backdrop-blur-sm"
               style={{
                 transform: `rotate(${currentRotation}deg)`,
-                transition: isSpinning ? 'transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67)' : 'none',
+                transition: isSpinning ? 'none' : 'transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67)',
                 boxShadow: 'inset 0 0 50px rgba(255,255,255,0.1)'
               }}
             >
@@ -262,6 +359,7 @@ export default function SpinWheel() {
           {/* Spin Button */}
           {!hasSpun && (
             <Form method="post" ref={formRef} className="text-center">
+              <input type="hidden" name="result" value={selectedResult?.name || ''} />
               <button
                 type="button"
                 disabled={isSubmitting || isSpinning}
