@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
-import { useLoaderData, useActionData, Form, useNavigation } from "@remix-run/react";
+import { useLoaderData, useActionData, Form, useNavigation, useNavigate } from "@remix-run/react";
 import { useEffect, useState, useRef } from "react";
 import { json, redirect } from "@remix-run/node";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
@@ -115,6 +115,7 @@ export default function SpinWheel() {
   const { pages, locale, t, isLoggedIn, hasSpun, spinResult } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
+  const navigate = useNavigate();
   const isSubmitting = navigation.state === "submitting";
   const [isSpinning, setIsSpinning] = useState(false);
   const [currentRotation, setCurrentRotation] = useState(0);
@@ -261,6 +262,7 @@ export default function SpinWheel() {
 
   const closeModal = () => {
     setShowResultModal(false);
+    navigate('/user/profile');
   };
 
   // Get the current result to display

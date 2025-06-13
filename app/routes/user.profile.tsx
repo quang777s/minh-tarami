@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import { serialize } from "@supabase/ssr";
 import Menu from "~/components/Menu";
+import wheelSpinData from "~/data/wheel-spin.json";
 
 const translations = {
   en: enTranslations,
@@ -26,6 +27,21 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   // Get user data
   const user = await getUser(request);
+  if (!user) {
+    throw redirect("/login");
+  }
+
+  // Get user's profile with signature
+  const { data: profile } = await supabase.client
+    .from("profiles")
+    .select("signature")
+    .eq("user_id", user.id)
+    .single();
+
+  // Get signature details if exists
+  const signatureDetails = profile?.signature 
+    ? wheelSpinData.find(item => item.name === profile.signature)
+    : null;
 
   // Fetch pages for menu
   const { data: pages, error: pagesError } = await supabase.client
@@ -50,7 +66,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       logo: translations[locale].landing.logo,
       menu: translations[locale].landing.menu
     },
-    isLoggedIn: true 
+    isLoggedIn: true,
+    signatureDetails
   });
 };
 
@@ -75,7 +92,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function UserProfile() {
-  const { user, pages, t, isLoggedIn } = useLoaderData<typeof loader>();
+  const { user, pages, t, isLoggedIn, signatureDetails } = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -141,6 +158,35 @@ export default function UserProfile() {
                     </p>
                   </div>
                 </div>
+
+                {/* Signature Details Section */}
+                {signatureDetails ? (
+                  <div className="mt-6 pt-6 border-t border-gray-800">
+                    <h3 className="text-lg font-semibold mb-4 text-purple-300">Kết Quả Vòng Quay</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <p className="text-sm text-gray-400">Loại</p>
+                        <p className="font-medium">{signatureDetails.type}</p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm text-gray-400">Vùng Hệ Thần Kinh</p>
+                        <p className="font-medium">{signatureDetails.nervous_system_area}</p>
+                      </div>
+                      <div className="col-span-2 space-y-1">
+                        <p className="text-sm text-gray-400">Ghi Chú</p>
+                        <p className="font-medium">{signatureDetails.note}</p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mt-6 pt-6 border-t border-gray-800 text-center">
+                    <h3 className="text-lg font-semibold mb-4 text-purple-300">Bạn Chưa Có Kết Quả Vòng Quay</h3>
+                    <p className="text-gray-400 mb-6">Hãy tham gia vòng quay để khám phá kết quả của bạn!</p>
+                    <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white">
+                      <Link to="/vong-quay">Quay Ngay</Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
