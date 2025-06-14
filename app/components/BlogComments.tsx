@@ -1,16 +1,36 @@
-import { Form, Link, useActionData, useNavigation } from "@remix-run/react";
+import { Form, Link, useActionData, useNavigation, useFetcher } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import type { Comment } from "~/types/blog";
 
 type BlogCommentsProps = {
-  comments: Comment[];
+  slug: string;
   isLoggedIn: boolean;
   locale: string;
 };
 
-export default function BlogComments({ comments, isLoggedIn, locale }: BlogCommentsProps) {
+type FetcherData = {
+  comments?: Comment[];
+  error?: string;
+};
+
+export default function BlogComments({ slug, isLoggedIn, locale }: BlogCommentsProps) {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const fetcher = useFetcher<FetcherData>();
   const actionData = useActionData<{ error?: string }>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+
+  // Load comments on mount
+  useEffect(() => {
+    fetcher.load(`/blog/${slug}/comments`);
+  }, [slug]);
+
+  // Update comments when fetcher data changes
+  useEffect(() => {
+    if (fetcher.data?.comments) {
+      setComments(fetcher.data.comments);
+    }
+  }, [fetcher.data]);
 
   return (
     <section className="relative w-full bg-black py-12">
@@ -19,7 +39,7 @@ export default function BlogComments({ comments, isLoggedIn, locale }: BlogComme
         
         {/* Comment Form */}
         {isLoggedIn ? (
-          <Form method="post" className="mb-8">
+          <Form method="post" action={`/blog/${slug}/comments`} className="mb-8">
             <div className="mb-4">
               <textarea
                 name="comment"
@@ -58,10 +78,12 @@ export default function BlogComments({ comments, isLoggedIn, locale }: BlogComme
             <div key={comment.id} className="bg-black/50 rounded-lg p-6">
               <div className="flex items-center mb-4">
                 <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white">
-                  {comment.user.name.charAt(0).toUpperCase()}
+                  {comment.user?.name?.charAt(0).toUpperCase() || '?'}
                 </div>
                 <div className="ml-4">
-                  <p className="text-white font-medium">{comment.user.name}</p>
+                  <p className="text-white font-medium">
+                    {comment.user?.name || 'Người dùng ẩn danh'}
+                  </p>
                   <p className="text-gray-400 text-sm">
                     {new Date(comment.created_at).toLocaleDateString(locale, {
                       year: "numeric",

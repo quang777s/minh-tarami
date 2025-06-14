@@ -40,25 +40,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw new Error("Blog post not found");
   }
 
-  // Fetch comments for this blog post
-  const { data: comments, error: commentsError } = await supabase.client
-    .from("tara_comments")
-    .select(
-      `
-      *,
-      user:profiles (
-        name
-      )
-    `
-    )
-    .eq("post_id", blog.id)
-    .order("created_at", { ascending: false });
-
-  if (commentsError) {
-    console.error("Supabase comments query error:", commentsError);
-    throw commentsError;
-  }
-
   const { data: pages, error: pagesError } = await supabase.client
     .from("tara_posts")
     .select("*")
@@ -75,7 +56,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return json({
     blog,
     pages,
-    comments,
     locale,
     t: translations[locale].landing,
     isLoggedIn: !!session,
@@ -155,8 +135,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 };
 
 export default function BlogPost() {
-  const { blog, pages, comments, locale, t, isLoggedIn } =
-    useLoaderData<typeof loader>();
+  const { blog, pages, locale, t, isLoggedIn } = useLoaderData<typeof loader>();
 
   useEffect(() => {
     // Set black background for blog page
@@ -212,10 +191,10 @@ export default function BlogPost() {
       </section>
 
       {/* Comments Section */}
-      <BlogComments
-        comments={comments as Comment[]}
-        isLoggedIn={isLoggedIn}
-        locale={locale}
+      <BlogComments 
+        slug={blog.slug}
+        isLoggedIn={isLoggedIn} 
+        locale={locale} 
       />
 
       {/* Fixed Copyright Bar */}
