@@ -93,6 +93,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
           {
             user_id: authData.user.id,
             email: email,
+            name: fullName,
             role: "customer",
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
@@ -112,7 +113,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     }
   }
 
-  return redirect("/login?message=Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản của bạn.");
+  const successMessage = encodeURIComponent("Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản của bạn.");
+  return redirect(`/login?message=${successMessage}`);
 };
 
 export default function Register() {
