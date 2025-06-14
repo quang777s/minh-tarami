@@ -72,7 +72,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return json({ error: "Email và mật khẩu là bắt buộc" });
   }
 
-  return signInWithPassword(request, "/user", email, password);
+  return signInWithPassword(request, "/login-success", email, password);
 };
 
 export default function Login() {
