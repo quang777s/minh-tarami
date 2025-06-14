@@ -53,13 +53,20 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   // Get current locale
   const locale = await getLocale(request);
 
-  return json({
-    blog,
-    pages,
-    locale,
-    t: translations[locale].landing,
-    isLoggedIn: !!session,
-  });
+  return json(
+    {
+      blog,
+      pages,
+      locale,
+      t: translations[locale].landing,
+      isLoggedIn: !!session,
+    },
+    {
+      headers: {
+        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+      },
+    }
+  );
 };
 
 export const action = async ({ request, params }: ActionFunctionArgs) => {

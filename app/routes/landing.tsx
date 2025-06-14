@@ -44,12 +44,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Get current locale
   const locale = await getLocale(request);
 
-  return json({ 
-    pages, 
-    locale, 
-    t: translations[locale].landing,
-    isLoggedIn: !!session 
-  });
+  return json(
+    { 
+      pages, 
+      locale, 
+      t: translations[locale].landing,
+      isLoggedIn: !!session 
+    },
+    {
+      headers: {
+        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+      },
+    }
+  );
 };
 
 export default function Landing() {
