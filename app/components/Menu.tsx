@@ -115,7 +115,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-2">
               <Link
-                to={`/`}
+                to={`/blog/gioi-thieu`}
                 className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
               >
                 Trang Chủ
@@ -171,6 +171,12 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               >
                 Nhân Vật
               </Link>
+              <Link
+                to={`/tra-tu`}
+                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+              >
+                Từ Điển
+              </Link>
               {!isLoggedIn && (
                 <>
                   <Link
@@ -203,7 +209,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
         <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"}`}>
           <div className="px-2 pt-2 pb-3 space-y-1 bg-black backdrop-blur-sm">
             <Link
-              to={`/`}
+              to={`/blog/gioi-thieu`}
               className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -267,6 +273,13 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               onClick={() => setIsMenuOpen(false)}
             >
               Nhân Vật
+            </Link>
+            <Link
+              to={`/tra-tu`}
+              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Từ Điển
             </Link>
             {!isLoggedIn && (
               <>
