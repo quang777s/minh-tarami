@@ -23,30 +23,27 @@ type ActionData = {
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
-  // Check if user is logged in
-  const {
-    data: { session },
-  } = await supabase.client.auth.getSession();
+  // Fetch session, blog post and pages in parallel
+  const [sessionResult, blogResult, pagesResult] = await Promise.all([
+    supabase.client.auth.getSession(),
+    supabase.client
+      .from("tara_posts")
+      .select("*")
+      .eq("category_id", 2)
+      .eq("slug", params.slug)
+      .single(),
+    supabase.client
+      .from("tara_posts")
+      .select("*")
+      .eq("category_id", 1)
+      .order("order_index", { ascending: true })
+  ]);
 
-  // Fetch the specific blog post
-  const { data: blog, error: blogError } = await supabase.client
-    .from("tara_posts")
-    .select("*")
-    .eq("category_id", 2)
-    .eq("slug", params.slug)
-    .single();
-
-  if (blogError || !blog) {
+  if (blogResult.error || !blogResult.data) {
     throw new Error("Blog post not found");
   }
 
-  const { data: pages, error: pagesError } = await supabase.client
-    .from("tara_posts")
-    .select("*")
-    .eq("category_id", 1)
-    .order("order_index", { ascending: true });
-
-  if (pagesError || !pages) {
+  if (pagesResult.error || !pagesResult.data) {
     throw new Error("Failed to fetch pages");
   }
 
@@ -55,15 +52,15 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   return json(
     {
-      blog,
-      pages,
+      blog: blogResult.data,
+      pages: pagesResult.data,
       locale,
       t: translations[locale].landing,
-      isLoggedIn: !!session,
+      isLoggedIn: !!sessionResult.data.session,
     },
     {
       headers: {
-        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+        "Cache-Control": "public, max-age=100, stale-while-revalidate=600",
       },
     }
   );

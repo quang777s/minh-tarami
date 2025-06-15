@@ -27,17 +27,17 @@ export const meta: MetaFunction = () => {
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
-  // Check if user is logged in
-  const { data: { session } } = await supabase.client.auth.getSession();
+  // Fetch session and pages in parallel
+  const [sessionResult, pagesResult] = await Promise.all([
+    supabase.client.auth.getSession(),
+    supabase.client
+      .from("tara_posts")
+      .select("*")
+      .eq("category_id", 1)
+      .order("order_index", { ascending: true })
+  ]);
 
-  // Fetch pages (posts with category_id = 1)
-  const { data: pages, error } = await supabase.client
-    .from("tara_posts")
-    .select("*")
-    .eq("category_id", 1)
-    .order("order_index", { ascending: true });
-
-  if (error) {
+  if (pagesResult.error) {
     throw new Error("Failed to fetch pages");
   }
 
@@ -46,14 +46,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   return json(
     { 
-      pages, 
+      pages: pagesResult.data, 
       locale, 
       t: translations[locale].landing,
-      isLoggedIn: !!session 
+      isLoggedIn: !!sessionResult.data.session 
     },
     {
       headers: {
-        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+        "Cache-Control": "public, max-age=100, stale-while-revalidate=600",
       },
     }
   );
