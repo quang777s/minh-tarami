@@ -22,7 +22,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
   // Check if user is logged in
-  const { data: { session } } = await supabase.client.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.client.auth.getSession();
 
   // Fetch pages for menu
   const { data: pages, error: pagesError } = await supabase.client
@@ -38,11 +40,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Get current locale
   const locale = await getLocale(request);
 
-  return json({ 
-    pages, 
-    locale, 
+  return json({
+    pages,
+    locale,
     t: translations[locale].landing,
-    isLoggedIn: !!session
+    isLoggedIn: !!session,
   });
 };
 
@@ -68,8 +70,10 @@ export default function TraTu() {
 
   const checkRateLimit = () => {
     const now = Date.now();
-    const storedData = localStorage.getItem('dictionaryRateLimit');
-    let rateLimitData = storedData ? JSON.parse(storedData) : { count: 0, timestamp: now };
+    const storedData = localStorage.getItem("dictionaryRateLimit");
+    let rateLimitData = storedData
+      ? JSON.parse(storedData)
+      : { count: 0, timestamp: now };
 
     // Reset count if time window has passed
     if (now - rateLimitData.timestamp > RATE_LIMIT.timeWindow) {
@@ -78,21 +82,25 @@ export default function TraTu() {
 
     // Check if rate limit is exceeded
     if (rateLimitData.count >= RATE_LIMIT.maxRequests) {
-      const timeLeft = Math.ceil((RATE_LIMIT.timeWindow - (now - rateLimitData.timestamp)) / 1000);
-      setRateLimitError(`Bạn đã vượt quá giới hạn tìm kiếm. Vui lòng đợi ${timeLeft} giây.`);
+      const timeLeft = Math.ceil(
+        (RATE_LIMIT.timeWindow - (now - rateLimitData.timestamp)) / 1000
+      );
+      setRateLimitError(
+        `Bạn đã vượt quá giới hạn tìm kiếm. Vui lòng đợi ${timeLeft} giây.`
+      );
       return false;
     }
 
     // Update rate limit data
     rateLimitData.count += 1;
-    localStorage.setItem('dictionaryRateLimit', JSON.stringify(rateLimitData));
+    localStorage.setItem("dictionaryRateLimit", JSON.stringify(rateLimitData));
     setRateLimitError(null);
     return true;
   };
 
   const handleSearch = async (word: string) => {
     if (!word.trim()) return;
-    
+
     if (!checkRateLimit()) {
       return;
     }
@@ -100,15 +108,56 @@ export default function TraTu() {
     try {
       setIsSearching(true);
       setError(null);
-      const response = await fetch(`/api/dictionary?word=${encodeURIComponent(word)}`);
+      const response = await fetch(
+        `/api/dictionary?word=${encodeURIComponent(word)}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch dictionary result");
       }
       const html = await response.text();
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
-      const headlines = doc.querySelectorAll(".mw-headline");
-      const result = Array.from(headlines).map(h => h.textContent || "").join("\n");
+
+      // Get all content-3 sections
+      const contentSections = doc.querySelectorAll("#content-3");
+      const resultParts: string[] = [];
+
+      contentSections.forEach((section) => {
+        // Get section header (h3 headline)
+        const sectionHeader = section.querySelector("h3 > .mw-headline");
+        if (sectionHeader) {
+          const headerText = sectionHeader.textContent?.trim();
+          if (headerText) {
+            resultParts.push(headerText);
+          }
+        }
+
+        // Get all content-5 divs (word entries)
+        const wordEntryDivs = section.querySelectorAll("#content-5");
+
+        wordEntryDivs.forEach((div) => {
+          // Get word entry (h5 headline)
+          const wordEntry = div.querySelector("h5 > .mw-headline");
+          if (!wordEntry) return;
+
+          const wordText = wordEntry.textContent?.trim();
+          if (!wordText) return;
+
+          // Get all definitions (dd > i)
+          const definitions = Array.from(div.querySelectorAll("dd > i"))
+            .map((dd) => dd.textContent?.trim())
+            .filter((text): text is string => !!text)
+            .map((def) => `<i>${def}</i>`);
+
+          if (definitions.length > 0) {
+            resultParts.push(`${wordText}\n${definitions.join("\n")}`);
+          }
+        });
+      });
+
+      // Combine all results with double newlines between entries
+      const result = resultParts.join("\n\n");
+
       setResult(result);
     } catch (error) {
       console.error("Error fetching dictionary result:", error);
@@ -175,8 +224,13 @@ export default function TraTu() {
               {/* Results */}
               {result && (
                 <div className="prose prose-invert prose-white max-w-none font-vietnamese text-white bg-black/50 p-6 rounded-lg">
-                  <h2 className="text-2xl font-bold mb-4">Kết quả cho từ "{searchWord}"</h2>
-                  <div className="whitespace-pre-line">{result}</div>
+                  <h2 className="text-2xl font-bold mb-4">
+                    Kết quả cho từ "{searchWord}"
+                  </h2>
+                  <div
+                    className="whitespace-pre-line"
+                    dangerouslySetInnerHTML={{ __html: result }}
+                  />
                 </div>
               )}
             </div>
@@ -192,4 +246,4 @@ export default function TraTu() {
       </div>
     </div>
   );
-} 
+}
