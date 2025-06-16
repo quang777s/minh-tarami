@@ -164,13 +164,12 @@ export default function BlogPost() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url(${
-                blog.featured_image || "/default-slide.jpg"
-              })`,
+              backgroundImage: `url(${blog.featured_image || "/default-slide.jpg"
+                })`,
             }}
           ></div>
           <div className="relative z-10 w-full flex justify-center pt-20 pb-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl lg:w-[80rem] mx-auto px-4 sm:px-6 lg:px-8">
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white font-vietnamese">
                 {blog.title}
               </h1>
@@ -195,10 +194,10 @@ export default function BlogPost() {
       </section>
 
       {/* Comments Section */}
-      <BlogComments 
+      <BlogComments
         slug={blog.slug}
-        isLoggedIn={isLoggedIn} 
-        locale={locale} 
+        isLoggedIn={isLoggedIn}
+        locale={locale}
       />
 
       {/* Fixed Copyright Bar */}
