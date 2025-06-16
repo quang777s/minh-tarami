@@ -71,7 +71,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${new URL(request.url).origin}/auth/callback?type=signup`,
+      emailRedirectTo: `https://www.taramind.vn`,
       data: {
         full_name: fullName
       }
