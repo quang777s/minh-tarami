@@ -39,14 +39,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw new Error("Failed to fetch pages");
   }
 
-  return json({ 
-    locale, 
-    pages, 
+  return json({
+    locale,
+    pages,
     t: {
       ...translations[locale].auth.register,
       logo: translations[locale].landing.logo,
       menu: translations[locale].landing.menu
-    } 
+    }
   });
 };
 
@@ -71,7 +71,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${new URL(request.url).origin}/auth/callback`,
+      emailRedirectTo: `${new URL(request.url).origin}/auth/callback?type=signup`,
       data: {
         full_name: fullName
       }
@@ -141,7 +141,7 @@ export default function Register() {
                     <AlertDescription>{actionData.error}</AlertDescription>
                   </Alert>
                 )}
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-gray-200">{t.form.name}</Label>
                   <Input
@@ -190,8 +190,8 @@ export default function Register() {
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-white text-black hover:bg-gray-200"
                   disabled={isSubmitting}
                 >

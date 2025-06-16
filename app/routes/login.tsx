@@ -5,6 +5,7 @@ import {
   useActionData,
   useLoaderData,
   useNavigation,
+  useSearchParams,
 } from "@remix-run/react";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
 import { signInWithPassword } from "~/lib/supabase/auth.supabase.server";
@@ -31,6 +32,10 @@ const translations = {
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const message = url.searchParams.get("message");
+  const error = url.searchParams.get("error");
+
   const supabase = createSupabaseServerClient(request);
   const {
     data: { session },
@@ -55,6 +60,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({ 
     locale, 
     pages, 
+    message,
+    error,
     t: {
       ...translations[locale].auth.login,
       logo: translations[locale].landing.logo,
@@ -76,7 +83,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Login() {
-  const { t, pages } = useLoaderData<typeof loader>();
+  const { t, pages, message, error } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -97,11 +104,19 @@ export default function Login() {
             </CardHeader>
             <CardContent>
               <Form method="post" className="space-y-4">
+                {message && (
+                  <Alert className="bg-green-900/50 border-green-800 text-white">
+                    <AlertDescription>{message}</AlertDescription>
+                  </Alert>
+                )}
+                {error && (
+                  <Alert variant="destructive" className="bg-red-900/50 border-red-800 text-white">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
                 {actionData?.error && (
-                  <Alert
-                    variant="destructive"
-                    className="bg-red-900/50 border-red-800"
-                  >
+                  <Alert variant="destructive" className="bg-red-900/50 border-red-800 text-white">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>{actionData.error}</AlertDescription>
                   </Alert>
