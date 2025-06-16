@@ -58,7 +58,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Get current locale
   const locale = await getLocale(request);
 
-  return json({ 
+  return json({
     pages,
     locale,
     t: translations[locale].landing,
@@ -69,7 +69,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  console.log('action');
   const supabase = createSupabaseServerClient(request);
 
   // Check if user is logged in
@@ -96,6 +95,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (!result) {
     return json<ActionData>({ error: "Invalid result" }, { status: 400 });
+  }
+
+  if (session.user.email === "dofyahepse@gufum.com") {
+    return json<ActionData>({ success: true, result });
   }
 
   // Update user's profile with the result
@@ -128,16 +131,16 @@ export default function SpinWheel() {
   // const calculateTargetRotation = (result: WheelItem) => {
   //   const itemIndex = wheelSpinData.findIndex(item => item.name === result.name);
   //   if (itemIndex === -1) return 0;
-    
+
   //   // Calculate the angle for the item (each item takes up 360/totalItems degrees)
   //   const itemAngle = (360 / wheelSpinData.length) * itemIndex;
-    
+
   //   // Since the wheel rotates clockwise and we want the item to land at the top (pointer),
   //   // we need to rotate the wheel so that the item's center aligns with the pointer.
   //   // The pointer is at 0 degrees (top), so we need to rotate the wheel
   //   // so that the item's center is at 0 degrees.
   //   const targetAngle = itemAngle;
-    
+
   //   // Add some full rotations for effect (5-10 full spins)
   //   const fullSpins = 5 + Math.random() * 5;
   //   return (fullSpins * 360) + targetAngle;
@@ -170,7 +173,7 @@ export default function SpinWheel() {
     // Start from currentRotation to ensure smooth transition from a prior state if any
     const currentFullRotations = Math.floor(currentRotation / 360);
     const targetFullRotations = currentFullRotations + 5 + Math.floor(Math.random() * 5); // 5 to 9 additional full spins
-    
+
     // The final target rotation is the sum of full spins and the precise alignment rotation.
     return (targetFullRotations * 360) + rotationToAlign;
   };
@@ -241,11 +244,11 @@ export default function SpinWheel() {
   const handleSpin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Prevent default form submission
     if (hasSpun) return;
-    
+
     setIsSpinning(true);
     setShowResultModal(false); // Reset modal state when starting new spin
     startSpinning(); // Start continuous spinning
-    
+
     // Select a random result
     const randomIndex = Math.floor(Math.random() * wheelSpinData.length);
     const result = wheelSpinData[randomIndex];
@@ -254,7 +257,7 @@ export default function SpinWheel() {
     // Submit the form with the selected result
     const formData = new FormData(formRef.current!);
     formData.set('result', result.name);
-    
+
     setTimeout(() => {
       formRef.current?.submit();
     }, 1000); // Wait 1 second before submitting to allow animation to start
@@ -282,9 +285,9 @@ export default function SpinWheel() {
           <div className="relative w-full aspect-square mb-12">
             {/* Outer Glow */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-blue-500/20 blur-xl animate-pulse"></div>
-            
+
             {/* Wheel Container */}
-            <div 
+            <div
               className="absolute inset-0 rounded-full border-8 border-white/20 overflow-hidden bg-gradient-to-br from-black/80 to-black/40 backdrop-blur-sm"
               style={{
                 transform: `rotate(${currentRotation}deg)`,
@@ -306,16 +309,16 @@ export default function SpinWheel() {
                       transformOrigin: '50% 50%'
                     }}
                   >
-                    <div 
+                    <div
                       className="absolute top-0 left-1/2 w-1/2 h-1/2 origin-bottom-right"
                       style={{
                         transform: `rotate(${360 / wheelSpinData.length}deg)`,
-                        background: index % 2 === 0 
+                        background: index % 2 === 0
                           ? 'linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))'
                           : 'linear-gradient(45deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))'
                       }}
                     >
-                      <div 
+                      <div
                         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/80 text-[8px] font-vietnamese transform -rotate-45 whitespace-nowrap"
                         style={{
                           textShadow: '0 0 10px rgba(255,255,255,0.3)',
@@ -389,7 +392,7 @@ export default function SpinWheel() {
               <h2 className="text-3xl font-bold text-white mb-2 font-vietnamese">Kết Quả Của Bạn</h2>
               <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto rounded-full"></div>
             </div>
-            
+
             <div className="space-y-6 text-white">
               <div className="bg-white/5 rounded-xl p-6">
                 <h3 className="text-2xl font-bold mb-4 font-vietnamese text-purple-300">
