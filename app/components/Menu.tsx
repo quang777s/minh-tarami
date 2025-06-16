@@ -146,7 +146,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 )
               )}
               <Link
-                to={`/user/profile`}
+                to={`/blog`}
                 className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
               >
                 Blogger
@@ -243,7 +243,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               )
             )}
             <Link
-              to={`/user/profile`}
+              to={`/blog`}
               className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
               onClick={() => setIsMenuOpen(false)}
             >
