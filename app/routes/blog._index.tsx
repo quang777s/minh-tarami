@@ -33,7 +33,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
   // Check if user is logged in
-  const { data: { session } } = await supabase.client.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.client.auth.getSession();
 
   // Fetch all blog posts
   const { data: blogs, error: blogsError } = await supabase.client
@@ -60,17 +62,18 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Get current locale
   const locale = await getLocale(request);
 
-  return json({ 
-    blogs, 
-    pages, 
-    locale, 
+  return json({
+    blogs,
+    pages,
+    locale,
     t: translations[locale].landing,
-    isLoggedIn: !!session 
+    isLoggedIn: !!session,
   });
 };
 
 export default function BlogList() {
-  const { blogs, pages, locale, t, isLoggedIn } = useLoaderData<typeof loader>();
+  const { blogs, pages, locale, t, isLoggedIn } =
+    useLoaderData<typeof loader>();
 
   useEffect(() => {
     // Set black background for blog page
@@ -94,7 +97,7 @@ export default function BlogList() {
           <h1 className="text-4xl md:text-5xl font-bold mb-12 text-white text-center">
             Blog Posts
           </h1>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog) => (
               <Link
@@ -104,7 +107,7 @@ export default function BlogList() {
               >
                 <div className="relative aspect-[16/9] overflow-hidden">
                   <img
-                    src={blog.featured_image || "/default-slide.jpg"}
+                    src={blog.featured_image || "/galaxy.jpg"}
                     alt={blog.title}
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
                   />
@@ -138,4 +141,4 @@ export default function BlogList() {
       </div>
     </div>
   );
-} 
+}
