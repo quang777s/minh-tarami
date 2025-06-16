@@ -19,8 +19,6 @@ type ActionData = {
   success?: boolean;
 };
 
-const slug = "careers"
-
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
@@ -31,7 +29,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       .from("tara_posts")
       .select("*")
       .eq("category_id", 1)
-      .eq("slug", slug)
+      .eq("slug", params.slug)
       .single(),
     supabase.client
       .from("tara_posts")
@@ -112,7 +110,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   const { data: blog } = await supabase.client
     .from("tara_posts")
     .select("id")
-    .eq("slug", slug)
+    .eq("slug", params.slug)
     .single();
 
   if (!blog) {
@@ -136,7 +134,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     );
   }
 
-  return redirect(`/blog/${slug}`);
+  return redirect(`/blog/${params.slug}`);
 };
 
 export default function BlogPost() {

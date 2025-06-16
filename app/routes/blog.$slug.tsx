@@ -8,7 +8,6 @@ import enTranslations from "~/i18n/locales/en.json";
 import viTranslations from "~/i18n/locales/vi.json";
 import Menu from "~/components/Menu";
 import BlogComments from "~/components/BlogComments";
-import type { Comment } from "~/types/blog";
 
 const translations = {
   en: enTranslations,

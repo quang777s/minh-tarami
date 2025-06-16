@@ -138,7 +138,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 ) : (
                   <Link
                     key={page.id}
-                    to={`/#${page.slug}`}
+                    to={`/page/${page.slug}`}
                     className="text-white hover:text-gray-300 px-2 py-1 text-sm"
                   >
                     {page.title}
@@ -235,7 +235,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               ) : (
                 <Link
                   key={page.id}
-                  to={`/#${page.slug}`}
+                  to={`/page/${page.slug}`}
                   className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
                 >
                   {page.title}
