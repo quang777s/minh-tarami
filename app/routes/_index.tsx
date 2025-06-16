@@ -19,7 +19,7 @@ type ActionData = {
   success?: boolean;
 };
 
-const slug = "careers"
+const slug = "gioi-thieu"
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
