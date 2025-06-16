@@ -21,6 +21,7 @@ import { useState } from "react";
 import { RichTextEditor } from "~/components/editor/rich-text-editor";
 import { ImageSelector } from "~/components/editor/image-selector";
 import type { OutputData } from "@editorjs/editorjs";
+import { generateSlug } from "~/lib/helpers/slug";
 
 const translations = {
   en: enTranslations,
@@ -112,10 +113,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   // Generate slug from title if empty
   if (!slug) {
-    slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+    slug = generateSlug(title);
   }
 
   const supabase = createSupabaseServerClient(request);
@@ -150,13 +148,6 @@ export default function CreatePost() {
   const [slug, setSlug] = useState<string>("");
   const [editorData, setEditorData] = useState<OutputData>();
   const submit = useSubmit();
-
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
-  };
 
   const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSlug(e.target.value);

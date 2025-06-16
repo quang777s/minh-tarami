@@ -21,6 +21,7 @@ import { useState } from "react";
 import RichTextEditor from "~/components/RichTextEditor";
 import { ImageSelector } from "~/components/editor/image-selector";
 import { X } from "lucide-react";
+import { generateSlug } from "~/lib/helpers/slug";
 
 const translations = {
   en: enTranslations,
@@ -96,10 +97,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   // Generate slug from title if empty
   if (!slug) {
-    slug = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+    slug = generateSlug(title);
   }
 
   const supabase = createSupabaseServerClient(request);
@@ -134,13 +132,6 @@ export default function CreatePage() {
   const [content, setContent] = useState<string>("");
   const submit = useSubmit();
 
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
-  };
-
   const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSlug(e.target.value);
   };
@@ -149,7 +140,7 @@ export default function CreatePage() {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-
+    
     // If slug is empty, generate it from title
     if (!formData.get("slug")) {
       const title = formData.get("title") as string;
@@ -158,7 +149,7 @@ export default function CreatePage() {
 
     // Add editor content to form
     formData.set("body", content);
-
+    
     submit(formData, { method: "post" });
   };
 

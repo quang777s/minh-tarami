@@ -114,18 +114,6 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
           {/* Desktop menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-2">
-              <Link
-                to={`/blog/gioi-thieu`}
-                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
-              >
-                Trang Chủ
-              </Link>
-              <Link
-                to={`/blog/he-thong-tri-tue`}
-                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
-              >
-                Hệ Thống Trí Tuệ
-              </Link>
               {pages?.map((page) =>
                 onMenuClick ? (
                   <button
@@ -150,24 +138,6 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
               >
                 Blogger
-              </Link>
-              <Link
-                to={`/blog/doi-ngu`}
-                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
-              >
-                Đội Ngũ
-              </Link>
-              <Link
-                to={`/blog/tuyen-nhan-vat`}
-                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
-              >
-                Tuyển Nhân Vật
-              </Link>
-              <Link
-                to={`/blog/nh-n-v-t`}
-                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
-              >
-                Nhân Vật
               </Link>
               <Link
                 to={`/tra-tu`}
@@ -206,20 +176,6 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
         {/* Mobile menu */}
         <div className={`md:hidden ${isMenuOpen ? "block" : "hidden"}`}>
           <div className="px-2 pt-2 pb-3 space-y-1 bg-black backdrop-blur-sm">
-            <Link
-              to={`/blog/gioi-thieu`}
-              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Trang Chủ
-            </Link>
-            <Link
-              to={`/blog/he-thong-tri-tue`}
-              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Hệ Thống Trí Tuệ
-            </Link>
             {pages?.map((page) =>
               onMenuClick ? (
                 <button
@@ -248,27 +204,6 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               onClick={() => setIsMenuOpen(false)}
             >
               Blogger
-            </Link>
-            <Link
-              to={`/blog/doi-ngu`}
-              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Đội Ngũ
-            </Link>
-            <Link
-              to={`/blog/tuyen-nhan-vat`}
-              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Tuyển Nhân Vật
-            </Link>
-            <Link
-              to={`/blog/nh-n-v-t`}
-              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Nhân Vật
             </Link>
             <Link
               to={`/tra-tu`}
