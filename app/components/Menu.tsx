@@ -138,21 +138,19 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 ) : (
                   <Link
                     key={page.id}
-                    to={`/landing#${page.slug}`}
+                    to={`/#${page.slug}`}
                     className="text-white hover:text-gray-300 px-2 py-1 text-sm"
                   >
                     {page.title}
                   </Link>
                 )
               )}
-              {isLoggedIn && (
-                <Link
-                  to={`/user/profile`}
-                  className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
-                >
-                  Blogger
-                </Link>
-              )}
+              <Link
+                to={`/user/profile`}
+                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+              >
+                Blogger
+              </Link>
               <Link
                 to={`/blog/doi-ngu`}
                 className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
@@ -237,22 +235,20 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               ) : (
                 <Link
                   key={page.id}
-                  to={`/landing#${page.slug}`}
+                  to={`/#${page.slug}`}
                   className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
                 >
                   {page.title}
                 </Link>
               )
             )}
-            {isLoggedIn && (
-              <Link
-                to={`/user/profile`}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Blogger
-              </Link>
-            )}
+            <Link
+              to={`/user/profile`}
+              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blogger
+            </Link>
             <Link
               to={`/blog/doi-ngu`}
               className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
