@@ -26,6 +26,23 @@ export default function App() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ResearchProject",
+              "name": "Hệ thống 999",
+              "description": "Mô hình phân tích EQ dựa trên khoa học thần kinh",
+              "url": "https://taramind.vn/he-thong-999",
+              "citation": [{
+                "@type": "ScholarlyArticle",
+                "name": "Thinking, Fast and Slow",
+                "author": "Daniel Kahneman"
+              }]
+            })
+          }}
+        />
       </head>
       <body className="min-h-screen font-sans">
         <Outlet />
