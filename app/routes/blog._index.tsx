@@ -21,6 +21,7 @@ type Blog = {
   featured_image: string | null;
   published_at: string | null;
   excerpt?: string;
+  post_type: string;
 };
 
 type Page = {
@@ -99,14 +100,14 @@ export default function BlogList() {
             Blog Posts
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="space-y-4 max-w-4xl mx-auto">
             {blogs.map((blog) => (
               <Link
                 key={blog.id}
                 to={`/blog/${blog.slug}`}
-                className="group block bg-black/50 rounded-lg overflow-hidden hover:bg-black/70 transition-all duration-300"
+                className="group flex items-center gap-4 bg-black/50 p-3 rounded-lg hover:bg-black/70 transition-all duration-200"
               >
-                <div className="relative aspect-[16/9] overflow-hidden">
+                <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden rounded-md">
                   <img
                     src={blog.featured_image || "/galaxy.jpg"}
                     alt={blog.title}
@@ -114,18 +115,24 @@ export default function BlogList() {
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300" />
                 </div>
-                <div className="p-6">
-                  <h2 className="text-xl font-semibold text-white mb-2 group-hover:text-gray-300 transition-colors duration-300">
-                    {blog.title}
-                  </h2>
+                
+                <div>
+                  <div className="flex items-baseline gap-3">
+                    <h2 className="text-base font-medium text-white group-hover:text-gray-300 line-clamp-1">
+                      {blog.title}
+                    </h2>
+                    <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded-full capitalize">
+                      {blog.post_type}
+                    </span>
+                  </div>
                   {blog.published_at && (
-                    <p className="text-gray-400 text-sm">
+                    <div className="text-xs text-gray-500">
                       {new Date(blog.published_at).toLocaleDateString(locale, {
                         year: "numeric",
-                        month: "long",
+                        month: "short",
                         day: "numeric",
                       })}
-                    </p>
+                    </div>
                   )}
                 </div>
               </Link>

@@ -28,6 +28,11 @@ const translations = {
   vi: viTranslations,
 };
 
+type Category = {
+  id: number;
+  name: string;
+};
+
 type MediaFile = {
   name: string;
   id: string;
@@ -63,6 +68,18 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect("/user");
   }
 
+  // Get valid categories (excluding id 1 and 3)
+  const { data: categories, error: categoriesError } = await supabase.client
+    .from("tara_categories")
+    .select("*")
+    .neq("id", 1)
+    .neq("id", 3)
+    .order("name");
+
+  if (categoriesError) {
+    throw new Error("Failed to fetch categories");
+  }
+
   // Get all media files
   const { data: media, error: mediaError } = await supabase.client.storage
     .from("taramind")
@@ -74,10 +91,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   // Get current locale
   const locale = await getLocale(request);
-  
-  return json({ 
-    user, 
+
+  return json({
+    user,
     profile,
+    categories,
     media,
     locale,
     t: translations[locale].admin,
@@ -89,7 +107,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const title = formData.get("title") as string;
   let slug = formData.get("slug") as string;
-  const post_type = formData.get("post_type") as string;
+  const category_id = parseInt(formData.get("category_id") as string);
   const body = formData.get("body") as string;
   const featured_image = formData.get("featured_image") as string;
   const published_at = formData.get("published_at") as string;
@@ -106,14 +124,13 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const { error } = await supabase.client.from("tara_posts").insert({
     title,
     slug,
-    post_type,
     body,
-    category_id: 2, // Set category_id to 2 for blog posts
+    category_id,
     featured_image,
     published_at: published_at || null,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-    order_index
+    order_index,
   });
 
   if (error) {
@@ -124,7 +141,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function CreateBlog() {
-  const { user, profile, media, locale, t, supabaseUrl } =
+  const { user, profile, categories, media, locale, t, supabaseUrl } =
     useLoaderData<typeof loader>();
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>("");
@@ -140,7 +157,7 @@ export default function CreateBlog() {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    
+
     // If slug is empty, generate it from title
     if (!formData.get("slug")) {
       const title = formData.get("title") as string;
@@ -149,7 +166,7 @@ export default function CreateBlog() {
 
     // Add editor content to form
     formData.set("body", content);
-    
+
     submit(formData, { method: "post" });
   };
 
@@ -196,9 +213,9 @@ export default function CreateBlog() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="slug">Slug</Label>
-                    <Input 
-                      id="slug" 
-                      name="slug" 
+                    <Input
+                      id="slug"
+                      name="slug"
                       className="w-full"
                       value={slug}
                       onChange={handleSlugChange}
@@ -216,6 +233,25 @@ export default function CreateBlog() {
                       <SelectItem value="post">Blog Post</SelectItem>
                       <SelectItem value="article">Article</SelectItem>
                       <SelectItem value="character">Nhân Vật</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="category_id">Category</Label>
+                  <Select name="category_id" required>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent className="z-[100] bg-white dark:bg-gray-950 border shadow-lg">
+                      {categories?.map((category) => (
+                        <SelectItem
+                          key={category.id}
+                          value={category.id.toString()}
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -279,10 +315,7 @@ export default function CreateBlog() {
 
                 <div className="space-y-2">
                   <Label>Content</Label>
-                  <RichTextEditor 
-                    value={content}
-                    onChange={setContent}
-                  />
+                  <RichTextEditor value={content} onChange={setContent} />
                 </div>
 
                 <div className="flex justify-end gap-4">
@@ -306,4 +339,4 @@ export default function CreateBlog() {
       />
     </div>
   );
-} 
+}

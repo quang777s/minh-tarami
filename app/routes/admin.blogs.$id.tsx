@@ -27,6 +27,11 @@ const translations = {
   vi: viTranslations,
 };
 
+type Category = {
+  id: number;
+  name: string;
+};
+
 type MediaFile = {
   name: string;
   id: string;
@@ -74,12 +79,23 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw redirect("/user");
   }
 
+  // Get valid categories (excluding id 1 and 3)
+  const { data: categories, error: categoriesError } = await supabase.client
+    .from("tara_categories")
+    .select("*")
+    .neq("id", 1)
+    .neq("id", 3)
+    .order("name");
+
+  if (categoriesError) {
+    throw new Error("Failed to fetch categories");
+  }
+
   // Get blog data
   const { data: blog, error: blogError } = await supabase.client
     .from("tara_posts")
     .select("*")
     .eq("id", params.id)
-    .eq("category_id", 2) // Ensure it's a blog post
     .single();
 
   if (blogError || !blog) {
@@ -102,6 +118,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     user,
     profile,
     blog,
+    categories,
     media,
     locale,
     t: translations[locale].admin,
@@ -119,9 +136,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     const { error } = await supabase.client
       .from("tara_posts")
       .delete()
-      .eq("id", params.id)
-      .eq("category_id", 2); // Ensure it's a blog post
-
+      .eq("id", params.id);
     if (error) {
       return json({ error: "Failed to delete blog post" });
     }
@@ -132,7 +147,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
   // Handle update action
   const title = formData.get("title") as string;
   let slug = formData.get("slug") as string;
-  const post_type = formData.get("post_type") as string;
+  const category_id = parseInt(formData.get("category_id") as string);
   const body = formData.get("body") as string;
   const featured_image = formData.get("featured_image") as string;
   const published_at = formData.get("published_at") as string;
@@ -154,17 +169,14 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     .update({
       title,
       slug,
-      post_type,
       body,
-      category_id: 2, // Ensure it stays a blog post
+      category_id,
       featured_image,
       published_at: published_at || null,
       updated_at: new Date().toISOString(),
       order_index,
     })
-    .eq("id", params.id)
-    .eq("category_id", 2); // Ensure it's a blog post
-
+    .eq("id", params.id);
   if (error) {
     return json({ error: "Failed to update blog post" });
   }
@@ -173,7 +185,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 };
 
 export default function EditBlog() {
-  const { user, profile, blog, media, locale, t, supabaseUrl } =
+  const { user, profile, blog, categories, media, locale, t, supabaseUrl } =
     useLoaderData<typeof loader>();
   const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string>(
@@ -282,6 +294,29 @@ export default function EditBlog() {
                 </div>
 
                 <div className="space-y-2">
+                  <Label htmlFor="category_id">Category</Label>
+                  <Select
+                    name="category_id"
+                    required
+                    defaultValue={blog.category_id?.toString()}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent className="z-[100] bg-white dark:bg-gray-950 border shadow-lg">
+                      {categories?.map((category: Category) => (
+                        <SelectItem
+                          key={category.id}
+                          value={category.id.toString()}
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
                   <Label>Featured Image</Label>
                   <div className="flex gap-4">
                     <Button
@@ -345,10 +380,7 @@ export default function EditBlog() {
 
                 <div className="space-y-2">
                   <Label>Content</Label>
-                  <RichTextEditor
-                    value={content}
-                    onChange={setContent}
-                  />
+                  <RichTextEditor value={content} onChange={setContent} />
                 </div>
 
                 <div className="flex justify-between gap-4">
@@ -364,7 +396,11 @@ export default function EditBlog() {
                       variant="destructive"
                       type="submit"
                       onClick={(e) => {
-                        if (!confirm('Are you sure you want to delete this blog post?')) {
+                        if (
+                          !confirm(
+                            "Are you sure you want to delete this blog post?"
+                          )
+                        ) {
                           e.preventDefault();
                         }
                       }}
@@ -388,4 +424,4 @@ export default function EditBlog() {
       />
     </div>
   );
-} 
+}
