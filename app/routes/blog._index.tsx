@@ -42,6 +42,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     .from("tara_posts")
     .select("*")
     .eq("category_id", 2)
+    .neq("post_type", "character")
     .order("published_at", { ascending: false });
 
   if (blogsError) {

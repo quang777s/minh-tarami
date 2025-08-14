@@ -215,6 +215,7 @@ export default function CreateBlog() {
                     <SelectContent className="z-[100] bg-white dark:bg-gray-950 border shadow-lg">
                       <SelectItem value="post">Blog Post</SelectItem>
                       <SelectItem value="article">Article</SelectItem>
+                      <SelectItem value="character">Nhân Vật</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
