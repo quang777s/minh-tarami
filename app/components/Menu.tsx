@@ -79,7 +79,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
           <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white hover:text-gray-300 focus:outline-none"
+              className="text-violet-100 hover:text-gray-300 focus:outline-none"
               aria-label={
                 isMenuOpen
                   ? t.menu?.close || "Close menu"
@@ -119,7 +119,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                   <button
                     key={page.id}
                     onClick={() => onMenuClick(page.slug)}
-                    className="text-white hover:text-gray-300 px-2 py-1 text-sm"
+                    className="text-violet-100 hover:text-gray-300 px-2 py-1 text-sm"
                   >
                     {page.title}
                   </button>
@@ -127,7 +127,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                   <Link
                     key={page.id}
                     to={`/page/${page.slug}`}
-                    className="text-white hover:text-gray-300 px-2 py-1 text-sm"
+                    className="text-violet-100 hover:text-gray-300 px-2 py-1 text-sm"
                   >
                     {page.title}
                   </Link>
@@ -135,13 +135,13 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               )}
               <Link
                 to={`/blog`}
-                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+                className={`text-violet-100 hover:text-gray-300 px-2 py-1 text-sm`}
               >
                 Blogger
               </Link>
               <Link
                 to={`/tra-tu`}
-                className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+                className={`text-violet-100 hover:text-gray-300 px-2 py-1 text-sm`}
               >
                 Từ Điển
               </Link>
@@ -149,13 +149,13 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 <>
                   <Link
                     to={`/register`}
-                    className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+                    className={`text-violet-100 hover:text-gray-300 px-2 py-1 text-sm`}
                   >
                     Đăng Ký
                   </Link>
                   <Link
                     to={`/login`}
-                    className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+                    className={`text-violet-100 hover:text-gray-300 px-2 py-1 text-sm`}
                   >
                     Đăng Nhập
                   </Link>
@@ -164,7 +164,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               {isLoggedIn && (
                 <Link
                   to={`/logout`}
-                  className={`text-white hover:text-gray-300 px-2 py-1 text-sm`}
+                  className={`text-violet-100 hover:text-gray-300 px-2 py-1 text-sm`}
                 >
                   Đăng Xuất
                 </Link>
@@ -184,7 +184,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                     onMenuClick(page.slug);
                     setIsMenuOpen(false);
                   }}
-                  className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+                  className="block w-full text-left text-violet-100 hover:text-gray-300 px-3 py-2 text-sm"
                 >
                   {page.title}
                 </button>
@@ -192,7 +192,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
                 <Link
                   key={page.id}
                   to={`/page/${page.slug}`}
-                  className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+                  className="block w-full text-left text-violet-100 hover:text-gray-300 px-3 py-2 text-sm"
                 >
                   {page.title}
                 </Link>
@@ -200,14 +200,14 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
             )}
             <Link
               to={`/blog`}
-              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+              className="block w-full text-left text-violet-100 hover:text-gray-300 px-3 py-2 text-sm"
               onClick={() => setIsMenuOpen(false)}
             >
               Blogger
             </Link>
             <Link
               to={`/tra-tu`}
-              className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+              className="block w-full text-left text-violet-100 hover:text-gray-300 px-3 py-2 text-sm"
               onClick={() => setIsMenuOpen(false)}
             >
               Từ Điển
@@ -216,14 +216,14 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
               <>
                 <Link
                   to={`/register`}
-                  className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+                  className="block w-full text-left text-violet-100 hover:text-gray-300 px-3 py-2 text-sm"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Đăng Ký
                 </Link>
                 <Link
                   to={`/login`}
-                  className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+                  className="block w-full text-left text-violet-100 hover:text-gray-300 px-3 py-2 text-sm"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Đăng Nhập
@@ -233,7 +233,7 @@ export default function Menu({ pages, t, onMenuClick, isLoggedIn }: MenuProps) {
             {isLoggedIn && (
               <Link
                 to={`/logout`}
-                className="block w-full text-left text-white hover:text-gray-300 px-3 py-2 text-sm"
+                className="block w-full text-left text-violet-100 hover:text-gray-300 px-3 py-2 text-sm"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Đăng Xuất

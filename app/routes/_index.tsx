@@ -19,7 +19,7 @@ type ActionData = {
   success?: boolean;
 };
 
-const slug = "gioi-thieu"
+const slug = "gioi-thieu";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
@@ -37,7 +37,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       .from("tara_posts")
       .select("*")
       .eq("category_id", 1)
-      .order("order_index", { ascending: true })
+      .order("order_index", { ascending: true }),
   ]);
 
   if (blogResult.error || !blogResult.data) {
@@ -165,17 +165,18 @@ export default function BlogPost() {
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url(${blog.featured_image || "/default-slide.jpg"
-                })`,
+              backgroundImage: `url(${
+                blog.featured_image || "/default-slide.jpg"
+              })`,
             }}
           ></div>
           <div className="relative z-10 w-full flex justify-center pt-20 pb-12">
             <div className="max-w-7xl lg:w-[80rem] mx-auto px-4 sm:px-6 lg:px-8">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white font-vietnamese">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-violet-100 font-vietnamese">
                 {blog.title}
               </h1>
               {blog.published_at && (
-                <p className="text-white mb-8 font-vietnamese">
+                <p className="text-violet-100 mb-8 font-vietnamese">
                   {new Date(blog.published_at).toLocaleDateString(locale, {
                     year: "numeric",
                     month: "long",
@@ -184,7 +185,7 @@ export default function BlogPost() {
                 </p>
               )}
               <div
-                className="prose prose-invert prose-white max-w-none font-vietnamese text-white"
+                className="prose prose-invert prose-white max-w-none font-vietnamese text-violet-100"
                 dangerouslySetInnerHTML={{
                   __html: blog.body,
                 }}
@@ -195,16 +196,12 @@ export default function BlogPost() {
       </section>
 
       {/* Comments Section */}
-      <BlogComments
-        slug={blog.slug}
-        isLoggedIn={isLoggedIn}
-        locale={locale}
-      />
+      <BlogComments slug={blog.slug} isLoggedIn={isLoggedIn} locale={locale} />
 
       {/* Fixed Copyright Bar */}
       <div className="fixed bottom-0 w-full bg-black backdrop-blur-sm py-3 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-white text-sm">{t.copyright}</p>
+          <p className="text-violet-100 text-sm">{t.copyright}</p>
         </div>
       </div>
     </div>

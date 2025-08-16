@@ -1,4 +1,10 @@
-import { Form, Link, useActionData, useNavigation, useFetcher } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useNavigation,
+  useFetcher,
+} from "@remix-run/react";
 import { useEffect, useState } from "react";
 import type { Comment } from "~/types/blog";
 
@@ -13,7 +19,11 @@ type FetcherData = {
   error?: string;
 };
 
-export default function BlogComments({ slug, isLoggedIn, locale }: BlogCommentsProps) {
+export default function BlogComments({
+  slug,
+  isLoggedIn,
+  locale,
+}: BlogCommentsProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const fetcher = useFetcher<FetcherData>();
   const actionData = useActionData<{ error?: string }>();
@@ -35,16 +45,20 @@ export default function BlogComments({ slug, isLoggedIn, locale }: BlogCommentsP
   return (
     <section className="relative w-full bg-black py-12">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-bold text-white mb-8">Bình luận</h2>
-        
+        <h2 className="text-2xl font-bold text-violet-100 mb-8">Bình luận</h2>
+
         {/* Comment Form */}
         {isLoggedIn ? (
-          <Form method="post" action={`/blog/${slug}/comments`} className="mb-8">
+          <Form
+            method="post"
+            action={`/blog/${slug}/comments`}
+            className="mb-8"
+          >
             <div className="mb-4">
               <textarea
                 name="comment"
                 rows={4}
-                className="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-gray-500"
+                className="w-full px-4 py-2 bg-black/50 border border-gray-700 rounded-lg text-violet-100 placeholder-gray-400 focus:outline-none focus:border-gray-500"
                 placeholder="Viết bình luận của bạn..."
                 required
               />
@@ -62,7 +76,7 @@ export default function BlogComments({ slug, isLoggedIn, locale }: BlogCommentsP
           </Form>
         ) : (
           <div className="mb-8 p-4 bg-black/50 rounded-lg">
-            <p className="text-white">
+            <p className="text-violet-100">
               Vui lòng{" "}
               <Link to="/login" className="text-blue-400 hover:text-blue-300">
                 đăng nhập
@@ -77,12 +91,12 @@ export default function BlogComments({ slug, isLoggedIn, locale }: BlogCommentsP
           {comments.map((comment) => (
             <div key={comment.id} className="bg-black/50 rounded-lg p-6">
               <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-white">
-                  {comment.user?.name?.charAt(0).toUpperCase() || '?'}
+                <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center text-violet-100">
+                  {comment.user?.name?.charAt(0).toUpperCase() || "?"}
                 </div>
                 <div className="ml-4">
-                  <p className="text-white font-medium">
-                    {comment.user?.name || 'Người dùng ẩn danh'}
+                  <p className="text-violet-100 font-medium">
+                    {comment.user?.name || "Người dùng ẩn danh"}
                   </p>
                   <p className="text-gray-400 text-sm">
                     {new Date(comment.created_at).toLocaleDateString(locale, {
@@ -95,11 +109,11 @@ export default function BlogComments({ slug, isLoggedIn, locale }: BlogCommentsP
                   </p>
                 </div>
               </div>
-              <p className="text-white">{comment.comment_text}</p>
+              <p className="text-violet-100">{comment.comment_text}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
-} 
+}
