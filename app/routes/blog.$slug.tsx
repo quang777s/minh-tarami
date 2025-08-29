@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { useEffect } from "react";
 import { json, redirect } from "@remix-run/node";
 import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
@@ -14,6 +14,29 @@ const translations = {
   vi: viTranslations,
 };
 
+type Category = {
+  id: number;
+  name: string;
+  slug: string;
+  parent_id: number | null;
+};
+
+const getBreadcrumbAncestors = (
+  category: Category,
+  allCategories: Category[],
+  ancestors: Category[] = []
+): Category[] => {
+  if (!category.parent_id) return ancestors;
+  const parent = allCategories.find((c) => c.id === category.parent_id);
+  if (parent) {
+    return getBreadcrumbAncestors(parent, allCategories, [
+      parent,
+      ...ancestors,
+    ]);
+  }
+  return ancestors;
+};
+
 type ActionData = {
   error?: string;
   success?: boolean;
@@ -23,20 +46,27 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const supabase = createSupabaseServerClient(request);
 
   // Fetch session, blog post and pages in parallel
-  const [sessionResult, blogResult, pagesResult] = await Promise.all([
-    supabase.client.auth.getSession(),
-    supabase.client
-      .from("tara_posts")
-      .select("*")
-      .eq("category_id", 2)
-      .eq("slug", params.slug)
-      .single(),
-    supabase.client
-      .from("tara_posts")
-      .select("*")
-      .eq("category_id", 1)
-      .order("order_index", { ascending: true }),
-  ]);
+  // Fetch all categories for breadcrumbs
+  const { data: categories } = await supabase.client
+    .from("tara_categories")
+    .select("*");
+
+  const [sessionResult, blogResult, pagesResult, categoriesResult] =
+    await Promise.all([
+      supabase.client.auth.getSession(),
+      supabase.client
+        .from("tara_posts")
+        .select("*")
+        .neq("category_id", 1)
+        .eq("slug", params.slug)
+        .single(),
+      supabase.client
+        .from("tara_posts")
+        .select("*")
+        .eq("category_id", 1)
+        .order("order_index", { ascending: true }),
+      supabase.client.from("tara_categories").select("*").gt("id", 3),
+    ]);
 
   if (blogResult.error || !blogResult.data) {
     throw new Error("Blog post not found");
@@ -44,6 +74,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   if (pagesResult.error || !pagesResult.data) {
     throw new Error("Failed to fetch pages");
+  }
+
+  if (categoriesResult.error || !categoriesResult.data) {
+    throw new Error("Failed to fetch categories");
   }
 
   // Get current locale
@@ -56,6 +90,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       locale,
       t: translations[locale].landing,
       isLoggedIn: !!sessionResult.data.session,
+      currentCategory: categoriesResult.data?.find(
+        (c) => c.id === blogResult.data.category_id
+      ),
+      categories: categoriesResult.data,
     },
     {
       headers: {
@@ -138,7 +176,8 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
 };
 
 export default function BlogPost() {
-  const { blog, pages, locale, t, isLoggedIn } = useLoaderData<typeof loader>();
+  const { blog, pages, locale, t, isLoggedIn, currentCategory, categories } =
+    useLoaderData<typeof loader>();
 
   useEffect(() => {
     // Set black background for blog page
@@ -170,6 +209,34 @@ export default function BlogPost() {
           ></div>
           <div className="relative z-10 w-full flex justify-center pt-20 pb-12">
             <div className="max-w-7xl lg:w-[80rem] mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Breadcrumbs */}
+              {currentCategory && (
+                <div className="text-violet-100 flex gap-2 items-center flex-wrap mb-4">
+                  <Link to="/blog" className="hover:text-violet-300">
+                    Blog
+                  </Link>
+                  <span className="text-white/50 mx-2">{">"}</span>
+                  {getBreadcrumbAncestors(currentCategory, categories).map(
+                    (ancestor) => (
+                      <span
+                        key={ancestor.id}
+                        className="flex items-center gap-2"
+                      >
+                        <Link
+                          to={`/blog?category=${ancestor.id}`}
+                          className="hover:text-violet-300"
+                        >
+                          {ancestor.name}
+                        </Link>
+                        <span className="text-white/50 mx-2">{">"}</span>
+                      </span>
+                    )
+                  )}
+                  <span className="text-violet-300">
+                    {currentCategory.name}
+                  </span>
+                </div>
+              )}
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-violet-100 font-vietnamese">
                 {blog.title}
               </h1>

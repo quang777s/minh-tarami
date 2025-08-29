@@ -75,7 +75,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         name
       )
     `)
-    .eq('category_id', 2)
+    .neq('category_id', 1)
     .order('created_at', { ascending: false });
 
   if (blogsError) {
@@ -255,4 +255,4 @@ export default function AdminBlogs() {
       </div>
     </div>
   );
-} 
+}

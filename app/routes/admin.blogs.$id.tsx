@@ -169,6 +169,7 @@ export const action = async ({ request, params }: ActionFunctionArgs) => {
     .update({
       title,
       slug,
+      post_type: formData.get("post_type") as string,
       body,
       category_id,
       featured_image,
